@@ -11,10 +11,6 @@ export interface ISkillState {
     [name: string]: ISkill
 }
 
-const initialState = {
-    'Acrobatics (Ag)': { name: 'Acrobatics (Ag)', level: 3, type: 'Ag'}
-} as ISkillState
-
 export const skillSlice = createSlice({
     name: 'skills',
     initialState: allSkills,

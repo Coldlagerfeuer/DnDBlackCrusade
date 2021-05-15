@@ -72,9 +72,9 @@ export const inventorySlice = createSlice({
     initialState: itemsInitialState,
     reducers: {
         addItem: (state, action: PayloadAction<IItem>) => {
-            const { name, count } = action.payload;
+            const { name } = action.payload;
             const oldCount = state[name]?.count
-            state[name] = {...action.payload, count: oldCount ? oldCount + 1 : 1};
+            state[name] = { ...action.payload, count: oldCount ? oldCount + 1 : 1 };
         },
         addItemByName: (state, action: PayloadAction<string>) => {
             const itemname = action.payload;
@@ -123,6 +123,15 @@ export const inventorySlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addItem, addItemByName, changeWeaponName, editWeapon, removeItem, editDescription, editCategory, importInventory } = inventorySlice.actions
+export const {
+    addItem,
+    addItemByName,
+    changeWeaponName,
+    editWeapon,
+    removeItem,
+    editDescription,
+    editCategory,
+    importInventory
+} = inventorySlice.actions
 export default inventorySlice.reducer
 

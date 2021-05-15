@@ -19,6 +19,7 @@ import { importInventory } from "../inventory/inventorySlice";
 import { TalentView } from "../talents/talentView";
 import { Armoury } from "../armoury/armoury";
 import { importArmoury } from "../armoury/armourySlice";
+import { FileUploadDrop } from "./fileUploadDrop";
 
 
 export const CharacterFunction = () => {
@@ -118,12 +119,13 @@ export const CharacterFunction = () => {
     }
 
     function getArmouryPane() {
-        return    <Jumbotron>
+        return <Jumbotron>
             <Armoury/>
         </Jumbotron>
     }
 
-    function getSettingsPane(){
+    function getSettingsPane() {
+
         return <Jumbotron>
             <Container>
                 <Row>
@@ -146,6 +148,21 @@ export const CharacterFunction = () => {
 
                         </Row>
                         <Row>
+                            <Col>
+
+                                <a href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                                    JSON.stringify(completeState)
+                                )}`} download={"DnD-Character.json"}>
+
+                                    <Button size={"sm"}>Download</Button>
+                                </a>
+                            </Col>
+                            <Col>
+                                {/*<input type="file" />*/}
+                                {/*<FileUploadDrop />*/}
+                            </Col>
+                        </Row>
+                        <Row>
                             Cols: {mainCols}
                             <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
                                     size="sm"
@@ -157,14 +174,17 @@ export const CharacterFunction = () => {
                         </Row>
                     </Col>
                     <Col sm={10}>
-                        <InputGroup>
-                            <FormControl as="textarea" size={"sm"} rows={10}
-                                         aria-label="Importfield"
-                                         value={importState}
-                                         onChange={(event) => {
-                                             setImportState(event.target.value)
-                                         }}/>
-                        </InputGroup>
+
+                        <FileUploadDrop {...{importState, setImportState}} />
+
+                        {/*<InputGroup>*/}
+                        {/*    <FormControl as="textarea" size={"sm"} rows={10}*/}
+                        {/*                 aria-label="Importfield"*/}
+                        {/*                 value={importState}*/}
+                        {/*                 onChange={(event) => {*/}
+                        {/*                     setImportState(event.target.value)*/}
+                        {/*                 }}/>*/}
+                        {/*</InputGroup>*/}
                     </Col>
                 </Row>
             </Container>
@@ -184,9 +204,9 @@ export const CharacterFunction = () => {
         <Row>
 
             <Col>
-            {allPanes.map(element =>
-                element
-            )}
+                {allPanes.map(element =>
+                    element
+                )}
             </Col>
         </Row>
 

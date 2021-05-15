@@ -1,11 +1,11 @@
 import { Badge, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../../general/hooks";
+import { useAppSelector } from "../../general/hooks";
 import React from "react";
 
 
 export const TalentEntryFunction = ({ name = 'TALENTNAME' }) => {
     const talents = useAppSelector(state => state.talents);
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
 
     const talent = talents[name];
 
