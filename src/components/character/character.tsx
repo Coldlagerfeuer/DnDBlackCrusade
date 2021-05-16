@@ -45,7 +45,7 @@ export const CharacterFunction = () => {
     }
 
     function getCharacteristicsPane() {
-        return <Jumbotron>
+        return <Jumbotron key={"jumbo-characteristics"}>
             <Container style={{ padding: 0 }}>
                 <Row>
                     <Col>
@@ -60,7 +60,7 @@ export const CharacterFunction = () => {
     }
 
     function getSkillsPane() {
-        return <Jumbotron>
+        return <Jumbotron key={"jumbo-skills"}>
             <Row>
                 <Col>
                     <h3>Skills</h3>
@@ -102,13 +102,13 @@ export const CharacterFunction = () => {
     }
 
     function getTalentsPane() {
-        return <Jumbotron>
+        return <Jumbotron key={"jumbo-talents"}>
             <TalentView/>
         </Jumbotron>
     }
 
     function getInventoryPane() {
-        return <Jumbotron>
+        return <Jumbotron  key={"jumbo-inventory"}>
             <Row>
                 <Col>
                     <h3>Inventory</h3>
@@ -119,14 +119,14 @@ export const CharacterFunction = () => {
     }
 
     function getArmouryPane() {
-        return <Jumbotron>
+        return <Jumbotron key={"jumbo-armoury"}>
             <Armoury/>
         </Jumbotron>
     }
 
     function getSettingsPane() {
 
-        return <Jumbotron>
+        return <Jumbotron  key={"jumbo-settings"}>
             <Container>
                 <Row>
                     <Col>

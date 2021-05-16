@@ -53,10 +53,14 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
 
     function getJSXForWeaponType(weaponType: EWeaponType) {
         switch (weaponType) {
-            case EWeaponType.IMPACT: return <GiBulletImpacts />
-            case EWeaponType.RENDING: return <GiChainsaw />
-            case EWeaponType.SCHOCK: return <GiElectric />
-            case EWeaponType.LASER: return <GiLaserPrecision />
+            case EWeaponType.IMPACT:
+                return <GiBulletImpacts/>
+            case EWeaponType.RENDING:
+                return <GiChainsaw/>
+            case EWeaponType.SCHOCK:
+                return <GiElectric/>
+            case EWeaponType.LASER:
+                return <GiLaserPrecision/>
 
         }
 
@@ -77,7 +81,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                             key={`category-dropdown-${e}`}
                             onClick={() => {
                                 dispatch(editWeapon({ ...weapon, weaponCategory: index }))
-                            }}>{e}</Dropdown.Item> : <></>
+                            }}>{e}</Dropdown.Item> : null
                     }
                 )}
             </Dropdown.Menu>
@@ -90,8 +94,11 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                                                     value={weapon.weight}
                                                     placeholder={"1"}
                                                     aria-label="Weight"
-                                                    onChange={(event) => dispatch(editWeapon({ ...weapon, weight: parseInt(event.target.value) }))}/> </Col>
-            :<Col md={col}> <GiWeight/> {weapon.weight} </Col>
+                                                    onChange={(event) => dispatch(editWeapon({
+                                                        ...weapon,
+                                                        weight: parseInt(event.target.value)
+                                                    }))}/> </Col>
+            : <Col md={col}> <GiWeight/> {weapon.weight} </Col>
     }
 
 
@@ -106,7 +113,10 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                              onChange={(event) => dispatch(editWeapon({ ...weapon, damage: event.target.value }))}/>
                 <div>
                     <Badge variant={'success'} style={{ cursor: 'pointer' }}
-                           onClick={() => dispatch(editWeapon({ ...weapon, pen: weapon.pen? weapon.pen + 1 : 1}))}>+</Badge>
+                           onClick={() => dispatch(editWeapon({
+                               ...weapon,
+                               pen: weapon.pen ? weapon.pen + 1 : 1
+                           }))}>+</Badge>
                     <Badge pill={true} variant={"secondary"}> <GiShieldImpact/> {weapon.pen ? weapon.pen : 0} </Badge>
                     <Badge variant={'danger'} style={{ cursor: 'pointer' }}
                            onClick={() => dispatch(editWeapon({
@@ -129,7 +139,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                                     onClick={() => {
                                         dispatch(editWeapon({ ...weapon, type: index }))
                                     }}
-                                >{e}</Dropdown.Item> : <></>
+                                >{e}</Dropdown.Item> : null
                             }
                         )}
                     </Dropdown.Menu>
@@ -211,7 +221,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                             : <></>
                         }
                         <Col>
-                            {isRangeWeapon() ?  getWeaponTypeDropdown() : <></>}
+                            {isRangeWeapon() ? getWeaponTypeDropdown() : <></>}
                             <InputGroup>
                                 <FormControl size={"sm"}
                                              value={newName}
@@ -222,19 +232,20 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                                     <Button size={"sm"}
                                             placeholder={"Name"}
                                             onClick={(event) => {
-                                        dispatch(changeWeaponName({
-                                            ...weapon,
-                                            name: newName,
-                                            oldName: weapon.name
-                                        }))
-                                    }}>
+                                                dispatch(changeWeaponName({
+                                                    ...weapon,
+                                                    name: newName,
+                                                    oldName: weapon.name
+                                                }))
+                                            }}>
                                         <IoMdCheckmarkCircle cursor={"pointer"} color={"white"}/>
                                     </Button>
                                 </InputGroup.Append>
                             </InputGroup>
                         </Col>
                     </Row>
-                    : <div>{getJSXForWeaponCategory(weapon.weaponCategory)} {getJSXForWeaponType(weapon.type)} {weapon.name}</div>
+                    :
+                    <div>{getJSXForWeaponCategory(weapon.weaponCategory)} {getJSXForWeaponType(weapon.type)} {weapon.name}</div>
                 }
 
             </OverlayTrigger>

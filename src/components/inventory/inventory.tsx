@@ -17,8 +17,9 @@ import {
     addItemByName,
     editCategory,
     editDescription,
-    EItemCategory,
+    EItemCategory, IInventory,
     IItem,
+    importInventory,
     removeItem,
     TItem
 } from "./inventorySlice";
@@ -38,6 +39,7 @@ export const InventoryFunction = () => {
     const items = useAppSelector(state => state.inventory);
     const armoury = useAppSelector(state => state.armoury)
     const dispatch = useAppDispatch()
+
 
 
     const itemOptions = [];
@@ -98,7 +100,7 @@ export const InventoryFunction = () => {
         function getArmourCard(item: IItem) {
             const armour: IArmourItem = item as IArmourItem;
 
-            return<ArmourCard armour={armour} />
+            return <ArmourCard armour={armour}/>
         }
 
         for (const name in items) {
@@ -169,6 +171,17 @@ export const InventoryFunction = () => {
         return <Pencil/>;
     }
 
+    function sortInventory() {
+        const itemsSorted: IInventory = {};
+        Object.keys(items).sort((a,b) => a.localeCompare(b)).map(key => itemsSorted[key] = items[key])
+
+        console.log(items)
+        console.log(itemsSorted)
+
+        dispatch(importInventory(itemsSorted))
+
+    }
+
     return <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
         <Row>
             <Col sm={3}>
@@ -181,7 +194,7 @@ export const InventoryFunction = () => {
                                          className={"mr-2"}
                             >
 
-                                <Button disabled><AiOutlineSortAscending/></Button>
+                                <Button onClick={() => sortInventory()} ><AiOutlineSortAscending/></Button>
                             </ButtonGroup>
                             <ButtonGroup size="sm">
                                 {Object.values(EItemCategory).map((value: string) =>

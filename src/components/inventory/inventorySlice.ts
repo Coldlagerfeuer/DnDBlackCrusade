@@ -118,6 +118,10 @@ export const inventorySlice = createSlice({
         },
         importInventory: (state, action) => {
             const inventory = action.payload;
+            //clear existing
+            for(const item in state) {
+                delete state[item];
+            }
             for (const name in inventory) {
                 state[name] = inventory[name];
             }

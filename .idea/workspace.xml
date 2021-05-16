@@ -2,26 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="808a4b29-ea26-4b7c-9d87-271f6fcdbaa2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/character/fileUploadDrop.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/2.8981805f.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/2.8981805f.chunk.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/2.8981805f.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/3.9b6c74f2.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/3.9b6c74f2.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.cb330c89.chunk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.cb330c89.chunk.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/runtime-main.61f737a8.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/runtime-main.61f737a8.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/inventory/inventory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inventory/inventory.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/inventory/inventorySlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inventory/inventorySlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,8 +120,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.deploy" />
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.build" />
+        <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
   </component>
@@ -150,8 +137,30 @@
       <workItem from="1619466937017" duration="725000" />
       <workItem from="1619467751054" duration="25282000" />
       <workItem from="1619702974468" duration="52217000" />
-      <workItem from="1620300152861" duration="79605000" />
+      <workItem from="1620300152861" duration="93338000" />
     </task>
+    <task id="LOCAL-00001" summary="Added ArmourEdit options">
+      <created>1621159709298</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1621159709298</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added Laser WeaponType">
+      <created>1621172596739</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1621172596739</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added nojekyll file">
+      <created>1621173513543</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1621173513543</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,5 +176,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added ArmourEdit options" />
+    <MESSAGE value="Added Laser WeaponType" />
+    <MESSAGE value="Added nojekyll file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added nojekyll file" />
   </component>
 </project>
