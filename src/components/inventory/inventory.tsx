@@ -1,7 +1,9 @@
 import {
+    Badge,
     Button,
     ButtonGroup,
     ButtonToolbar,
+    Card,
     Col,
     Dropdown,
     FormControl,
@@ -15,6 +17,7 @@ import React, { useState } from "react";
 import { GearFill, Pencil, PlusCircle, ShieldFill } from "react-bootstrap-icons";
 import {
     addItemByName,
+    editArmour,
     editCategory,
     editDescription,
     EItemCategory,
@@ -27,6 +30,7 @@ import { allItems } from "../character/resources";
 import { IArmourItem, IWeapon, setGear, setWeapon } from "../armoury/armourySlice";
 import { AiOutlineSortAscending, GiCrossedSwords } from "react-icons/all";
 import { WeaponCard } from "../armoury/weaponCard";
+import { ArmourCard } from "../armoury/armourCard";
 
 export const InventoryFunction = () => {
     const [readonly, toggleReadonly] = useState(true)
@@ -94,6 +98,12 @@ export const InventoryFunction = () => {
             return <WeaponCard weapon={weapon} editMode={!readonly}/>;
         }
 
+        function getArmourCard(item: IItem) {
+            const armour: IArmourItem = item as IArmourItem;
+
+            return<ArmourCard armour={armour} />
+        }
+
         for (const name in items) {
             const item: IItem = items[name];
             result.push(<Tab.Pane eventKey={`#link${name}`} key={`tabpane-${name}`}>
@@ -128,7 +138,7 @@ export const InventoryFunction = () => {
                 <Row>
 
 
-                    <Col md={item.category === EItemCategory.WEAPON ? 5 : 12}>
+                    <Col md={item.category === EItemCategory.WEAPON || item.category === EItemCategory.ARMOUR ? 5 : 12}>
 
                         <InputGroup>
                             <FormControl as="textarea" readOnly={readonly} size={"sm"} rows={10}
@@ -140,6 +150,7 @@ export const InventoryFunction = () => {
                         </InputGroup>
                     </Col>
                     {item.category === EItemCategory.WEAPON ? <Col>{getWeaponCard(item)}</Col> : <></>}
+                    {item.category === EItemCategory.ARMOUR ? <Col>{getArmourCard(item)}</Col> : <></>}
                 </Row>
                 {getItemButton(item)}
             </Tab.Pane>)
@@ -169,20 +180,20 @@ export const InventoryFunction = () => {
                     <ListGroup.Item>
                         <ButtonToolbar>
 
-                        <ButtonGroup size={"sm"}
-                            className={"mr-2"}
+                            <ButtonGroup size={"sm"}
+                                         className={"mr-2"}
                             >
 
-                        <Button disabled ><AiOutlineSortAscending /></Button>
-                        </ButtonGroup>
-                        <ButtonGroup size="sm">
-                            {Object.values(EItemCategory).map((value: string) =>
-                                <Button key={`filter-btn-${value}`}
-                                        variant={activeFilter === value ? "primary" : "secondary"}
-                                        onClick={() => {
-                                            setFilter(value);
-                                        }}>{getJSXForItemCategory(value)}</Button>)}
-                        </ButtonGroup>
+                                <Button disabled><AiOutlineSortAscending/></Button>
+                            </ButtonGroup>
+                            <ButtonGroup size="sm">
+                                {Object.values(EItemCategory).map((value: string) =>
+                                    <Button key={`filter-btn-${value}`}
+                                            variant={activeFilter === value ? "primary" : "secondary"}
+                                            onClick={() => {
+                                                setFilter(value);
+                                            }}>{getJSXForItemCategory(value)}</Button>)}
+                            </ButtonGroup>
                         </ButtonToolbar>
                     </ListGroup.Item>
 

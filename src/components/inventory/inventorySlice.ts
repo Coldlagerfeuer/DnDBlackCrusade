@@ -97,6 +97,9 @@ export const inventorySlice = createSlice({
         editWeapon: (state, action: PayloadAction<IWeapon>) => {
             state[action.payload.name] = action.payload;
         },
+        editArmour: (state, action: PayloadAction<IArmourItem>) => {
+            state[action.payload.name] = action.payload;
+        },
         removeItem: (state, action: PayloadAction<TItem>) => {
             const item = action.payload;
             if (item.count === 1) {
@@ -128,6 +131,7 @@ export const {
     addItemByName,
     changeWeaponName,
     editWeapon,
+    editArmour,
     removeItem,
     editDescription,
     editCategory,
