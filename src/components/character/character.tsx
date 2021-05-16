@@ -174,17 +174,7 @@ export const CharacterFunction = () => {
                         </Row>
                     </Col>
                     <Col sm={10}>
-
-                        <FileUploadDrop {...{importState, setImportState}} />
-
-                        {/*<InputGroup>*/}
-                        {/*    <FormControl as="textarea" size={"sm"} rows={10}*/}
-                        {/*                 aria-label="Importfield"*/}
-                        {/*                 value={importState}*/}
-                        {/*                 onChange={(event) => {*/}
-                        {/*                     setImportState(event.target.value)*/}
-                        {/*                 }}/>*/}
-                        {/*</InputGroup>*/}
+                        <FileUploadDrop {...{ importState, setImportState }} />
                     </Col>
                 </Row>
             </Container>
@@ -195,8 +185,8 @@ export const CharacterFunction = () => {
         getCharacteristicsPane(),
         getSkillsPane(),
         getTalentsPane(),
-        getInventoryPane(),
         getArmouryPane(),
+        getInventoryPane(),
         getSettingsPane(),
     ]
 

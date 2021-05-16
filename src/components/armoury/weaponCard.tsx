@@ -13,8 +13,9 @@ import {
 import {
     BiQuestionMark,
     GiAncientSword,
-    GiArrowScope,
-    GiChainsaw,
+    GiArrowScope, GiBulletImpacts,
+    GiChainsaw, GiElectric,
+    GiLaserPrecision,
     GiMachineGunMagazine,
     GiPistolGun,
     GiReloadGunBarrel,
@@ -24,7 +25,7 @@ import {
 } from "react-icons/all";
 import React, { useState } from "react";
 import './weaponCard.scss';
-import { EWeaponCategory, IWeapon, removeWeapon } from "./armourySlice";
+import { EWeaponCategory, EWeaponType, IWeapon, removeWeapon } from "./armourySlice";
 import { addItem, editWeapon, changeWeaponName } from "../inventory/inventorySlice";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 
@@ -47,6 +48,19 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                 return <GiChainsaw/>
         }
         return <BiQuestionMark/>
+    }
+
+
+    function getJSXForWeaponType(weaponType: EWeaponType) {
+        switch (weaponType) {
+            case EWeaponType.IMPACT: return <GiBulletImpacts />
+            case EWeaponType.RENDING: return <GiChainsaw />
+            case EWeaponType.SCHOCK: return <GiElectric />
+            case EWeaponType.LASER: return <GiLaserPrecision />
+
+        }
+
+        return <BiQuestionMark/>;
     }
 
     function getWeaponTypeDropdown() {
@@ -80,6 +94,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             :<Col md={col}> <GiWeight/> {weapon.weight} </Col>
     }
 
+
     function getDamageField() {
         return editMode ?
             <Col md={4}>
@@ -92,15 +107,36 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                 <div>
                     <Badge variant={'success'} style={{ cursor: 'pointer' }}
                            onClick={() => dispatch(editWeapon({ ...weapon, pen: weapon.pen? weapon.pen + 1 : 1}))}>+</Badge>
-                    <Badge pill={true} variant={"secondary"}> <GiShieldImpact/> {weapon.pen} </Badge>
+                    <Badge pill={true} variant={"secondary"}> <GiShieldImpact/> {weapon.pen ? weapon.pen : 0} </Badge>
                     <Badge variant={'danger'} style={{ cursor: 'pointer' }}
                            onClick={() => dispatch(editWeapon({
                                ...weapon,
                                pen: weapon.pen ? Math.max(weapon.pen - 1, 0) : 0
                            }))}>-</Badge>
                 </div>
+
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        {getJSXForWeaponType(weapon.type)}
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        {Object.values(EWeaponType).map((value, index) => {
+                                // @ts-ignore
+                                const e = EWeaponType[index]
+                                return e ? <Dropdown.Item
+                                    key={`category-dropdown-${e}`}
+                                    onClick={() => {
+                                        dispatch(editWeapon({ ...weapon, type: index }))
+                                    }}
+                                >{e}</Dropdown.Item> : <></>
+                            }
+                        )}
+                    </Dropdown.Menu>
+                </Dropdown>
+
             </Col>
-            : <Col md={4}> {weapon.damage} <Badge pill={true} variant={"secondary"}> <GiShieldImpact/> {weapon.pen}
+            : <Col md={4}>{weapon.damage} <Badge pill={true} variant={"secondary"}> <GiShieldImpact/> {weapon.pen}
             </Badge> </Col>
     }
 
@@ -198,7 +234,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                             </InputGroup>
                         </Col>
                     </Row>
-                    : <div>{getJSXForWeaponCategory(weapon.weaponCategory)} {weapon.name}</div>
+                    : <div>{getJSXForWeaponCategory(weapon.weaponCategory)} {getJSXForWeaponType(weapon.type)} {weapon.name}</div>
                 }
 
             </OverlayTrigger>

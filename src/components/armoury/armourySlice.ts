@@ -30,8 +30,9 @@ export enum EWeaponType {
     IMPACT,
     RENDING,
     SCHOCK,
+    LASER,
 
-    MISC
+    MISC,
 }
 
 

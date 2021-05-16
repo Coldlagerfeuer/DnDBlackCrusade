@@ -1,9 +1,7 @@
 import {
-    Badge,
     Button,
     ButtonGroup,
     ButtonToolbar,
-    Card,
     Col,
     Dropdown,
     FormControl,
@@ -17,7 +15,6 @@ import React, { useState } from "react";
 import { GearFill, Pencil, PlusCircle, ShieldFill } from "react-bootstrap-icons";
 import {
     addItemByName,
-    editArmour,
     editCategory,
     editDescription,
     EItemCategory,
