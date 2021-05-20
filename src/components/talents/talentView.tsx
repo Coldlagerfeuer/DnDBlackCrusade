@@ -46,7 +46,7 @@ export const TalentView = () => {
                             id="basic-typeahead-talents"
                             options={talentOptions}
                             onInputChange={(name) => setNewTalent({ ...newTalent, name: name })}
-                            onChange={(selection) => setNewTalent({ ...newTalent, name: selection[0]?.toString() })}
+                            onChange={(selection) => setNewTalent({ ...newTalent, ...allTalents[selection[0]?.toString()],   name: selection[0]?.toString() })}
                             selected={allTalents[newTalent.name] ? [newTalent.name] : []}
                         />
 
