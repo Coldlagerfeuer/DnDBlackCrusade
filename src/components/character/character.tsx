@@ -26,7 +26,7 @@ export const CharacterFunction = () => {
     const [skillCols, setSkillCols] = useState(2);
     const [mainCols, setMainCols] = useState(1);
     const [showType, toggleShowType] = useState(true);
-    const [showSkilled, toggleShowSkilled] = useState(true);
+    const [showSkilled, toggleShowSkilled] = useState(false);
     const [importState, setImportState] = useState('');
 
     const completeState = useAppSelector(state => state);
@@ -108,7 +108,7 @@ export const CharacterFunction = () => {
     }
 
     function getInventoryPane() {
-        return <Jumbotron  key={"jumbo-inventory"}>
+        return <Jumbotron key={"jumbo-inventory"}>
             <Row>
                 <Col>
                     <h3>Inventory</h3>
@@ -126,7 +126,7 @@ export const CharacterFunction = () => {
 
     function getSettingsPane() {
 
-        return <Jumbotron  key={"jumbo-settings"}>
+        return <Jumbotron key={"jumbo-settings"}>
             <Container>
                 <Row>
                     <Col>
@@ -190,19 +190,21 @@ export const CharacterFunction = () => {
         getSettingsPane(),
     ]
 
-    return <Container>
-        <Row>
+    return <>
+        {mainCols === 1
+            ? <Container>
+                {mapElements(allPanes, mainCols)}
+            </Container>
+            : <Row>
+                {mapElements(allPanes, mainCols).map((elementCol, index) => (
+                    <Col key={`skillcol-${index}`}>
+                        {elementCol}
+                    </Col>
+                ))}
+            </Row>
+        }</>
+}
 
-            <Col>
-                {allPanes.map(element =>
-                    element
-                )}
-            </Col>
-        </Row>
-
-
-    </Container>
-};
 
 function createCharacteristicsObjects(characteristics: ICharacteristicsState): JSX.Element[] {
     const result: JSX.Element[] = [];
@@ -224,26 +226,17 @@ function createSkillMatrix(colCount: number = 2, showType: boolean, showSkilled:
         )
     }
 
-    const skillMatrix: any[] = [];
-    for (let j = 0; j < colCount; j++) {
-        const part = ((skillObjects.length - 1) / colCount + 1 | 0);
-        skillMatrix[j] = new Array(part);
-        for (let i = part * j; i < part * (j + 1); i++) {
-            skillMatrix[j].push(skillObjects[i]);
-        }
-    }
-    return skillMatrix;
+    return mapElements(skillObjects, colCount);
 }
 
-
-function createTalentObject(talents: ITalentState) {
-    const result: JSX.Element[] = [];
-    for (const name in talents) {
-        result.push(
-            <Col key={`talent-${name}`} style={{ padding: "5px" }}>
-                <TalentEntryFunction {...talents[name]} />
-            </Col>
-        )
+function mapElements(objects: JSX.Element[], colCount: number) {
+    const matrix: any[] = [];
+    for (let j = 0; j < colCount; j++) {
+        const part = ((objects.length - 1) / colCount + 1 | 0);
+        matrix[j] = new Array(part);
+        for (let i = part * j; i < part * (j + 1); i++) {
+            matrix[j].push(objects[i]);
+        }
     }
-    return result;
+    return matrix;
 }

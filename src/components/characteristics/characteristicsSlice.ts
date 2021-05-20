@@ -16,7 +16,7 @@ export const characteristicsInitialState = {
     'WS': { name: "Weapon Skill", value: 30, short: 'WS', bonus: 0  },
     'BS': { name: "Ballistic Skill", value: 30, short: 'BS', bonus: 0 },
     'S': { name: "Strength", value: 30, short: 'S', bonus: 0 },
-    'T': { name: "Toughness", value: 30, short: 'T', bonus: 1 },
+    'T': { name: "Toughness", value: 30, short: 'T', bonus: 0 },
     'AG': { name: "Agility", value: 30, short: 'AG', bonus: 0 },
     'I': { name: "Intelligence", value: 30, short: 'INT', bonus: 0 },
     'PER': { name: "Perception", value: 30, short: 'PER', bonus: 0 },

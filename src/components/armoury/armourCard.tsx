@@ -34,7 +34,7 @@ export const ArmourCard = ({ armour }: { armour: IArmourItem }) => {
 
                     </Row>
                 </Col>
-                <Col md={2}></Col>
+                <Col md={2}/>
                 <Col>
 
                     <Row>

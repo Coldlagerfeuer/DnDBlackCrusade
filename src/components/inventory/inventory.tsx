@@ -41,7 +41,6 @@ export const InventoryFunction = () => {
     const dispatch = useAppDispatch()
 
 
-
     const itemOptions = [];
     for (const item in allItems) {
         itemOptions.push(item);
@@ -173,7 +172,7 @@ export const InventoryFunction = () => {
 
     function sortInventory() {
         const itemsSorted: IInventory = {};
-        Object.keys(items).sort((a,b) => a.localeCompare(b)).map(key => itemsSorted[key] = items[key])
+        Object.keys(items).sort((a, b) => a.localeCompare(b)).map(key => itemsSorted[key] = items[key])
 
         console.log(items)
         console.log(itemsSorted)
@@ -194,7 +193,7 @@ export const InventoryFunction = () => {
                                          className={"mr-2"}
                             >
 
-                                <Button onClick={() => sortInventory()} ><AiOutlineSortAscending/></Button>
+                                <Button onClick={() => sortInventory()}><AiOutlineSortAscending/></Button>
                             </ButtonGroup>
                             <ButtonGroup size="sm">
                                 {Object.values(EItemCategory).map((value: string) =>
@@ -221,16 +220,16 @@ export const InventoryFunction = () => {
                             {/*<FormControl aria-describedby="basic-addon1"*/}
                             {/*             onChange={(event => setNewItem(event.target.value))}/>*/}
 
-
-                            <Typeahead
-                                className={'form-control'}
-                                id="basic-typeahead-single"
-                                // options={['John', 'Paul', 'George', 'Ringo']}
-                                options={itemOptions}
-                                onInputChange={(name) => setNewItem(name)}
-                                // onChange={(value: string) => console.log(value, 'Simple typeahead')}
-                                onChange={(selection) => setNewItem(selection[0]?.toString())}
-                            />
+                            <div style={{ width: '9.87em' }}>
+                                <Typeahead
+                                    id="basic-typeahead-single"
+                                    // options={['John', 'Paul', 'George', 'Ringo']}
+                                    options={itemOptions}
+                                    onInputChange={(name) => setNewItem(name)}
+                                    // onChange={(value: string) => console.log(value, 'Simple typeahead')}
+                                    onChange={(selection) => setNewItem(selection[0]?.toString())}
+                                />
+                            </div>
                         </InputGroup>
                     </ListGroup.Item>
                 </ListGroup>

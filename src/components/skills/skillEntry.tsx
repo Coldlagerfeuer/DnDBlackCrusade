@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { setLevel } from "./skillSlice";
 
 
-export const SkillEntryFunction = ({ name = 'SKILLNAME', showType = true, showSkilled = true }) => {
+export const SkillEntryFunction = ({ name = 'SKILLNAME', showType = true, showSkilled = false }) => {
     const skills = useAppSelector(state => state.skills);
     const dispatch = useAppDispatch()
 

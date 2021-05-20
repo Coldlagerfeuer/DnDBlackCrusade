@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "./armoury.scss";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { addItem } from "../inventory/inventorySlice";
-import { removeGear } from "./armourySlice";
+import { removeGear, setWounds } from "./armourySlice";
 
 export const Armoury = () => {
 
@@ -24,7 +24,9 @@ export const Armoury = () => {
     const maxInfamy: number = Math.floor( infamyStat.value / 10 + infamyStat.bonus);
 
     const [infamy, setInfamy] = useState(maxInfamy);
-    const [health, setHealth] = useState(armouryState.character.currentWounds);
+    // const [health, setHealth] = useState(armouryState.character.currentWounds);
+    const health = armouryState.character.currentWounds;
+
 
     return <div>
 
@@ -100,9 +102,9 @@ export const Armoury = () => {
                     <Col md={2}>
                         <div>
                             <Badge variant={'success'} style={{ cursor: 'pointer' }}
-                                   onClick={() => setHealth(Math.min(health + 1, maxHealth))}>+</Badge>
+                                   onClick={() => dispatch(setWounds(Math.min(health + 1, maxHealth)))}>+</Badge>
                             <Badge variant={'danger'} style={{ cursor: 'pointer' }}
-                                   onClick={() => setHealth(Math.max(health - 1, 0))}>-</Badge>
+                                   onClick={() => dispatch(setWounds(Math.max(health - 1, 0)))}>-</Badge>
                         </div>
                     </Col>
                 </Row>

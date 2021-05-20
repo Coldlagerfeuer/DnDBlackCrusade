@@ -5,10 +5,19 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/armourCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/armourCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/armourySlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/armourySlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/characteristics/characteristicsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/characteristics/characteristicsSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/inventory/inventory.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inventory/inventory.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/inventory/inventorySlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/inventory/inventorySlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,18 +84,7 @@
       <recent name="C:\Git\MyProjects\DnDBlackCrusade\dnd-frontend\src\general" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.deploy">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="npm.start">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -119,9 +117,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
         <item itemvalue="npm.build" />
-        <item itemvalue="npm.start" />
       </list>
     </recent_temporary>
   </component>
@@ -137,7 +135,8 @@
       <workItem from="1619466937017" duration="725000" />
       <workItem from="1619467751054" duration="25282000" />
       <workItem from="1619702974468" duration="52217000" />
-      <workItem from="1620300152861" duration="93338000" />
+      <workItem from="1620300152861" duration="96954000" />
+      <workItem from="1621247807048" duration="13176000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -160,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621173513543</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added sorting, refining code">
+      <created>1621177822963</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1621177822963</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -176,11 +182,13 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added ArmourEdit options" />
     <MESSAGE value="Added Laser WeaponType" />
     <MESSAGE value="Added nojekyll file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added nojekyll file" />
+    <MESSAGE value="Added sorting, refining code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added sorting, refining code" />
   </component>
 </project>

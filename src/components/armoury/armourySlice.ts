@@ -112,7 +112,7 @@ export const armourySlice = createSlice({
         removeWeapon: (state, action) => {
             delete state.weapons[action.payload.name];
         },
-        setWounds: (state, action) => {
+        setWounds: (state, action: PayloadAction<number>) => {
             state.character.currentWounds = action.payload
         },
         setMaxWounds: (state, action) => {
