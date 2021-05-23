@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="808a4b29-ea26-4b7c-9d87-271f6fcdbaa2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/skills/skillRollToast.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/characteristics/characteristicsSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/characteristics/characteristicsSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +82,7 @@
       <recent name="C:\Git\MyProjects\DnDBlackCrusade\dnd-frontend\src\general" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.deploy">
+  <component name="RunManager" selected="npm.start">
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -121,8 +128,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
@@ -140,7 +147,7 @@
       <workItem from="1619467751054" duration="25282000" />
       <workItem from="1619702974468" duration="52217000" />
       <workItem from="1620300152861" duration="96954000" />
-      <workItem from="1621247807048" duration="32466000" />
+      <workItem from="1621247807048" duration="42575000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -191,7 +198,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621701935254</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Improved talent view">
+      <created>1621779245900</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1621779245900</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,6 +230,19 @@
     <MESSAGE value="Added sorting, refining code" />
     <MESSAGE value="Extended talents, added autocomplete" />
     <MESSAGE value="Extended talents" />
-    <option name="LAST_COMMIT_MESSAGE" value="Extended talents" />
+    <MESSAGE value="Improved talent view" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved talent view" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/character/character.tsx</url>
+          <line>229</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

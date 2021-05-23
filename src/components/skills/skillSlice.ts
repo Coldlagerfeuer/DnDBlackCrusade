@@ -4,7 +4,7 @@ import { allSkills } from "../character/resources";
 export interface ISkill {
     name: string,
     level: number,
-    type?: string
+    type: string
 }
 
 export interface ISkillState {

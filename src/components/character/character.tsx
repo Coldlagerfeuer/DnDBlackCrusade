@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, Container, FormControl, InputGroup, Jumbotron, Row } from "react-bootstrap";
+import { Button, Col, Container, Jumbotron, Row } from "react-bootstrap";
 import { CharacteristicsCounter } from "../characteristics/characteristicsCounter";
 import './character.scss';
 import { SkillEntryFunction } from "../skills/skillEntry";
@@ -9,8 +9,7 @@ import {
     ICharacteristicsState,
     importCharacteristics
 } from "../characteristics/characteristicsSlice";
-import { TalentEntryFunction } from "../talents/talentEntry";
-import { importTalents, ITalentState } from "../talents/talentSlice";
+import { importTalents } from "../talents/talentSlice";
 import { InventoryFunction } from "../inventory/inventory";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { RootState } from "../../general/store";
@@ -220,9 +219,10 @@ function createCharacteristicsObjects(characteristics: ICharacteristicsState): J
 
 function createSkillMatrix(colCount: number = 2, showType: boolean, showSkilled: boolean) {
     const skillObjects: JSX.Element[] = [];
-    for (const name in allSkills) {
+    for (const skillName in allSkills) {
         skillObjects.push(
-            <SkillEntryFunction key={`skill-${name}`} name={name} showType={showType} showSkilled={showSkilled}/>
+            // <></>
+            <SkillEntryFunction key={`skill-${skillName}`}  {...{skillName, showType, showSkilled }} />
         )
     }
 

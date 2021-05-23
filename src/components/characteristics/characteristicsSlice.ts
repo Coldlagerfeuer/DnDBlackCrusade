@@ -18,7 +18,7 @@ export const characteristicsInitialState = {
     'S': { name: "Strength", value: 30, short: 'S', bonus: 0 },
     'T': { name: "Toughness", value: 30, short: 'T', bonus: 0 },
     'AG': { name: "Agility", value: 30, short: 'AG', bonus: 0 },
-    'I': { name: "Intelligence", value: 30, short: 'INT', bonus: 0 },
+    'INT': { name: "Intelligence", value: 30, short: 'INT', bonus: 0 },
     'PER': { name: "Perception", value: 30, short: 'PER', bonus: 0 },
     'WP': { name: "Willpower", value: 30, short: 'WP', bonus: 0 },
     'FEL': { name: "Fellowship", value: 30, short: 'FEL', bonus: 0 },

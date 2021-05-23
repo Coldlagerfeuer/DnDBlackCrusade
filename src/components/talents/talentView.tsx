@@ -32,7 +32,7 @@ export const TalentView = () => {
         <Container fluid>
             <Row>
                 <Col>
-                    <h3>Talents</h3>
+                    <h3>Talents & Traits</h3>
                 </Col>
             </Row>
             <Row>
@@ -59,7 +59,7 @@ export const TalentView = () => {
                                 ...activeTalent, ...allTalents[selection[0]?.toString()],
                                 name: selection[0]?.toString()
                             })}
-                            selected={allTalents[activeTalent.name] ? [activeTalent.name] : [activeTalent.name]}
+                            selected={allTalents[activeTalent.name] ? [activeTalent.name] : []}
                         />
                         <FormControl placeholder={"Specialization or count"}
                                      value={activeTalent.specialization ? activeTalent.specialization : ""}
