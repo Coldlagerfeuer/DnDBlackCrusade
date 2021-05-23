@@ -22,7 +22,7 @@ export const TalentEntryFunction = ({
         }
     >
         <div onClick={() => setActiveTalent(talent)}>
-            <Badge>{`T${talent.tier} ${talent.name}`}</Badge>
+            <Badge>{`T${talent.tier} ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>
         </div>
     </OverlayTrigger>
 

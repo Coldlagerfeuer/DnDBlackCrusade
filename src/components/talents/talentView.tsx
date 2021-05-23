@@ -1,17 +1,27 @@
-import { Button, Col, Container, Form, FormControl, InputGroup, Row } from "react-bootstrap";
+import {
+    Button,
+    Col,
+    Container,
+    Dropdown,
+    DropdownButton,
+    FormControl,
+    InputGroup,
+    ListGroup,
+    Row
+} from "react-bootstrap";
 import { addTalent, ITalent, ITalentState, removeTalent } from "./talentSlice";
 import { Pencil, PlusCircle, Trash } from "react-bootstrap-icons";
 import React, { useState } from "react";
 import { TalentEntryFunction } from "./talentEntry";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { Hint, Typeahead } from "react-bootstrap-typeahead";
-import { allItems, allTalents } from "../character/resources";
+import { Typeahead } from "react-bootstrap-typeahead";
+import { allTalents } from "../character/resources";
 
 export const TalentView = () => {
     const talents = useAppSelector(state => state.talents);
     const dispatch = useAppDispatch()
 
-    const [newTalent, setNewTalent] = useState({ name: '', description: '', tier: 0, prerequisites: "" } as ITalent);
+    const [activeTalent, setActiveTalent] = useState({ name: '', description: '', tier: 0 } as ITalent);
 
     const talentOptions = [];
     for (const talent in allTalents) {
@@ -26,41 +36,73 @@ export const TalentView = () => {
                 </Col>
             </Row>
             <Row>
-                {createTalentObject(talents, setNewTalent)}
+                {createTalentObject(talents, setActiveTalent)}
             </Row>
             <Row>
                 <Col>
                     <InputGroup className="mb-3">
                         <InputGroup.Prepend>
                             <Button
-                                onClick={() => dispatch(addTalent(newTalent))}
+                                onClick={() => dispatch(addTalent(activeTalent))}
                                 variant="outline-primary">
-                                {talents[newTalent.name] ? <Pencil/> : <PlusCircle/>}
+                                {talents[activeTalent.name] ? <Pencil/> : <PlusCircle/>}
                             </Button>
                         </InputGroup.Prepend>
-                        {/*<FormControl placeholder={'Talentname'} aria-describedby="basic-addon1"*/}
-                        {/*             onChange={(event => setNewTalent({ ...newTalent, name: event.target.value }))} />*/}
-
                         <Typeahead
                             placeholder={'Talentname'}
                             id="basic-typeahead-talents"
                             options={talentOptions}
-                            onInputChange={(name) => setNewTalent({ ...newTalent, name: name })}
-                            onChange={(selection) => setNewTalent({ ...newTalent, ...allTalents[selection[0]?.toString()],   name: selection[0]?.toString() })}
-                            selected={allTalents[newTalent.name] ? [newTalent.name] : []}
+                            paginationText={"More..."}
+                            size={"large"}
+                            onInputChange={(name) => setActiveTalent({ ...activeTalent, name: name })}
+                            onChange={(selection) => setActiveTalent({
+                                ...activeTalent, ...allTalents[selection[0]?.toString()],
+                                name: selection[0]?.toString()
+                            })}
+                            selected={allTalents[activeTalent.name] ? [activeTalent.name] : [activeTalent.name]}
                         />
-
-                        <FormControl placeholder={'Description'} aria-describedby="basic-addon1"
-                                     onChange={(event => setNewTalent({
-                                         ...newTalent,
-                                         description: event.target.value
-                                     }))}/>
+                        <FormControl placeholder={"Specialization or count"}
+                                     value={activeTalent.specialization ? activeTalent.specialization : ""}
+                                     size={"lg"}
+                                     onChange={(event => setActiveTalent({
+                                         ...activeTalent,
+                                         specialization: event.target.value
+                                     }))}
+                        />
+                        <DropdownButton size={"lg"} variant="success" title={`Tier: ${activeTalent.tier}`}>
+                            <Dropdown.Item
+                                onClick={() => setActiveTalent({ ...activeTalent, tier: 1 })}>1</Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={() => setActiveTalent({ ...activeTalent, tier: 2 })}>2</Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={() => setActiveTalent({ ...activeTalent, tier: 3 })}>3</Dropdown.Item>
+                        </DropdownButton>
                         <InputGroup.Append>
                             <Button
-                                onClick={() => dispatch(removeTalent(newTalent))}
+                                onClick={() => dispatch(removeTalent(activeTalent))}
                                 variant="outline-primary"><Trash/></Button>
                         </InputGroup.Append>
                     </InputGroup>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={8}>
+
+                    <FormControl placeholder={'Description'} aria-describedby="basic-addon1"
+                                 as="textarea" size={"sm"} rows={10}
+                                 value={activeTalent.description}
+                                 onChange={(event => setActiveTalent({
+                                     ...activeTalent,
+                                     description: event.target.value
+                                 }))}/>
+                </Col>
+                <Col>
+                    Prerequisites to Skill
+                    <ListGroup>
+                        {activeTalent.prerequisites?.split(",").map((prerequisit: string) =>
+                            <ListGroup.Item key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
+                        )}
+                    </ListGroup>
                 </Col>
             </Row>
         </Container>
@@ -68,12 +110,12 @@ export const TalentView = () => {
 }
 
 
-function createTalentObject(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>> ) {
+function createTalentObject(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {
     const result: JSX.Element[] = [];
     for (const name in talents) {
         result.push(
             <Col key={`talent-${name}`} style={{ padding: "5px" }}>
-                <TalentEntryFunction { ...talents[name]}  setActiveTalent={setNewTalent} />
+                <TalentEntryFunction {...talents[name]} setActiveTalent={setNewTalent}/>
             </Col>
         )
     }

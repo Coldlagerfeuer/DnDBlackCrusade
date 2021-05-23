@@ -5,7 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,6 +76,19 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.deploy">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -125,7 +140,7 @@
       <workItem from="1619467751054" duration="25282000" />
       <workItem from="1619702974468" duration="52217000" />
       <workItem from="1620300152861" duration="96954000" />
-      <workItem from="1621247807048" duration="13968000" />
+      <workItem from="1621247807048" duration="32466000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -162,7 +177,21 @@
       <option name="project" value="LOCAL" />
       <updated>1621550260667</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Extended talents, added autocomplete">
+      <created>1621551161118</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1621551161118</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Extended talents">
+      <created>1621701935254</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1621701935254</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,6 +215,7 @@
     <MESSAGE value="Added nojekyll file" />
     <MESSAGE value="Added sorting, refining code" />
     <MESSAGE value="Extended talents, added autocomplete" />
-    <option name="LAST_COMMIT_MESSAGE" value="Extended talents, added autocomplete" />
+    <MESSAGE value="Extended talents" />
+    <option name="LAST_COMMIT_MESSAGE" value="Extended talents" />
   </component>
 </project>

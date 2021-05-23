@@ -3,9 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface ITalent {
     name: string,
     tier: number,
-    prerequisites: string,
+    prerequisites?: string,
     devotion?: EGods,
-    description?: string
+    description?: string,
+    specialization?: string
 }
 
 export enum EGods {
@@ -13,7 +14,8 @@ export enum EGods {
     NURGLE,
     SLAANESH,
     TZEENTCH,
-    UNALIGNED
+    UNALIGNED,
+    SPECIAL
 }
 
 export interface ITalentState {

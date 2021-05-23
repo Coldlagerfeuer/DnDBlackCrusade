@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/DnDBlackCrusade/static/css/main.f33e001e.chunk.css",
-    "main.js": "/DnDBlackCrusade/static/js/main.2f2472e5.chunk.js",
-    "main.js.map": "/DnDBlackCrusade/static/js/main.2f2472e5.chunk.js.map",
+    "main.js": "/DnDBlackCrusade/static/js/main.2db507d2.chunk.js",
+    "main.js.map": "/DnDBlackCrusade/static/js/main.2db507d2.chunk.js.map",
     "runtime-main.js": "/DnDBlackCrusade/static/js/runtime-main.d6f42a7f.js",
     "runtime-main.js.map": "/DnDBlackCrusade/static/js/runtime-main.d6f42a7f.js.map",
     "static/css/2.150d169a.chunk.css": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css",
-    "static/js/2.b926e736.chunk.js": "/DnDBlackCrusade/static/js/2.b926e736.chunk.js",
-    "static/js/2.b926e736.chunk.js.map": "/DnDBlackCrusade/static/js/2.b926e736.chunk.js.map",
+    "static/js/2.9be776eb.chunk.js": "/DnDBlackCrusade/static/js/2.9be776eb.chunk.js",
+    "static/js/2.9be776eb.chunk.js.map": "/DnDBlackCrusade/static/js/2.9be776eb.chunk.js.map",
     "static/js/3.70de8e16.chunk.js": "/DnDBlackCrusade/static/js/3.70de8e16.chunk.js",
     "static/js/3.70de8e16.chunk.js.map": "/DnDBlackCrusade/static/js/3.70de8e16.chunk.js.map",
     "index.html": "/DnDBlackCrusade/index.html",
     "static/css/2.150d169a.chunk.css.map": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css.map",
     "static/css/main.f33e001e.chunk.css.map": "/DnDBlackCrusade/static/css/main.f33e001e.chunk.css.map",
-    "static/js/2.b926e736.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.b926e736.chunk.js.LICENSE.txt"
+    "static/js/2.9be776eb.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.9be776eb.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d6f42a7f.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.b926e736.chunk.js",
+    "static/js/2.9be776eb.chunk.js",
     "static/css/main.f33e001e.chunk.css",
-    "static/js/main.2f2472e5.chunk.js"
+    "static/js/main.2db507d2.chunk.js"
   ]
 }
