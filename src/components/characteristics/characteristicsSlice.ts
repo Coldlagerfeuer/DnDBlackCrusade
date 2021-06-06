@@ -23,6 +23,7 @@ export const characteristicsInitialState = {
     'WP': { name: "Willpower", value: 30, short: 'WP', bonus: 0 },
     'FEL': { name: "Fellowship", value: 30, short: 'FEL', bonus: 0 },
     'INF': { name: "Infamy", value: 30, short: 'INF', bonus: 0 },
+    'COR': { name: "Corruption", value: 0, short: 'COR', bonus: 0}
 } as ICharacteristicsState
 
 

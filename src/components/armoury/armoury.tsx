@@ -1,10 +1,12 @@
 import { WeaponCard } from "./weaponCard";
-import { Badge, Card, Col, ProgressBar, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, FormControl, FormGroup, FormLabel, ProgressBar, Row } from "react-bootstrap";
 import React, { useState } from "react";
 import "./armoury.scss";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { addItem } from "../inventory/inventorySlice";
-import { removeGear, setWounds } from "./armourySlice";
+import { addItem, EItemCategory } from "../inventory/inventorySlice";
+import { ISpell, IWeapon, removeGear, setMaxWounds, setWounds } from "./armourySlice";
+import { SpellCard } from "./spellCard";
+import { BiTargetLock } from "react-icons/all";
 
 export const Armoury = () => {
 
@@ -16,17 +18,24 @@ export const Armoury = () => {
     const imageLegL = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%20style%3D%22height%3A%20512px%3B%20width%3A%20512px%3B%22%3E%3Cpath%20d%3D%22M0%200h512v512H0z%22%20fill%3D%22%23000%22%20fill-opacity%3D%221%22%3E%3C%2Fpath%3E%3Cg%20class%3D%22%22%20transform%3D%22translate(0%2C0)%22%20style%3D%22%22%3E%3Cpath%20d%3D%22M269%2023.95l-87.7.1c1.1%2061.4-2.4%20116.05-14%20159.45-9%2034-23.6%2061.6-45.2%2079-.1%209.5-.8%2019-2.1%2028.6-3.1%2022.9-13.5%2043.2-22.75%2065%2023.55-1.3%2043.55-11.6%2065.35-24.8%2020.6-12.5%2042.4-27.5%2068.9-37.8-.2-1.4-.4-2.9-.4-4.2-1.9-23.7.1-52.2%204.1-83.2C243%20147.6%20257.9%2081.05%20269%2023.95zm-105.7.1H80.65c-1.6%2036.5%2010.1%2076.15%2021.65%20119.15%208.3%2030.4%2016.5%2062.3%2019%2095.7%2012.6-14.3%2021.8-34.4%2028.6-60%2010.8-40.6%2014.4-94.15%2013.4-154.85zm41.8%2014.9a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-2.4%2052.5a9%209%200%200%201%20.1%200%209%209%200%200%201%209%208.95%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-8.95zm-5.9%2056.25a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-16%2060.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-32%2048.1a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm85.7%2055.3c-22.6%209.6-42.3%2022.9-62.6%2035-24.6%2014.9-50.5%2027.9-81.85%2027.5-8.2%2022.7-13.8%2048-10%2079.9h82.35c13.2-41.4%2042.9-78%2095.1-106.8-1.4-1-2.9-2.1-4.3-3.2-9.6-7.6-15.3-18.8-18.7-32.4zm40.2%2046.7c-52.1%2026.2-80.4%2058.5-93.6%2095.7h127.4c0-14.3.6-29%203.9-43.6%202.6-11.5%207-22.9%2014-33.9-16.1-3.3-33.5-8.1-51.7-18.2zm70.8%2021.8c-8.2%2010.9-12.8%2022.3-15.5%2034.3-2.8%2012.5-3.5%2025.8-3.5%2039.6h104c-2-17.8-12.5-39.8-28.1-52.1-17.8-13.9-36-17.9-56.9-21.8zm8.3%2010.5a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zm-254.05%2035a9%209%200%200%201%20.1%200%209%209%200%200%201%208.95%209%209%209%200%200%201-8.95%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm44.85.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm201.5.1a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zM72.05%20470v18.1H440V470z%22%20fill%3D%22%23fff%22%20fill-opacity%3D%221%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fsvg%3E';
 
     const infamyStat = useAppSelector(state => state.characteristics['INF']);
+    const toughnessStat = useAppSelector(state => state.characteristics["T"]);
     const armouryState = useAppSelector(state => state.armoury);
     const dispatch = useAppDispatch()
 
     const armour = armouryState.armour;
     const maxHealth = armouryState.character.maxWounds;
-    const maxInfamy: number = Math.floor( infamyStat.value / 10 + infamyStat.bonus);
+    const maxInfamy: number = Math.floor(infamyStat.value / 10 + infamyStat.bonus);
 
     const [infamy, setInfamy] = useState(maxInfamy);
-    // const [health, setHealth] = useState(armouryState.character.currentWounds);
+    const [showTarget, setShowTarget] = useState(true);
+    const [maxWoundsEditable, setMaxWoundsEditable] = useState(false)
+
     const health = armouryState.character.currentWounds;
 
+    function calcWoundLabel() {
+        const heavilyWounded = (health > (toughnessStat.value / 10 + toughnessStat.bonus) * 2) ? "Heavy Wounded - " : "";
+        return `${heavilyWounded}${health > maxHealth ? `CRIT: ${health - maxHealth}` : `${health}/${maxHealth}`}`;
+    }
 
     return <div>
 
@@ -40,10 +49,13 @@ export const Armoury = () => {
                 {/* BEGIN WEAPONS*/}
                 <Row>
                     <Col>
-                        {Object.values(armouryState.weapons).map((weapon =>
+                        {Object.values(armouryState.weapons).map(((weapon) =>
                                 <div key={`wp-${weapon.name}`}>
 
-                                <WeaponCard weapon={weapon} />
+                                    {weapon.category === EItemCategory.WEAPON ? <WeaponCard weapon={weapon as IWeapon}/>
+                                        : weapon.category === EItemCategory.SPELL ?
+                                            <SpellCard spell={weapon as ISpell}/> : <></>
+                                    }
                                 </div>
                         ))}
                     </Col>
@@ -57,35 +69,55 @@ export const Armoury = () => {
                             <Row key={`gear-${gear.name}`}>
                                 <Col md={10}>{gear.name}</Col>
                                 <Col md={2}> <Badge variant={'danger'} style={{ cursor: 'pointer' }}
-                                             onClick={() => {
-                                                 dispatch(removeGear(gear));
-                                                 dispatch(addItem(gear))
-                                             }}>-</Badge>
+                                                    onClick={() => {
+                                                        dispatch(removeGear(gear));
+                                                        dispatch(addItem(gear))
+                                                    }}>-</Badge>
                                 </Col>
                             </Row>
 
                         ))}
                     </Col>
-                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageHead}/> <Card.ImgOverlay> <Badge
-                        className={"armoury-badge"} variant={"secondary"} pill>{armour.head}</Badge> </Card.ImgOverlay></Card></Col>
+                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageHead}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"armoury-badge"} variant={"secondary"} pill>{armour.head}</Badge>
+                            {showTarget ? <Badge variant={"dark"}>(1-10)</Badge> : undefined}
+                        </Card.ImgOverlay></Card>
+                    </Col>
+                    <Col> <Button><BiTargetLock onClick={() => setShowTarget(!showTarget)}/> </Button> </Col>
                 </Row>
                 <Row>
-                    <Col md={{ offset: 2, span: 3 }}><Card> <Card.Img src={imageArmR}/> <Card.ImgOverlay> <Badge
-                        className={"badge-armoury badge-secondary"} pill>{armour.armR}</Badge> </Card.ImgOverlay>
+                    <Col md={{ offset: 2, span: 3 }}><Card> <Card.Img src={imageArmR}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"badge-armoury badge-secondary"} pill>{armour.armR} </Badge>
+                            {showTarget ? <Badge variant={"dark"}>(11-20)</Badge> : undefined}
+                        </Card.ImgOverlay>
                     </Card></Col>
-                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageBody}/> <Card.ImgOverlay> <Badge
-                        className={"armoury-badge"} variant={"secondary"} pill>{armour.body}</Badge> </Card.ImgOverlay>
+                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageBody}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"armoury-badge"} variant={"secondary"} pill>{armour.body}</Badge>
+                            {showTarget ? <Badge variant={"dark"}>(31-70)</Badge> : undefined}
+                        </Card.ImgOverlay>
                     </Card></Col>
-                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageArmL}/> <Card.ImgOverlay> <Badge
-                        className={"armoury-badge"} variant={"secondary"} pill>{armour.armL}</Badge> </Card.ImgOverlay>
+                    <Col md={{ span: 3 }}><Card> <Card.Img src={imageArmL}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"armoury-badge"} variant={"secondary"} pill>{armour.armL}</Badge>
+                            {showTarget ? <Badge variant={"dark"}>(21-30)</Badge> : undefined}
+                        </Card.ImgOverlay>
                     </Card></Col>
                 </Row>
                 <Row>
-                    <Col md={{ offset: 3, span: 3 }}><Card> <Card.Img src={imageLegR}/> <Card.ImgOverlay> <Badge
-                        className={"armoury-badge"} variant={"secondary"} pill>{armour.legR}</Badge> </Card.ImgOverlay>
+                    <Col md={{ offset: 3, span: 3 }}><Card> <Card.Img src={imageLegR}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"armoury-badge"} variant={"secondary"} pill>{armour.legR}</Badge>
+                            {showTarget ? <Badge variant={"dark"}>(71-85)</Badge> : undefined}
+                        </Card.ImgOverlay>
                     </Card></Col>
-                    <Col md={{ offset: 1, span: 3 }}><Card> <Card.Img src={imageLegL}/> <Card.ImgOverlay> <Badge
-                        className={"armoury-badge"} variant={"secondary"} pill>{armour.legL}</Badge> </Card.ImgOverlay>
+                    <Col md={{ offset: 1, span: 3 }}><Card> <Card.Img src={imageLegL}/>
+                        <Card.ImgOverlay>
+                            <Badge className={"armoury-badge"} variant={"secondary"} pill>{armour.legL}</Badge>
+                            {showTarget ? <Badge variant={"dark"}>(86-100)</Badge> : undefined}
+                        </Card.ImgOverlay>
                     </Card></Col>
                 </Row>
 
@@ -93,18 +125,36 @@ export const Armoury = () => {
                 <Row>
                     <Col md={2}>Wounds:</Col>
                     <Col md={8}>
-                        <ProgressBar>
-                            <ProgressBar variant={"danger"} animated={health < maxHealth / 2} now={health}
-                                         max={maxHealth} label={`${health}/${maxHealth}`}/>
-                            <ProgressBar variant={"secondary"} now={maxHealth - health} max={maxHealth}/>
-                        </ProgressBar>
+                        {maxWoundsEditable ?
+                            <FormGroup as={Row}>
+                                <FormLabel column sm={5} >Max Wounds:</FormLabel>
+                                <Col sm={7}>
+
+                                <FormControl value={maxHealth}
+                                             onChange={(event) => dispatch(setMaxWounds(event.target.value))}
+                                             onMouseLeave={() => setMaxWoundsEditable(false)}
+                                             autoFocus />
+                                </Col>
+                            </FormGroup>
+                            :
+                            <ProgressBar>
+                                <ProgressBar variant={"danger"} animated={health > maxHealth} now={health}
+                                             max={maxHealth}
+                                             label={health >= maxHealth / 2 ? calcWoundLabel() : undefined}
+                                             onClick={() => setMaxWoundsEditable(true)}/>
+                                <ProgressBar variant={"secondary"}
+                                             label={health < maxHealth / 2 ? calcWoundLabel() : undefined}
+                                             now={maxHealth + 10 - health} max={maxHealth + 10}
+                                             onClick={() => setMaxWoundsEditable(true)}/>
+                            </ProgressBar>
+                        }
                     </Col>
                     <Col md={2}>
                         <div>
-                            <Badge variant={'success'} style={{ cursor: 'pointer' }}
-                                   onClick={() => dispatch(setWounds(Math.min(health + 1, maxHealth)))}>+</Badge>
                             <Badge variant={'danger'} style={{ cursor: 'pointer' }}
                                    onClick={() => dispatch(setWounds(Math.max(health - 1, 0)))}>-</Badge>
+                            <Badge variant={'success'} style={{ cursor: 'pointer' }}
+                                   onClick={() => dispatch(setWounds(Math.min(health + 1, maxHealth + 10)))}>+</Badge>
                         </div>
                     </Col>
                 </Row>
@@ -121,10 +171,10 @@ export const Armoury = () => {
                     </Col>
                     <Col md={2}>
                         <div>
-                            <Badge variant={'success'} style={{ cursor: 'pointer' }}
-                                   onClick={() => setInfamy(Math.min(infamy + 1, maxInfamy))}>+</Badge>
                             <Badge variant={'danger'} style={{ cursor: 'pointer' }}
                                    onClick={() => setInfamy(infamy - 1)}>-</Badge>
+                            <Badge variant={'success'} style={{ cursor: 'pointer' }}
+                                   onClick={() => setInfamy(Math.min(infamy + 1, maxInfamy))}>+</Badge>
                         </div>
                     </Col>
                 </Row>

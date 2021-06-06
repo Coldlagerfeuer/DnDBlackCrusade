@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { allItems } from "../character/resources";
-import { EWeaponCategory, EWeaponType, IArmourItem, IWeapon } from "../armoury/armourySlice";
+import { EWeaponCategory, EDamageType, IArmour, IWeapon } from "../armoury/armourySlice";
 
 export enum EItemCategory {
     NONE = "-",
     WEAPON = "Weapon",
     ARMOUR = "Armour",
+    SPELL = "Spells",
     MISC = "Misc",
 
 }
@@ -17,7 +18,7 @@ export interface IItem {
     description?: string
 }
 
-export type TItem = IItem | IWeapon | IArmourItem;
+export type TItem = IItem | IWeapon | IArmour;
 
 export interface IInventory {
     [name: string]: TItem
@@ -40,7 +41,7 @@ export const itemsInitialState = {
         rof: 's/-/6',
         clip: 18,
         rld: 'FULL',
-        type: EWeaponType.IMPACT,
+        type: EDamageType.IMPACT,
         pen: 0,
         weight: 1.5
     },
@@ -54,7 +55,7 @@ export const itemsInitialState = {
         rof: '',
         clip: 0,
         rld: '',
-        type: EWeaponType.RENDING,
+        type: EDamageType.RENDING,
         pen: 0,
         weight: 1.5
     },
@@ -97,7 +98,7 @@ export const inventorySlice = createSlice({
         editWeapon: (state, action: PayloadAction<IWeapon>) => {
             state[action.payload.name] = action.payload;
         },
-        editArmour: (state, action: PayloadAction<IArmourItem>) => {
+        editArmour: (state, action: PayloadAction<IArmour>) => {
             state[action.payload.name] = action.payload;
         },
         removeItem: (state, action: PayloadAction<TItem>) => {

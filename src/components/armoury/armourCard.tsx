@@ -1,11 +1,11 @@
 import { Badge, Card, Col, Row } from "react-bootstrap";
 import { editArmour } from "../inventory/inventorySlice";
 import React from "react";
-import { IArmourItem } from "./armourySlice";
+import { IArmour } from "./armourySlice";
 import { useAppDispatch } from "../../general/hooks";
 
 
-export const ArmourCard = ({ armour }: { armour: IArmourItem }) => {
+export const ArmourCard = ({ armour }: { armour: IArmour }) => {
 
     const dispatch = useAppDispatch()
 

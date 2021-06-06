@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Jumbotron, Row } from "react-bootstrap";
+import { Button, Col, Container, FormControl, Jumbotron, Row } from "react-bootstrap";
 import { CharacteristicsCounter } from "../characteristics/characteristicsCounter";
 import './character.scss';
 import { SkillEntryFunction } from "../skills/skillEntry";
-import { allSkills } from "./resources";
+import { allArmour, allItems, allSkills, allWeapons } from "./resources";
 import {
     characteristicsInitialState,
     ICharacteristicsState,
@@ -14,11 +14,12 @@ import { InventoryFunction } from "../inventory/inventory";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { RootState } from "../../general/store";
 import { importSkills } from "../skills/skillSlice";
-import { importInventory } from "../inventory/inventorySlice";
+import { EItemCategory, IInventory, IItem, importInventory } from "../inventory/inventorySlice";
 import { TalentView } from "../talents/talentView";
 import { Armoury } from "../armoury/armoury";
-import { importArmoury } from "../armoury/armourySlice";
+import { IArmour, importArmoury, IWeapon, IWeaponState } from "../armoury/armourySlice";
 import { FileUploadDrop } from "./fileUploadDrop";
+import { setCharacterName } from "./characterSlice";
 
 
 export const CharacterFunction = () => {
@@ -27,6 +28,7 @@ export const CharacterFunction = () => {
     const [showType, toggleShowType] = useState(true);
     const [showSkilled, toggleShowSkilled] = useState(false);
     const [importState, setImportState] = useState('');
+    const [editCharacterName, setEditCharacterName] = useState(false);
 
     const completeState = useAppSelector(state => state);
     const dispatch = useAppDispatch()
@@ -36,6 +38,7 @@ export const CharacterFunction = () => {
             return;
         }
         const state = JSON.parse(importState) as RootState;
+        dispatch(setCharacterName(state.character.characterName))
         dispatch(importCharacteristics(state.characteristics))
         dispatch(importInventory(state.inventory))
         dispatch(importSkills(state.skills))
@@ -48,7 +51,17 @@ export const CharacterFunction = () => {
             <Container style={{ padding: 0 }}>
                 <Row>
                     <Col>
-                        <h3>Characteristics</h3>
+                        {editCharacterName ?
+                            <FormControl
+                                onMouseLeave={() => setEditCharacterName(false)}
+                                value={completeState.character.characterName}
+                                onChange={(event => dispatch(setCharacterName(event.target.value)))}
+                                autoFocus={true}/>
+                            :
+                            <h1 style={{ fontFamily: 'CloisterBlack', fontSize:"xxx-large" }}
+                                onClick={() => setEditCharacterName(true)}
+                            >{completeState.character.characterName}</h1>
+                        }
                     </Col>
                 </Row>
                 <Row>
@@ -125,6 +138,36 @@ export const CharacterFunction = () => {
 
     function getSettingsPane() {
 
+        function calcNewItems() {
+            const result = {
+                items: {},
+                weapons: {},
+                armour: {}
+            }
+
+            const items: IInventory = {};
+            const weapons: IWeaponState = {};
+            const armour: { [name: string]: IArmour } = {};
+
+            const inventory = completeState.inventory;
+            for (const itemName in inventory) {
+                if (!(itemName in allItems || itemName in allWeapons || itemName in allArmour)) {
+                    const item: IItem = inventory[itemName];
+                    if (item.category === EItemCategory.WEAPON) {
+                        weapons[itemName] = item as IWeapon;
+                    } else if (item.category === EItemCategory.ARMOUR) {
+                        armour[itemName] = item as IArmour;
+                    } else {
+                        items[itemName] = item;
+                    }
+                }
+            }
+            result.items = items;
+            result.weapons = weapons;
+            result.armour = armour;
+            return result
+        }
+
         return <Jumbotron key={"jumbo-settings"}>
             <Container>
                 <Row>
@@ -153,7 +196,7 @@ export const CharacterFunction = () => {
                                     JSON.stringify(completeState)
                                 )}`} download={"DnD-Character.json"}>
 
-                                    <Button size={"sm"}>Download</Button>
+                                    <Button>Download</Button>
                                 </a>
                             </Col>
                             <Col>
@@ -171,7 +214,14 @@ export const CharacterFunction = () => {
                                     onClick={() => setMainCols(mainCols + 1)}>+</Button>
 
                         </Row>
+                        <Row>
+                            <Col>
+                                <Button onClick={() => setImportState(JSON.stringify(calcNewItems()))}>Export New
+                                    Items</Button>
+                            </Col>
+                        </Row>
                     </Col>
+
                     <Col sm={10}>
                         <FileUploadDrop {...{ importState, setImportState }} />
                     </Col>
@@ -179,6 +229,7 @@ export const CharacterFunction = () => {
             </Container>
         </Jumbotron>
     }
+
 
     const allPanes = [
         getCharacteristicsPane(),
@@ -221,8 +272,7 @@ function createSkillMatrix(colCount: number = 2, showType: boolean, showSkilled:
     const skillObjects: JSX.Element[] = [];
     for (const skillName in allSkills) {
         skillObjects.push(
-            // <></>
-            <SkillEntryFunction key={`skill-${skillName}`}  {...{skillName, showType, showSkilled }} />
+            <SkillEntryFunction key={`skill-${skillName}`}  {...{ skillName, showType, showSkilled }} />
         )
     }
 

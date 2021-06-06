@@ -25,7 +25,7 @@ import {
 } from "react-icons/all";
 import React, { useState } from "react";
 import './weaponCard.scss';
-import { EWeaponCategory, EWeaponType, IWeapon, removeWeapon } from "./armourySlice";
+import { EWeaponCategory, EDamageType, IWeapon, removeWeapon } from "./armourySlice";
 import { addItem, editWeapon, changeWeaponName } from "../inventory/inventorySlice";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 
@@ -51,15 +51,15 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
     }
 
 
-    function getJSXForWeaponType(weaponType: EWeaponType) {
+    function getJSXForWeaponType(weaponType: EDamageType) {
         switch (weaponType) {
-            case EWeaponType.IMPACT:
+            case EDamageType.IMPACT:
                 return <GiBulletImpacts/>
-            case EWeaponType.RENDING:
+            case EDamageType.RENDING:
                 return <GiChainsaw/>
-            case EWeaponType.SCHOCK:
+            case EDamageType.SCHOCK:
                 return <GiElectric/>
-            case EWeaponType.LASER:
+            case EDamageType.LASER:
                 return <GiLaserPrecision/>
 
         }
@@ -131,9 +131,9 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        {Object.values(EWeaponType).map((value, index) => {
+                        {Object.values(EDamageType).map((value, index) => {
                                 // @ts-ignore
-                                const e = EWeaponType[index]
+                                const e = EDamageType[index]
                                 return e ? <Dropdown.Item
                                     key={`category-dropdown-${e}`}
                                     onClick={() => {

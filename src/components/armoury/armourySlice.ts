@@ -16,27 +16,46 @@ export interface IWeapon extends IItem{
     rof: string,
     clip: number,
     rld: string
-    type: EWeaponType,
+    type: EDamageType,
     pen: number,
     weight: number,
 
 }
 
-export interface IWeaponState {
-    [name: string]: IWeapon
+export enum ESpellType {
+    ATTACK = "Attack",
+    CONCENTRATION = "Concentration"
 }
 
-export enum EWeaponType {
+export interface ISpell extends IItem {
+    exp: number,
+    prerequisites: string,
+    action: string,
+    focusPower: string,
+    range: string,
+    sustained: boolean,
+    subtype: ESpellType[],
+    pen: number,
+    damage: string,
+    type: EDamageType,
+}
+
+export interface IWeaponState {
+    [name: string]: IWeapon | ISpell
+}
+
+export enum EDamageType {
     IMPACT,
     RENDING,
     SCHOCK,
     LASER,
+    ENERGY,
 
     MISC,
 }
 
 
-export interface IArmour {
+export interface IArmourStats {
     head?: number,
     body?: number,
     armR?: number,
@@ -45,11 +64,11 @@ export interface IArmour {
     legL?: number
 }
 
-export interface IArmourItem extends IItem, IArmour {}
+export interface IArmour extends IItem, IArmourStats {}
 
 export interface IArmouryState {
-    armour: IArmour,
-    gear: {[name: string]: IArmourItem},
+    armour: IArmourStats,
+    gear: {[name: string]: IArmour},
     weapons: IWeaponState,
     character: {
         currentWounds: number,
@@ -80,10 +99,8 @@ export const armourySlice = createSlice({
     name: 'armoury',
     initialState: armouryInitalState,
     reducers: {
-        setGear: (state, action: PayloadAction<IArmourItem>) =>  {
+        setGear: (state, action: PayloadAction<IArmour>) =>  {
             const { head, body, armL, armR, legL, legR, name } = action.payload;
-
-
 
             state.armour.head = head ? head : state.armour.head
             state.armour.body = body ? body : state.armour.body
@@ -94,7 +111,7 @@ export const armourySlice = createSlice({
 
           state.gear[name] = action.payload;
         },
-        removeGear: (state, action: PayloadAction<IArmourItem>) =>  {
+        removeGear: (state, action: PayloadAction<IArmour>) =>  {
             const { head, body, armL, armR, legL, legR, name } = action.payload;
 
             state.armour.head = head ? 0 : state.armour.head
@@ -106,7 +123,7 @@ export const armourySlice = createSlice({
 
             delete state.gear[name]
         },
-        setWeapon: (state, action: PayloadAction<IWeapon>) => {
+        setWeapon: (state, action: PayloadAction<IWeapon | ISpell>) => {
             state.weapons[action.payload.name] = {...action.payload, count: 1};
         },
         removeWeapon: (state, action) => {

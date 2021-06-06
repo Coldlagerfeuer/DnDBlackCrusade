@@ -1,6 +1,14 @@
 import { ISkillState } from "../skills/skillSlice";
 import { EItemCategory, IInventory } from "../inventory/inventorySlice";
-import { EWeaponCategory, EWeaponType, IArmourItem, IWeaponState } from "../armoury/armourySlice";
+import {
+    ESpellType,
+    EWeaponCategory,
+    EDamageType,
+    IArmour,
+    ISpell,
+    IWeaponState,
+    IWeapon
+} from "../armoury/armourySlice";
 import { EGods, ITalentState } from "../talents/talentSlice";
 
 export const allSkills: ISkillState = {
@@ -217,18 +225,35 @@ export const allTalents = {
 
 
 export const allWeapons: IWeaponState = {
-    'Autopistol': { name: 'Autopistol', category: EItemCategory.WEAPON, count: 1, weaponCategory: EWeaponCategory.PISTOL, damage: '1d10+2', range: 30, rof: 's/-/6', clip: 18, rld: 'FULL', type: EWeaponType.IMPACT, pen: 0, weight: 1.5 },
-    [`Chaindagger`]: { name: 'Chaindagger', category: EItemCategory.WEAPON, count: 1, weaponCategory: EWeaponCategory.CHAIN, damage: '1d10+1', range: 0, rof: '', clip: 0, rld: '', type: EWeaponType.RENDING, pen: 0, weight: 1.5 },
+    'Autopistol': { name: 'Autopistol', category: EItemCategory.WEAPON, count: 1, weaponCategory: EWeaponCategory.PISTOL, damage: '1d10+2', range: 30, rof: 's/-/6', clip: 18, rld: 'FULL', type: EDamageType.IMPACT, pen: 0, weight: 1.5 } as IWeapon,
+    "Chaindagger": { name: 'Chaindagger', category: EItemCategory.WEAPON, count: 1, weaponCategory: EWeaponCategory.CHAIN, damage: '1d10+1', range: 0, rof: '', clip: 0, rld: '', type: EDamageType.RENDING, pen: 0, weight: 1.5 } as IWeapon,
+    "Splinter Rifle": { name: "Splinter Rifle", category: EItemCategory.WEAPON, count: 1, damage: "1d10+2", clip: 200, range: 100, pen: 3, rof: "s/3/5", rld: "FULL", description: "Toxic (4) - (-40 Thougness Test or 1d10 pure)", weaponCategory: EWeaponCategory.PISTOL, type: EDamageType.LASER, weight: 0 } as IWeapon,
+
+
+//    SPELLS
+    "Doombolt" : { name: "Doombolt", category: EItemCategory.SPELL, count: 1, damage: "1d10 + Psy Rating", pen: 8, type: EDamageType.ENERGY, exp: 200, prerequisites: "None", action: "Half", focusPower: "Challenging (+0) WP", range: "20m x Psy Rating", sustained: false, subtype: [ESpellType.ATTACK, ESpellType.CONCENTRATION], description: "Known by a variety of names, the Doombolt is a common destructive power utilised by a great many Chaos magos to strike down their foes. Formed from the coalesced spite and loathing of the Sorcerer, they are corrosive bolts of dark energy, raining down like black hail upon the enemy. As the Sorcerer conjures these bitter projectiles with clenched fi sts, he fi lls the air with the stench of brimstone and the booming roar of daemons for the brief moment of the power’s manifestation. Doombolt is a Psychic Barrage that deals 1d10+ Psy Rating Energy Damage with a Pen of 8." } as ISpell,
+    // "Foul Cage": {name: "Foul Cage",  }
 }
 
-export const allArmour: {[name: string]: IArmourItem} = {
-    'DummyArmour': {
-        name: 'DummyArmour',
-            count: 1,
-            category: EItemCategory.ARMOUR,
-            body: 95
 
-    }
+
+export const allArmour: {[name: string]: IArmour} = {
+    "Light Carapace": {
+        name: "Light Carapace",
+        count: 1,
+        category: EItemCategory.ARMOUR,
+        armL: 5,
+        legL: 5,
+        legR: 5,
+        armR: 5,
+        body: 5
+    },
+    "Carapace Helm": {
+        name: "Carapace Helm",
+        count: 1,
+        category: EItemCategory.ARMOUR,
+        head: 4
+    },
 }
 
 export const allItems: IInventory = {

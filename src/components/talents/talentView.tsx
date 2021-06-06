@@ -103,6 +103,7 @@ export const TalentView = () => {
                             <ListGroup.Item key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
                         )}
                     </ListGroup>
+                    Alignment: {activeTalent.devotion}
                 </Col>
             </Row>
         </Container>

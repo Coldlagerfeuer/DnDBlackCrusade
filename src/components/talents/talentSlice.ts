@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { allTalents } from "../character/resources";
 
 export interface ITalent {
     name: string,
@@ -10,12 +11,12 @@ export interface ITalent {
 }
 
 export enum EGods {
-    KHORNE,
-    NURGLE,
-    SLAANESH,
-    TZEENTCH,
-    UNALIGNED,
-    SPECIAL
+    KHORNE = "Khorne",
+    NURGLE = "Nurgle",
+    SLAANESH = "Slaanesh",
+    TZEENTCH = "Tzeentch",
+    UNALIGNED = "Unaligned",
+    SPECIAL = "Special"
 }
 
 export interface ITalentState {
@@ -34,6 +35,11 @@ export const talentSlice = createSlice({
             const talent = action.payload;
             if (talent.name !== '') {
                 state[talent.name] = talent
+
+                if (!allTalents[talent.name]) {
+                    allTalents[talent.name] = talent;
+                }
+
             }
         },
         removeTalent: (state, action) => {

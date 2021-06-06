@@ -17,7 +17,8 @@ import {
     addItemByName,
     editCategory,
     editDescription,
-    EItemCategory, IInventory,
+    EItemCategory,
+    IInventory,
     IItem,
     importInventory,
     removeItem,
@@ -25,10 +26,11 @@ import {
 } from "./inventorySlice";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { allItems } from "../character/resources";
-import { IArmourItem, IWeapon, setGear, setWeapon } from "../armoury/armourySlice";
-import { AiOutlineSortAscending, GiCrossedSwords } from "react-icons/all";
+import { IArmour, ISpell, IWeapon, setGear, setWeapon } from "../armoury/armourySlice";
+import { AiOutlineSortAscending, GiCrossedSwords, GiOrbWand } from "react-icons/all";
 import { WeaponCard } from "../armoury/weaponCard";
 import { ArmourCard } from "../armoury/armourCard";
+import { SpellCard } from "../armoury/spellCard";
 
 export const InventoryFunction = () => {
     const [readonly, toggleReadonly] = useState(true)
@@ -73,11 +75,21 @@ export const InventoryFunction = () => {
                         }}>Equip</Button>
 
                 case EItemCategory.ARMOUR:
-                    const armour = item as IArmourItem;
+                    const armour = item as IArmour;
                     return <Button
                         disabled={!!armoury.gear[armour.name]}
                         onClick={() => {
                             dispatch(setGear(armour))
+                            dispatch(removeItem(item))
+                        }}>Equip</Button>
+
+                case EItemCategory.SPELL:
+                    const spell = item as ISpell;
+
+                    return <Button
+                        disabled={!!armoury.weapons[spell.name]}
+                        onClick={() => {
+                            dispatch(setWeapon(spell))
                             dispatch(removeItem(item))
                         }}>Equip</Button>
 
@@ -90,16 +102,16 @@ export const InventoryFunction = () => {
             return undefined;
         }
 
-        function getWeaponCard(item: TItem) {
-            const weapon = item as IWeapon;
 
-            return <WeaponCard weapon={weapon} editMode={!readonly}/>;
-        }
-
-        function getArmourCard(item: IItem) {
-            const armour: IArmourItem = item as IArmourItem;
-
-            return <ArmourCard armour={armour}/>
+        function getTypeCard(item: IItem) {
+            switch (item.category) {
+                case EItemCategory.WEAPON:
+                    return <Col><WeaponCard weapon={item as IWeapon} editMode={!readonly}/></Col>
+                case EItemCategory.ARMOUR:
+                    return <Col><ArmourCard armour={item as IArmour}/></Col>
+                case EItemCategory.SPELL:
+                    return <Col><SpellCard spell={item as ISpell}/></Col>
+            }
         }
 
         for (const name in items) {
@@ -136,7 +148,7 @@ export const InventoryFunction = () => {
                 <Row>
 
 
-                    <Col md={item.category === EItemCategory.WEAPON || item.category === EItemCategory.ARMOUR ? 5 : 12}>
+                    <Col md={item.category === EItemCategory.NONE || item.category === EItemCategory.MISC ? 12 : 5}>
 
                         <InputGroup>
                             <FormControl as="textarea" readOnly={readonly} size={"sm"} rows={10}
@@ -147,8 +159,7 @@ export const InventoryFunction = () => {
                                          }}/>
                         </InputGroup>
                     </Col>
-                    {item.category === EItemCategory.WEAPON ? <Col>{getWeaponCard(item)}</Col> : <></>}
-                    {item.category === EItemCategory.ARMOUR ? <Col>{getArmourCard(item)}</Col> : <></>}
+                    {getTypeCard(item)}
                 </Row>
                 {getItemButton(item)}
             </Tab.Pane>)
@@ -166,6 +177,8 @@ export const InventoryFunction = () => {
                 return <ShieldFill/>
             case EItemCategory.WEAPON:
                 return <GiCrossedSwords/>
+            case EItemCategory.SPELL:
+                return <GiOrbWand/>
         }
         return <Pencil/>;
     }

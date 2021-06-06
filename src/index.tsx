@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from "react-redux";
 import store from "./general/store";
-
+import '../src/fonts/CloisterBlack.ttf'
 
 ReactDOM.render(
     <React.Fragment>
