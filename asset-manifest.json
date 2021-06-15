@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/DnDBlackCrusade/static/css/main.dd425060.chunk.css",
-    "main.js": "/DnDBlackCrusade/static/js/main.ae8fc8e8.chunk.js",
-    "main.js.map": "/DnDBlackCrusade/static/js/main.ae8fc8e8.chunk.js.map",
-    "runtime-main.js": "/DnDBlackCrusade/static/js/runtime-main.cfaec737.js",
-    "runtime-main.js.map": "/DnDBlackCrusade/static/js/runtime-main.cfaec737.js.map",
+    "main.js": "/DnDBlackCrusade/static/js/main.254cddb4.chunk.js",
+    "main.js.map": "/DnDBlackCrusade/static/js/main.254cddb4.chunk.js.map",
+    "runtime-main.js": "/DnDBlackCrusade/static/js/runtime-main.ec49c3ce.js",
+    "runtime-main.js.map": "/DnDBlackCrusade/static/js/runtime-main.ec49c3ce.js.map",
     "static/css/2.150d169a.chunk.css": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css",
-    "static/js/2.a045cd10.chunk.js": "/DnDBlackCrusade/static/js/2.a045cd10.chunk.js",
-    "static/js/2.a045cd10.chunk.js.map": "/DnDBlackCrusade/static/js/2.a045cd10.chunk.js.map",
-    "static/js/3.516536b2.chunk.js": "/DnDBlackCrusade/static/js/3.516536b2.chunk.js",
-    "static/js/3.516536b2.chunk.js.map": "/DnDBlackCrusade/static/js/3.516536b2.chunk.js.map",
+    "static/js/2.4da33320.chunk.js": "/DnDBlackCrusade/static/js/2.4da33320.chunk.js",
+    "static/js/2.4da33320.chunk.js.map": "/DnDBlackCrusade/static/js/2.4da33320.chunk.js.map",
+    "static/js/3.6b4e4ece.chunk.js": "/DnDBlackCrusade/static/js/3.6b4e4ece.chunk.js",
+    "static/js/3.6b4e4ece.chunk.js.map": "/DnDBlackCrusade/static/js/3.6b4e4ece.chunk.js.map",
     "index.html": "/DnDBlackCrusade/index.html",
     "static/css/2.150d169a.chunk.css.map": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css.map",
     "static/css/main.dd425060.chunk.css.map": "/DnDBlackCrusade/static/css/main.dd425060.chunk.css.map",
-    "static/js/2.a045cd10.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.a045cd10.chunk.js.LICENSE.txt",
+    "static/js/2.4da33320.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.4da33320.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/DnDBlackCrusade/static/media/CloisterBlack.0a8dea1a.ttf"
   },
   "entrypoints": [
-    "static/js/runtime-main.cfaec737.js",
+    "static/js/runtime-main.ec49c3ce.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.a045cd10.chunk.js",
+    "static/js/2.4da33320.chunk.js",
     "static/css/main.dd425060.chunk.css",
-    "static/js/main.ae8fc8e8.chunk.js"
+    "static/js/main.254cddb4.chunk.js"
   ]
 }
