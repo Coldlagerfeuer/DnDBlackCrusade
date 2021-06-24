@@ -17,7 +17,6 @@ import {
     addItemByName,
     editCategory,
     editDescription,
-    EItemCategory,
     IInventory,
     IItem,
     importInventory,
@@ -31,11 +30,12 @@ import { AiOutlineSortAscending, GiCrossedSwords, GiOrbWand } from "react-icons/
 import { WeaponCard } from "../armoury/weaponCard";
 import { ArmourCard } from "../armoury/armourCard";
 import { SpellCard } from "../armoury/spellCard";
+import { EItemCategory } from "../character/EItemCategory";
 
 export const InventoryFunction = () => {
-    const [readonly, toggleReadonly] = useState(true)
-    const [newItem, setNewItem] = useState('')
-    const [activeFilter, setFilter] = useState('-')
+    const [readonly, toggleReadonly] = useState(true);
+    const [newItem, setNewItem] = useState('');
+    const [activeFilter, setFilter] = useState('-');
 
 
     const items = useAppSelector(state => state.inventory);

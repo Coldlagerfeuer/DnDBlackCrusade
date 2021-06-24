@@ -3,7 +3,7 @@ import {
     Button,
     Card,
     Col,
-    Dropdown,
+    Dropdown, DropdownButton,
     FormControl,
     InputGroup,
     OverlayTrigger,
@@ -11,7 +11,8 @@ import {
     Tooltip
 } from "react-bootstrap";
 import {
-    BiQuestionMark,
+    BiCrosshair,
+    BiQuestionMark, FaDiceD20,
     GiAncientSword,
     GiArrowScope, GiBulletImpacts,
     GiChainsaw, GiElectric,
@@ -28,12 +29,16 @@ import './weaponCard.scss';
 import { EWeaponCategory, EDamageType, IWeapon, removeWeapon } from "./armourySlice";
 import { addItem, editWeapon, changeWeaponName } from "../inventory/inventorySlice";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
+import { rollDamageAndSendToDiscord, rollStatAndSendToDiscord } from "../character/Rolls";
 
 
 export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, editMode?: boolean }) => {
     const [newName, setNewName] = useState(weapon.name);
 
     const weaponEquipped = useAppSelector(state => state.armoury.weapons[weapon.name]);
+    const character = useAppSelector(state => state.character);
+    const characteristics = useAppSelector(state => state.characteristics);
+    const [testModifier, setTestModifier] = useState(10);
 
     const dispatch = useAppDispatch();
 
@@ -190,7 +195,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                                                          }))}/>
 
             </Col>
-            : <Col> <GiMachineGunMagazine/>{weapon.clip} <GiReloadGunBarrel/> {weapon.rld} </Col>
+            : <Col> <GiMachineGunMagazine/> {weapon.clip} <GiReloadGunBarrel/> {weapon.rld} </Col>
     }
 
     function getRemoveFromArmoury() {
@@ -214,14 +219,14 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                         id={`tooltip-${weapon.name}`}>{weapon.description ? weapon.description : "Add description"}</Tooltip>
                 }>
                 {editMode ? <Row>
-                        {!isRangeWeapon() ?
+                        {!isMeeleWeapon() ?
                             <Col md={4}>
                                 {getWeaponTypeDropdown()}
                             </Col>
                             : <></>
                         }
                         <Col>
-                            {isRangeWeapon() ? getWeaponTypeDropdown() : <></>}
+                            {isMeeleWeapon() ? getWeaponTypeDropdown() : <></>}
                             <InputGroup>
                                 <FormControl size={"sm"}
                                              value={newName}
@@ -252,12 +257,43 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
         </Col>
     }
 
-    function isRangeWeapon() {
+    function getRollDice() {
+        const characteristic = isMeeleWeapon() ? characteristics["WS"] : characteristics["BS"];
+        const dropItems = [<Dropdown.Header key={`aim-header-${weapon.name}`}>Aim Modifier</Dropdown.Header>];
+
+        // dropItems.push();
+        for (let i = 60; i > -70; i-= 10) {
+            dropItems.push(<Dropdown.Item key={`${weapon.name}-modifier-${i}`} onClick={() => setTestModifier(i)} >{i}</Dropdown.Item>);
+        }
+
+        return <Row>
+            <Col>
+                <DropdownButton size="sm" title={testModifier} variant={'secondary'}>
+                    {dropItems}
+                </DropdownButton>
+            </Col>
+            <Col>
+                <Button size="sm" variant="light" onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic, testModifier)}>
+                    <BiCrosshair style={{ cursor: "pointer" }}
+                    /> Aim
+                </Button>
+            </Col>
+            <Col>
+                <Button size="sm" variant="light" onClick={() => rollDamageAndSendToDiscord(character.discordServer, character.characterName, weapon)}>
+                    <FaDiceD20 color={"darkred"}
+                               style={{ cursor: "pointer" }}
+                    /> Damage
+                </Button>
+            </Col>
+        </Row>;
+    }
+
+    function isMeeleWeapon() {
         return weapon.weaponCategory > EWeaponCategory._
     }
 
     function getWeaponCard() {
-        if (isRangeWeapon()) {
+        if (isMeeleWeapon()) {
             return getWeaponCardMeele()
         } else {
             return getWeaponCardRange()
@@ -274,6 +310,10 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                     {getRemoveFromArmoury()}
                 </Row>
             </Card.Header>
+            <Card.Body style={{padding: 10}}>
+                {getRollDice()}
+
+            </Card.Body>
         </Card>;
     }
 
@@ -283,16 +323,17 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             <Card.Header>
                 <Row>
                     {getNameField()}
+                    {getDamageField()}
                     {getWeightField()}
                     {getRemoveFromArmoury()}
                 </Row>
             </Card.Header>
-            <Card.Body>
+            <Card.Body style={{padding: 5}}>
                 <Row>
-                    {getDamageField()}
                     {getRangeField()}
                     {getMagazineField()}
                 </Row>
+                {getRollDice()}
             </Card.Body>
         </Card>;
     }

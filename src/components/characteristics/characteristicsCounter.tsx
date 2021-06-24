@@ -2,15 +2,18 @@ import { Badge, Col, Container, Row } from "react-bootstrap";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { decrement, decrementBonus, increment, incrementBonus } from './characteristicsSlice'
+import { rollStatAndSendToDiscord } from "../character/Rolls";
+import { FaDiceD20 } from "react-icons/all";
 
 export const CharacteristicsCounter = ({ short = '' }) => {
     const [hideBtns, toggleBtns] = React.useState(true);
 
     const characteristic = useAppSelector(state => state.characteristics[short]);
+    const character = useAppSelector(state => state.character);
     const dispatch = useAppDispatch()
 
 
-    return <Container id={`stat-${characteristic.name}`} style={{ backgroundColor: "lightgrey" }}>
+    return <Container id={`stat-${characteristic.name}`} style={{ backgroundColor: "lightgrey", padding: 0 }}>
         <Row onClick={() => toggleBtns(!hideBtns)}>
             <Col>
                 <Badge variant="secondary" pill style={{ cursor: 'pointer' }}>
@@ -38,7 +41,6 @@ export const CharacteristicsCounter = ({ short = '' }) => {
                                 variant={"dark"}
                                 pill
                                 onClick={() => toggleBtns(!hideBtns)}>
-                                {/*{object.value}*/}
                                 {characteristic.value}
                             </Badge>
                             <Badge pill variant={'danger'} style={{ cursor: 'pointer' }}
@@ -46,7 +48,10 @@ export const CharacteristicsCounter = ({ short = '' }) => {
 
                         </div>
                     </>
-                    : <>{characteristic.bonus ?
+                    : <>
+                        <FaDiceD20 onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic)} color={"darkred"} style={{ cursor: "pointer" }}/>
+
+                        {characteristic.bonus ?
                         <Badge variant={'secondary'}>
                             {characteristic.bonus}
                         </Badge>
@@ -55,7 +60,6 @@ export const CharacteristicsCounter = ({ short = '' }) => {
                             variant={"dark"}
                             pill
                             onClick={() => toggleBtns(!hideBtns)}>
-                            {/*{object.value}*/}
                             {characteristic.value}
                         </Badge>
                     </>

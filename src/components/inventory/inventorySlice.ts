@@ -1,15 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { allItems } from "../character/resources";
 import { EWeaponCategory, EDamageType, IArmour, IWeapon } from "../armoury/armourySlice";
-
-export enum EItemCategory {
-    NONE = "-",
-    WEAPON = "Weapon",
-    ARMOUR = "Armour",
-    SPELL = "Spells",
-    MISC = "Misc",
-
-}
+import { EItemCategory } from "../character/EItemCategory";
 
 export interface IItem {
     name: string,

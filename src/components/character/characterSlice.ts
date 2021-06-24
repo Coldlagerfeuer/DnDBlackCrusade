@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const characterSlice = createSlice({
     name: 'character',
     initialState: {
-        characterName: 'Character Name'
+        characterName: 'Character Name',
+        discordServer: ''
     },
     reducers: {
         importCompleteState: (state, action) => {
@@ -11,9 +12,12 @@ export const characterSlice = createSlice({
         },
         setCharacterName: (state, action) => {
             state.characterName = action.payload;
+        },
+        setDiscordServer: (state, action) => {
+            state.discordServer = action.payload
         }
     },
 });
 
-export const { importCompleteState, setCharacterName } = characterSlice.actions
+export const { importCompleteState, setCharacterName, setDiscordServer } = characterSlice.actions
 export default characterSlice.reducer

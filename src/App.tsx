@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.scss';
 import { CharacterFunction } from "./components/character/character";
-import { Col, Row } from "react-bootstrap";
 
 function App() {
     return (

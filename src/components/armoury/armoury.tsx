@@ -1,12 +1,14 @@
 import { WeaponCard } from "./weaponCard";
-import { Badge, Button, Card, Col, FormControl, FormGroup, FormLabel, ProgressBar, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, Dropdown, DropdownButton, FormControl, FormGroup, FormLabel, ProgressBar, Row } from "react-bootstrap";
 import React, { useState } from "react";
 import "./armoury.scss";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { addItem, EItemCategory } from "../inventory/inventorySlice";
+import { addItem } from "../inventory/inventorySlice";
 import { ISpell, IWeapon, removeGear, setMaxWounds, setWounds } from "./armourySlice";
 import { SpellCard } from "./spellCard";
-import { BiTargetLock } from "react-icons/all";
+import { BiTargetLock, FaDiceD20 } from "react-icons/all";
+import { rollInitAndSendToDiscord } from "../character/Rolls";
+import { EItemCategory } from "../character/EItemCategory";
 
 export const Armoury = () => {
 
@@ -19,14 +21,21 @@ export const Armoury = () => {
 
     const infamyStat = useAppSelector(state => state.characteristics['INF']);
     const toughnessStat = useAppSelector(state => state.characteristics["T"]);
+    const agilityStat = useAppSelector(state => state.characteristics["AG"]);
     const armouryState = useAppSelector(state => state.armoury);
+    const character = useAppSelector(state => state.character);
     const dispatch = useAppDispatch()
 
+    const [agilityBonus, setAgilityBonus] = useState(2);
+
+    const agility = Math.floor(agilityStat.value / 10 + agilityStat.bonus + agilityBonus);
     const armour = armouryState.armour;
     const maxHealth = armouryState.character.maxWounds;
     const maxInfamy: number = Math.floor(infamyStat.value / 10 + infamyStat.bonus);
+    const maxFatigue: number = Math.floor(toughnessStat.value / 10 + toughnessStat.bonus);
 
     const [infamy, setInfamy] = useState(maxInfamy);
+    const [fatigue, setFatigue] = useState(0);
     const [showTarget, setShowTarget] = useState(true);
     const [maxWoundsEditable, setMaxWoundsEditable] = useState(false)
 
@@ -37,8 +46,12 @@ export const Armoury = () => {
         return `${heavilyWounded}${health > maxHealth ? `CRIT: ${health - maxHealth}` : `${health}/${maxHealth}`}`;
     }
 
-    return <div>
+    const dropItems = [<Dropdown.Header key={`init-modifier-header`}>Init Modifier</Dropdown.Header>];
+    for (let i = 10; i > -10; i -= 1) {
+        dropItems.push(<Dropdown.Item key={`init-modifier-${i}`} onClick={() => setAgilityBonus(i)}>{i}</Dropdown.Item>);
+    }
 
+    return <div>
         <Row>
             <Col>
                 <h3>Armoury</h3>
@@ -51,7 +64,6 @@ export const Armoury = () => {
                     <Col>
                         {Object.values(armouryState.weapons).map(((weapon) =>
                                 <div key={`wp-${weapon.name}`}>
-
                                     {weapon.category === EItemCategory.WEAPON ? <WeaponCard weapon={weapon as IWeapon}/>
                                         : weapon.category === EItemCategory.SPELL ?
                                             <SpellCard spell={weapon as ISpell}/> : <></>
@@ -60,7 +72,6 @@ export const Armoury = () => {
                         ))}
                     </Col>
                 </Row>
-
             </Col>
             <Col>
                 <Row>
@@ -75,7 +86,6 @@ export const Armoury = () => {
                                                     }}>-</Badge>
                                 </Col>
                             </Row>
-
                         ))}
                     </Col>
                     <Col md={{ span: 3 }}><Card> <Card.Img src={imageHead}/>
@@ -84,7 +94,24 @@ export const Armoury = () => {
                             {showTarget ? <Badge variant={"dark"}>(1-10)</Badge> : undefined}
                         </Card.ImgOverlay></Card>
                     </Col>
-                    <Col> <Button><BiTargetLock onClick={() => setShowTarget(!showTarget)}/> </Button> </Col>
+                    <Col>
+                        <Row>
+                            <Col>
+                                <Row>
+                                    <Button variant={showTarget ? "primary" : "secondary"} onClick={() => setShowTarget(!showTarget)}><BiTargetLock/> </Button>
+                                </Row>
+                                <Row>
+                                    <Button
+                                        onClick={() => rollInitAndSendToDiscord(character.discordServer, character.characterName, agility, 1, 10)}
+                                        variant={"light"}><FaDiceD20 color={"darkred"} style={{ cursor: "pointer" }}/> Init
+                                    </Button>
+                                    <DropdownButton size="sm" title={agilityBonus} variant={'secondary'}>
+                                        {dropItems}
+                                    </DropdownButton>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Col>
                 </Row>
                 <Row>
                     <Col md={{ offset: 2, span: 3 }}><Card> <Card.Img src={imageArmR}/>
@@ -127,13 +154,13 @@ export const Armoury = () => {
                     <Col md={8}>
                         {maxWoundsEditable ?
                             <FormGroup as={Row}>
-                                <FormLabel column sm={5} >Max Wounds:</FormLabel>
+                                <FormLabel column sm={5}>Max Wounds:</FormLabel>
                                 <Col sm={7}>
 
-                                <FormControl value={maxHealth}
-                                             onChange={(event) => dispatch(setMaxWounds(event.target.value))}
-                                             onMouseLeave={() => setMaxWoundsEditable(false)}
-                                             autoFocus />
+                                    <FormControl value={maxHealth}
+                                                 onChange={(event) => dispatch(setMaxWounds(event.target.value))}
+                                                 onMouseLeave={() => setMaxWoundsEditable(false)}
+                                                 autoFocus/>
                                 </Col>
                             </FormGroup>
                             :
@@ -179,6 +206,26 @@ export const Armoury = () => {
                     </Col>
                 </Row>
 
+                {/* FATIGUE */}
+                <Row>
+                    <Col md={2}>Fatigue: </Col>
+                    <Col md={8}>
+                        <ProgressBar>
+                            <ProgressBar variant={"warning"} now={fatigue} max={maxFatigue}
+                                         label={`${fatigue}/${maxFatigue}`}/>
+                            <ProgressBar variant={"secondary"} now={maxFatigue - fatigue} max={maxFatigue}/>
+                        </ProgressBar>
+                    </Col>
+                    <Col md={2}>
+                        <div>
+                            <Badge variant={'danger'} style={{ cursor: 'pointer' }}
+                                   onClick={() => setFatigue(fatigue - 1)}>-</Badge>
+                            <Badge variant={'success'} style={{ cursor: 'pointer' }}
+                                   onClick={() => setFatigue(Math.min(fatigue + 1, maxFatigue))}>+</Badge>
+                        </div>
+                    </Col>
+                </Row>
+
             </Col>
 
         </Row>
@@ -186,3 +233,30 @@ export const Armoury = () => {
 
 
 }
+
+export function reverseNumber(value: number) {
+    const s = value.toString().length === 1 ? '0' + value.toString() : value.toString()
+
+    return parseInt(s.split("").reverse().join(""));
+}
+
+export function getHitLocation(rollValue: number) {
+    const reverse = reverseNumber(rollValue);
+
+    if (reverse < 11) {
+        return "Head";
+    } else if (reverse < 21) {
+        return "Right Hand";
+    } else if (reverse < 31) {
+        return "Left Hand";
+    } else if (reverse < 71) {
+        return "Body";
+    } else if (reverse < 86) {
+        return "Right Leg";
+    } else {
+        return "Left Leg"
+    }
+
+
+}
+
