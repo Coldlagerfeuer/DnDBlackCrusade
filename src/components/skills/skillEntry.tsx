@@ -40,7 +40,7 @@ export const SkillEntryFunction = ({
 
         setVariant(rollResult.result ? 'success' : 'danger');
         setShow(true);
-        setTimeout(() => setShow(false), 10000)
+        setTimeout(() => setShow(false), 15000)
         setText(`${name} Test: rolled ${rollResult.rolls} your level: ${rollResult.sum} = Test ${rollResult.result ? 'success' : 'failed'}`)
 
 

@@ -15,6 +15,7 @@ export const TalentEntryFunction = ({
 
     return <OverlayTrigger
         key={`talent-${talent.name}`}
+        placement={'bottom'}
         overlay={
             <Tooltip id={`tooltip-${talent.name}`}>
                 {talent.description}

@@ -2,13 +2,8 @@ import React, { useState } from "react";
 import { Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Jumbotron, Row } from "react-bootstrap";
 import { CharacteristicsCounter } from "../characteristics/characteristicsCounter";
 import './character.scss';
-import { SkillEntryFunction } from "../skills/skillEntry";
 import { allArmour, allItems, allWeapons } from "./resources";
-import {
-    characteristicsInitialState,
-    ICharacteristicsState,
-    importCharacteristics
-} from "../characteristics/characteristicsSlice";
+import { characteristicsInitialState, ICharacteristicsState, importCharacteristics } from "../characteristics/characteristicsSlice";
 import { importTalents } from "../talents/talentSlice";
 import { InventoryFunction } from "../inventory/inventory";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
@@ -19,17 +14,16 @@ import { TalentView } from "../talents/talentView";
 import { Armoury } from "../armoury/armoury";
 import { IArmour, importArmoury, IWeapon, IWeaponState } from "../armoury/armourySlice";
 import { FileUploadDrop } from "./fileUploadDrop";
-import { setCharacterName, setDiscordServer } from "./characterSlice";
-import { rollAndSendToDiscord, rollTestAndSendToDiscord } from "./Rolls";
+import { changeLayout, setCharacterName, setDiscordServer } from "./characterSlice";
+import { rollAndSendToDiscord } from "./Rolls";
 import { FaDiceD20 } from "react-icons/all";
 import { EItemCategory } from "./EItemCategory";
+import { SkillView } from "../skills/skillView";
+import { ETabNames } from "./ETabNames";
 
 
 export const CharacterFunction = () => {
-    const [skillCols, setSkillCols] = useState(2);
     const [mainCols, setMainCols] = useState(1);
-    const [showType, toggleShowType] = useState(true);
-    const [showSkilled, toggleShowSkilled] = useState(false);
     const [importState, setImportState] = useState('');
     const [editCharacterName, setEditCharacterName] = useState(false);
     const [editDiscord, setEditDiscord] = useState(false);
@@ -54,7 +48,7 @@ export const CharacterFunction = () => {
         dispatch(importArmoury(state.armoury))
     }
 
-    function getCharacteristicsPane() {
+    function getCharacteristicsPane(layout: string) {
         return <Jumbotron key={"jumbo-characteristics"}>
             <Container style={{ padding: 0 }}>
                 <Row>
@@ -118,83 +112,18 @@ export const CharacterFunction = () => {
         </Jumbotron>
     }
 
-    function getSkillsPane() {
-
-        function createSkillMatrix(colCount: number = 2, showType: boolean, showSkilled: boolean, callbackRoll: any) {
-            const skillObjects: JSX.Element[] = [];
-            const skillNames: string[] = showSkilled ? Object.values(completeState.skills).filter(value => value.level > 0).map(skill => skill.parent ? `${skill.parent.name} - ${skill.name}` : skill.name) : Object.keys(completeState.skills);
-            skillNames.sort((a, b) => a.localeCompare(b))
-
-            skillNames.forEach(skillName => {
-                skillObjects.push(
-                    <SkillEntryFunction key={`skill-${skillName}`}  {...{
-                        skillName,
-                        showType,
-                        showSkilled,
-                        callbackRoll
-                    }} />
-                )
-            });
-            return mapElements(skillObjects, colCount);
-        }
-
-
-        return <Jumbotron key={"jumbo-skills"}>
-            <Row>
-                <Col>
-                    <h3>Skills</h3>
-                </Col>
-            </Row>
-            <Row>Col: {skillCols}
-                <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary" size="sm"
-                        onClick={() => setSkillCols(skillCols - 1)}>-</Button>
-                <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary" size="sm"
-                        onClick={() => setSkillCols(skillCols + 1)}>+</Button>
-                <Button size={"sm"} style={{ padding: 0, height: '25px' }}
-                        onClick={() => toggleShowType(!showType)}>Type</Button>
-                <Button size={"sm"} style={{ padding: 0, height: '25px' }}
-                        onClick={() => toggleShowSkilled(!showSkilled)}>Skilled</Button>
-            </Row>
-            <Container fluid>
-                <Row>
-                    {createSkillMatrix(skillCols, showType, showSkilled, rollTestAndSendToDiscord).map((skillCols, index) => (
-                        <Col key={`skillcol-${index}`}>
-                            <Col>
-                                {showSkilled ? <Row>
-                                        <Col md={1}>{/* EMPTY */}</Col>
-                                        <Col md={5}><b>Skillname</b></Col>
-                                        <Col>T</Col>
-                                        <Col>C</Col>
-                                        <Col>B</Col>
-                                        <Col><b>Sum</b></Col>
-                                    </Row>
-                                    : <Row>
-                                        <Col md={5}><b>Skillname</b></Col>
-                                        <Col md={5} style={{ padding: 0 }}>
-                                            <span style={{ paddingLeft: 0, paddingRight: 12 }}><b>T</b></span>
-                                            <span style={{ paddingLeft: 5, paddingRight: 5 }}><b>+10</b></span>
-                                            <span style={{ paddingLeft: 5, paddingRight: 5 }}><b>+20</b></span>
-                                            <span style={{ paddingLeft: 5, paddingRight: 5 }}><b>+30</b></span>
-                                        </Col>
-                                        <Col md={2}>Bonus</Col>
-                                    </Row>
-                                }
-                            </Col>
-                            {skillCols}
-                        </Col>
-                    ))}
-                </Row>
-            </Container>
-        </Jumbotron>
+    function getSkillsPane(layout: string) {
+        const sidebarSettings = { cols: 1, showSkilledDef: true, showSettings: false }
+        return layout === 'main' ? <SkillView/> : <SkillView {...sidebarSettings} />
     }
 
-    function getTalentsPane() {
+    function getTalentsPane(layout: string) {
         return <Jumbotron key={"jumbo-talents"}>
-            <TalentView/>
+            <TalentView sidebar={layout !== 'main'}/>
         </Jumbotron>
     }
 
-    function getInventoryPane() {
+    function getInventoryPane(layout: string) {
         return <Jumbotron key={"jumbo-inventory"}>
             <Row>
                 <Col>
@@ -205,13 +134,13 @@ export const CharacterFunction = () => {
         </Jumbotron>
     }
 
-    function getArmouryPane() {
+    function getArmouryPane(layout: string) {
         return <Jumbotron key={"jumbo-armoury"}>
             <Armoury/>
         </Jumbotron>
     }
 
-    function getSettingsPane() {
+    function getSettingsPane(layout: string) {
 
         function calcNewItems() {
             const result = {
@@ -265,7 +194,8 @@ export const CharacterFunction = () => {
                             <Col>
                                 <a href={`data:text/json;charset=utf-8,${encodeURIComponent(
                                     JSON.stringify(completeState)
-                                )}`} download={completeState.character.characterName ? completeState.character.characterName + ".json" : "DnD-Character.json"}>
+                                )}`}
+                                   download={completeState.character.characterName ? completeState.character.characterName + ".json" : "DnD-Character.json"}>
                                     <Button>Download</Button>
                                 </a>
                             </Col>
@@ -295,7 +225,7 @@ export const CharacterFunction = () => {
                     </Col>
                 </Row>
 
-                <Row>
+                <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
                     {editDiscord ?
                         <FormControl
                             onMouseLeave={() => setEditDiscord(false)}
@@ -309,6 +239,34 @@ export const CharacterFunction = () => {
                     }
                 </Row>
 
+                {Object.keys(ETabNames).map((value, index) => {
+                        if (isNaN(Number(value))) {
+                            return <></>;
+                        }
+
+                        return <Row key={`layout-${value}`}>
+                            <Col>{getNameForTabKey(index)}</Col>
+                            <Col>
+                                <Form>
+                                    <div key={`inline-radio`} className="mb-3">
+                                        <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`inline-radio-1`}
+                                                    checked={completeState.character.layout.left.includes(index)}
+                                                    onChange={() => dispatch(changeLayout({ field: 'left', index }))}
+                                        />
+                                        <Form.Check inline label="Main" name="group1" type={'radio'} id={`inline-radio-2`}
+                                                    checked={completeState.character.layout.main.includes(index)}
+                                                    onChange={() => dispatch(changeLayout({ field: 'main', index }))}
+                                        />
+                                        <Form.Check inline label="Right Sidebar" type={'radio'} id={`inline-radio-3`}
+                                                    checked={completeState.character.layout.right.includes(index)}
+                                                    onChange={() => dispatch(changeLayout({ field: 'right', index }))}
+                                        />
+                                    </div>
+                                </Form>
+                            </Col>
+                        </Row>
+                    }
+                )}
             </Container>
         </Jumbotron>
     }
@@ -335,32 +293,86 @@ export const CharacterFunction = () => {
     }
 
 
-    const allPanes = [
+    // const allPanes = [
+    //
+    //     // getDebugPane(),
+    //
+    //     getCharacteristicsPane(),
+    //     getSkillsPane(),
+    //     getTalentsPane(),
+    //     getArmouryPane(),
+    //     getInventoryPane(),
+    //     getSettingsPane(),
+    // ]
 
-        // getDebugPane(),
 
-        getCharacteristicsPane(),
-        getSkillsPane(),
-        getTalentsPane(),
-        getArmouryPane(),
-        getInventoryPane(),
-        getSettingsPane(),
-    ]
+    function getNameForTabKey(key: ETabNames) {
+        switch (key) {
+            case ETabNames.CHARACTERISTICS:
+                return 'Characteristics';
+            case ETabNames.SKILLS:
+                return 'Skills';
+            case ETabNames.TALENTS:
+                return 'Talents';
+            case ETabNames.ARMOURY:
+                return 'Armoury';
+            case ETabNames.INVENTORY:
+                return 'Inventory';
+            case ETabNames.SETTINGS:
+                return 'Settings';
+            default:
+                return `No name for no. ${key}`
+        }
+    }
 
-    return <>
-        {mainCols === 1
-            ? <Container>
-                {mapElements(allPanes, mainCols)}
-            </Container>
-            : <Row>
-                {mapElements(allPanes, mainCols).map((elementCol, index) => (
-                    <Col key={`skillcol-${index}`} md={6}>
-                        {elementCol}
-                    </Col>
-                ))}
-            </Row>
-        }</>
+    function getTabForKey(key: ETabNames, layout: string) {
+        switch (key) {
+            case ETabNames.CHARACTERISTICS:
+                return getCharacteristicsPane(layout);
+            case ETabNames.SKILLS:
+                return getSkillsPane(layout);
+            case ETabNames.TALENTS:
+                return getTalentsPane(layout);
+            case ETabNames.ARMOURY:
+                return getArmouryPane(layout);
+            case ETabNames.INVENTORY:
+                return getInventoryPane(layout);
+            case ETabNames.SETTINGS:
+                return getSettingsPane(layout);
+            default:
+                return <Jumbotron>{`No tab for no. ${key}`}</Jumbotron>
+        }
+    }
 
+    function getTabs(layout = 'main') {
+        const panes = completeState.character.layout[layout].map(name => getTabForKey(name, layout))
+        return <>
+            {mainCols === 1
+                ? <div>{mapElements(panes, mainCols)}</div>
+                : <Row>
+                    {mapElements(panes, mainCols).map((elementCol, index) => (
+                        <Col key={`skillcol-${index}`} md={6}>
+                            {elementCol}
+                        </Col>
+                    ))}
+                </Row>
+            }</>
+    }
+
+
+    return <Row>
+        <Col xs={3} id="sidebar-wrapper">
+            {getTabs('left')}
+        </Col>
+        <Col xs={6} id="page-content-wrapper">
+            <div>
+                {getTabs()}
+            </div>
+        </Col>
+        <Col xs={3} id="sidebar-wrapper">
+            {getTabs('right')}
+        </Col>
+    </Row>
 
 } // END OF FUNCTION
 
@@ -378,7 +390,7 @@ function createCharacteristicsObjects(characteristics: ICharacteristicsState): J
 }
 
 
-function mapElements(objects: JSX.Element[], colCount: number) {
+export function mapElements(objects: JSX.Element[], colCount: number) {
     const matrix: any[] = [];
     for (let j = 0; j < colCount; j++) {
         const part = ((objects.length - 1) / colCount + 1 | 0);

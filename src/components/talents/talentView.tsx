@@ -17,24 +17,19 @@ import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { allTalents } from "../character/resources";
 
-export const TalentView = () => {
+export const TalentView = ({ sidebar = false }) => {
     const talents = useAppSelector(state => state.talents);
     const dispatch = useAppDispatch()
 
     const [activeTalent, setActiveTalent] = useState({ name: '', description: '', tier: 0 } as ITalent);
 
-    const talentOptions = [];
+    const talentOptions: any[] = [];
     for (const talent in allTalents) {
         talentOptions.push(talent);
     }
 
-    return (
-        <Container fluid>
-            <Row>
-                <Col>
-                    <h3>Talents & Traits</h3>
-                </Col>
-            </Row>
+    function getEditFields() {
+        return (<div>
             <Row>
                 {createTalentObject(talents, setActiveTalent)}
             </Row>
@@ -106,10 +101,25 @@ export const TalentView = () => {
                     Alignment: {activeTalent.devotion}
                 </Col>
             </Row>
+        </div>);
+    }
+
+    return (
+        <Container fluid>
+            <Row>
+                <Col>
+                    <h3>Talents & Traits</h3>
+                </Col>
+            </Row>
+            {sidebar ? createSimpleTalent(talents, setActiveTalent) : getEditFields()}
+
         </Container>
     )
 }
 
+function createSimpleTalent(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {
+    return <Row>{Object.keys(talents).map(value => <TalentEntryFunction {...talents[value]} setActiveTalent={setNewTalent}/>)}</Row>
+}
 
 function createTalentObject(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {
     const result: JSX.Element[] = [];
