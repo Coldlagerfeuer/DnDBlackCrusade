@@ -18,11 +18,15 @@ export const skillSlice = createSlice({
     initialState: allSkills,
     reducers: {
         setLevel: (state, action: PayloadAction<ISkill>) => {
-            const name: string = action.payload.name;
-            if (state[name].level === action.payload.level) {
-                state[name].level = 0;
+            const { name, parent } = action.payload;
+            const key = parent ? `${parent.name} - ${name}` : name;
+            console.log("setLevel")
+            console.log(action.payload)
+            console.log(key)
+            if (state[key].level === action.payload.level) {
+                state[key].level = 0;
             } else {
-                state[name].level = action.payload.level;
+                state[key].level = action.payload.level;
             }
         },
         setBonus: (state, action: PayloadAction<ISkill>) => {

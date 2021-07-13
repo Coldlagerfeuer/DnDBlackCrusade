@@ -5,19 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="808a4b29-ea26-4b7c-9d87-271f6fcdbaa2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Sidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/character/ETabNames.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/skills/skillView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/Rolls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/Rolls.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/character/characterSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/characterSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,13 +82,15 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -136,8 +134,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
@@ -162,7 +160,8 @@
       <workItem from="1623009257314" duration="5440000" />
       <workItem from="1623050384393" duration="69050000" />
       <workItem from="1624259272771" duration="11414000" />
-      <workItem from="1624345916073" duration="23084000" />
+      <workItem from="1624345916073" duration="25305000" />
+      <workItem from="1625149957979" duration="10673000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -241,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624567681328</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added layout options">
+      <created>1624918674024</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1624918674024</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,6 +276,7 @@
     <MESSAGE value="Added roll function to skills" />
     <MESSAGE value="Added Charactername, Spells" />
     <MESSAGE value="Added multiple rolls, added lore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added multiple rolls, added lore" />
+    <MESSAGE value="Added layout options" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added layout options" />
   </component>
 </project>

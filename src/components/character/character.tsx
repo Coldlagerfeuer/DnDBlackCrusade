@@ -245,8 +245,8 @@ export const CharacterFunction = () => {
                         }
 
                         return <Row key={`layout-${value}`}>
-                            <Col>{getNameForTabKey(index)}</Col>
-                            <Col>
+                            <Col xs={3}>{getNameForTabKey(index)}</Col>
+                            <Col xs={9} style={{padding:0}}>
                                 <Form>
                                     <div key={`inline-radio`} className="mb-3">
                                         <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`inline-radio-1`}

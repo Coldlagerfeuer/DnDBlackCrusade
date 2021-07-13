@@ -262,8 +262,8 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
         const dropItems = [<Dropdown.Header key={`aim-header-${weapon.name}`}>Aim Modifier</Dropdown.Header>];
 
         // dropItems.push();
-        for (let i = 60; i > -70; i-= 10) {
-            dropItems.push(<Dropdown.Item key={`${weapon.name}-modifier-${i}`} onClick={() => setTestModifier(i)} >{i}</Dropdown.Item>);
+        for (let i = 60; i > -70; i -= 10) {
+            dropItems.push(<Dropdown.Item key={`${weapon.name}-modifier-${i}`} onClick={() => setTestModifier(i)}>{i}</Dropdown.Item>);
         }
 
         return <Row>
@@ -273,13 +273,15 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                 </DropdownButton>
             </Col>
             <Col>
-                <Button size="sm" variant="light" onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic, testModifier)}>
+                <Button size="sm" variant="light"
+                        onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic, testModifier)}>
                     <BiCrosshair style={{ cursor: "pointer" }}
                     /> Aim
                 </Button>
             </Col>
             <Col>
-                <Button size="sm" variant="light" onClick={() => rollDamageAndSendToDiscord(character.discordServer, character.characterName, weapon)}>
+                <Button size="sm" variant="light"
+                        onClick={() => rollDamageAndSendToDiscord(character.discordServer, character.characterName, weapon)}>
                     <FaDiceD20 color={"darkred"}
                                style={{ cursor: "pointer" }}
                     /> Damage
@@ -310,7 +312,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                     {getRemoveFromArmoury()}
                 </Row>
             </Card.Header>
-            <Card.Body style={{padding: 10}}>
+            <Card.Body style={{ padding: 10 }}>
                 {getRollDice()}
 
             </Card.Body>
@@ -328,7 +330,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                     {getRemoveFromArmoury()}
                 </Row>
             </Card.Header>
-            <Card.Body style={{padding: 5}}>
+            <Card.Body style={{ padding: 5 }}>
                 <Row>
                     {getRangeField()}
                     {getMagazineField()}
