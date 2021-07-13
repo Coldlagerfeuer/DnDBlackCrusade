@@ -8,11 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/character/Rolls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/Rolls.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +76,7 @@
       <recent name="C:\Git\MyProjects\DnDBlackCrusade\dnd-frontend\src\general" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="npm.deploy">
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -134,8 +129,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.start" />
         <item itemvalue="npm.deploy" />
+        <item itemvalue="npm.start" />
         <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
@@ -161,7 +156,7 @@
       <workItem from="1623050384393" duration="69050000" />
       <workItem from="1624259272771" duration="11414000" />
       <workItem from="1624345916073" duration="25305000" />
-      <workItem from="1625149957979" duration="10673000" />
+      <workItem from="1625149957979" duration="11442000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -247,7 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624918674024</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fixed additional Lore Level set">
+      <created>1626197222311</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1626197222311</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,6 +279,7 @@
     <MESSAGE value="Added Charactername, Spells" />
     <MESSAGE value="Added multiple rolls, added lore" />
     <MESSAGE value="Added layout options" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added layout options" />
+    <MESSAGE value="Fixed additional Lore Level set" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed additional Lore Level set" />
   </component>
 </project>
