@@ -14,7 +14,7 @@ export const SkillEntryFunction = ({
     const skills = useAppSelector(state => state.skills);
     const characteristics = useAppSelector(state => state.characteristics);
     const characterName = useAppSelector(state => state.character.characterName);
-    const discordServer = useAppSelector(state => state.character.discordServer);
+    const discordServer = useAppSelector(state => state.character.discord[state.character.discord.active]);
     const dispatch = useAppDispatch();
 
     const [show, setShow] = useState(false);

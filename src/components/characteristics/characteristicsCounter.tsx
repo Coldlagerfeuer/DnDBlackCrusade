@@ -49,7 +49,7 @@ export const CharacteristicsCounter = ({ short = '' }) => {
                         </div>
                     </>
                     : <>
-                        <FaDiceD20 onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic)} color={"darkred"} style={{ cursor: "pointer" }}/>
+                        <FaDiceD20 onClick={() => rollStatAndSendToDiscord(character.discord[character.discord.active], character.characterName, characteristic)} color={"darkred"} style={{ cursor: "pointer" }}/>
 
                         {characteristic.bonus ?
                         <Badge variant={'secondary'}>

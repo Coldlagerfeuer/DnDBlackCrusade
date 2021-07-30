@@ -5,6 +5,7 @@ import { talentSlice } from "../components/talents/talentSlice";
 import { inventorySlice } from "../components/inventory/inventorySlice";
 import { characterSlice } from "../components/character/characterSlice";
 import { armourySlice } from "../components/armoury/armourySlice";
+import { experienceSlice } from "../components/character/experienceSlice";
 
 /**
  * Creates the Redux store and adds the default middlewares from redux toolkit as well as the router middleware
@@ -16,7 +17,8 @@ const store = configureStore({
         skills: skillSlice.reducer,
         talents: talentSlice.reducer,
         inventory: inventorySlice.reducer,
-        armoury: armourySlice.reducer
+        armoury: armourySlice.reducer,
+        experience: experienceSlice.reducer,
     },
     middleware: [...getDefaultMiddleware()],
 });

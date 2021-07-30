@@ -14,12 +14,13 @@ import { TalentView } from "../talents/talentView";
 import { Armoury } from "../armoury/armoury";
 import { IArmour, importArmoury, IWeapon, IWeaponState } from "../armoury/armourySlice";
 import { FileUploadDrop } from "./fileUploadDrop";
-import { changeLayout, setCharacterName, setDiscordServer } from "./characterSlice";
+import { changeLayout, importCharacter, setCharacterName, setDiscordActive, setDiscordServer, setDiscordServerDebug } from "./characterSlice";
 import { rollAndSendToDiscord } from "./Rolls";
 import { FaDiceD20 } from "react-icons/all";
 import { EItemCategory } from "./EItemCategory";
 import { SkillView } from "../skills/skillView";
 import { ETabNames } from "./ETabNames";
+import { ExperienceView } from "./experienceView";
 
 
 export const CharacterFunction = () => {
@@ -27,6 +28,7 @@ export const CharacterFunction = () => {
     const [importState, setImportState] = useState('');
     const [editCharacterName, setEditCharacterName] = useState(false);
     const [editDiscord, setEditDiscord] = useState(false);
+    const [editDiscordDebug, setEditDiscordDebug] = useState(false);
     const [customAmount, setCustomAmount] = useState(1)
     const [customLimit, setCustomLimit] = useState(100)
 
@@ -39,8 +41,13 @@ export const CharacterFunction = () => {
             return;
         }
         const state = JSON.parse(importState) as RootState;
-        dispatch(setCharacterName(state.character.characterName))
-        dispatch(setDiscordServer(state.character.discordServer))
+
+        dispatch(importCharacter(state.character))
+        //
+        // dispatch(setCharacterName(state.character.characterName))
+        // dispatch(setDiscordServer(state.character.discord.prod))
+        // dispatch(setLayout(state.character.layout))
+
         dispatch(importCharacteristics(state.characteristics))
         dispatch(importInventory(state.inventory))
         dispatch(importSkills(state.skills))
@@ -48,7 +55,11 @@ export const CharacterFunction = () => {
         dispatch(importArmoury(state.armoury))
     }
 
-    function getCharacteristicsPane(layout: string) {
+    function getDiscordServer() {
+        return completeState.character.discord[completeState.character.discord.active];
+    }
+
+    function getCharacteristicsPane() {
         return <Jumbotron key={"jumbo-characteristics"}>
             <Container style={{ padding: 0 }}>
                 <Row>
@@ -101,7 +112,7 @@ export const CharacterFunction = () => {
                             </Col>
                             <Col>
                                 <Button
-                                    onClick={() => rollAndSendToDiscord(completeState.character.discordServer, completeState.character.characterName, customAmount, customLimit)}
+                                    onClick={() => rollAndSendToDiscord(getDiscordServer(), completeState.character.characterName, customAmount, customLimit)}
                                     variant={"light"}> Roll <FaDiceD20 color={"darkred"} style={{ cursor: "pointer" }}/>
                                 </Button>
                             </Col>
@@ -114,7 +125,7 @@ export const CharacterFunction = () => {
 
     function getSkillsPane(layout: string) {
         const sidebarSettings = { cols: 1, showSkilledDef: true, showSettings: false }
-        return layout === 'main' ? <SkillView/> : <SkillView {...sidebarSettings} />
+        return layout === 'main' ? <SkillView key={'skillView'}/> : <SkillView key={'skillView'} {...sidebarSettings} />
     }
 
     function getTalentsPane(layout: string) {
@@ -123,24 +134,24 @@ export const CharacterFunction = () => {
         </Jumbotron>
     }
 
-    function getInventoryPane(layout: string) {
+    function getInventoryPane() {
         return <Jumbotron key={"jumbo-inventory"}>
             <Row>
                 <Col>
-                    <h3>Inventory</h3>
+                    <h3>{getNameForTabKey(ETabNames.INVENTORY)}</h3>
                 </Col>
             </Row>
             <InventoryFunction/>
         </Jumbotron>
     }
 
-    function getArmouryPane(layout: string) {
+    function getArmouryPane() {
         return <Jumbotron key={"jumbo-armoury"}>
             <Armoury/>
         </Jumbotron>
     }
 
-    function getSettingsPane(layout: string) {
+    function getSettingsPane() {
 
         function calcNewItems() {
             const result = {
@@ -176,7 +187,7 @@ export const CharacterFunction = () => {
             <Container>
                 <Row>
                     <Col>
-                        <h3>Settings</h3>
+                        <h3>{getNameForTabKey(ETabNames.SETTINGS)}</h3>
                     </Col>
                 </Row>
                 <Row>
@@ -225,23 +236,62 @@ export const CharacterFunction = () => {
                     </Col>
                 </Row>
 
-                <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
-                    {editDiscord ?
-                        <FormControl
-                            onMouseLeave={() => setEditDiscord(false)}
-                            value={completeState.character.discordServer}
-                            onChange={(event => dispatch(setDiscordServer(event.target.value)))}
-                            autoFocus={true}/>
-                        :
-                        <h4
-                            onClick={() => setEditDiscord(true)}
-                        >{completeState.character.discordServer ? completeState.character.discordServer : 'Click to set Discord'}</h4>
-                    }
+                <Row>
+                    <Col md={3}>
+                        <Row>
+                            <Col>
+
+                        <Form.Check label="Prod" name="group1" type={'radio'} id={`discord-inline-radio-1`}
+                                    checked={completeState.character.discord.active === 'prod'}
+                                    onChange={() => dispatch(setDiscordActive('prod'))}
+                        />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                        <Form.Check label="Debug" name="group1" type={'radio'} id={`discord-inline-radio-2`}
+                                    checked={completeState.character.discord.active === 'debug'}
+                                    onChange={() => dispatch(setDiscordActive('debug'))}
+                        />
+
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col md={9}>
+                        <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
+                            {editDiscord ?
+                                <FormControl
+                                    onMouseLeave={() => setEditDiscord(false)}
+                                    value={completeState.character.discord.prod}
+                                    onChange={(event => dispatch(setDiscordServer(event.target.value)))}
+                                    autoFocus={true}/>
+                                :
+                                <h4
+                                    onClick={() => setEditDiscord(true)}
+                                >{completeState.character.discord.prod ? completeState.character.discord.prod : 'Click to set Discord'}</h4>
+                            }
+                        </Row>
+
+                        <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
+                            {editDiscordDebug ?
+                                <FormControl
+                                    onMouseLeave={() => setEditDiscordDebug(false)}
+                                    value={completeState.character.discord.debug}
+                                    onChange={(event => dispatch(setDiscordServerDebug(event.target.value)))}
+                                    autoFocus={true}/>
+                                :
+                                <h4
+                                    onClick={() => setEditDiscordDebug(true)}
+                                >{completeState.character.discord.debug ? completeState.character.discord.debug : 'Click to set Discord - debug'}</h4>
+                            }
+                        </Row>
+                    </Col>
                 </Row>
 
-                {Object.keys(ETabNames).map((value, index) => {
+                {Object.keys(ETabNames)
+                    .flatMap((value, index) => {
                         if (isNaN(Number(value))) {
-                            return <></>;
+                            return [];
                         }
 
                         return <Row key={`layout-${value}`}>
@@ -249,15 +299,15 @@ export const CharacterFunction = () => {
                             <Col xs={9} style={{padding:0}}>
                                 <Form>
                                     <div key={`inline-radio`} className="mb-3">
-                                        <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`inline-radio-1`}
+                                        <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`${value}-inline-radio-1`}
                                                     checked={completeState.character.layout.left.includes(index)}
                                                     onChange={() => dispatch(changeLayout({ field: 'left', index }))}
                                         />
-                                        <Form.Check inline label="Main" name="group1" type={'radio'} id={`inline-radio-2`}
+                                        <Form.Check inline label="Main" name="group1" type={'radio'} id={`${value}-inline-radio-2`}
                                                     checked={completeState.character.layout.main.includes(index)}
                                                     onChange={() => dispatch(changeLayout({ field: 'main', index }))}
                                         />
-                                        <Form.Check inline label="Right Sidebar" type={'radio'} id={`inline-radio-3`}
+                                        <Form.Check inline label="Right Sidebar" type={'radio'} id={`${value}-inline-radio-3`}
                                                     checked={completeState.character.layout.right.includes(index)}
                                                     onChange={() => dispatch(changeLayout({ field: 'right', index }))}
                                         />
@@ -271,40 +321,17 @@ export const CharacterFunction = () => {
         </Jumbotron>
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function getDebugPane() {
-        if (process.env.NODE_ENV === 'development') {
-            return <Jumbotron key={'debugPane'}>
-                {editDiscord ?
-                    <FormControl
-                        onMouseLeave={() => setEditDiscord(false)}
-                        value={completeState.character.discordServer}
-                        onChange={(event => dispatch(setDiscordServer(event.target.value)))}
-                        autoFocus={true}/>
-                    :
-                    <h4
-                        onClick={() => setEditDiscord(true)}
-                    >{completeState.character.discordServer ? completeState.character.discordServer : 'Click to set Discord'}</h4>
-                }
-                {/*<Button onClick={() => sendMessageToDiscord('TEST')}>Send Discord Message</Button>*/}
-            </Jumbotron>
-        }
-        return <div key={'debugPane'}/>;
+
+    function getExperiencePane() {
+        return <Jumbotron key={"jumbo-experience"}>
+            <Row>
+                <Col>
+                    <h3>{getNameForTabKey(ETabNames.EXPERIENCE)}</h3>
+                </Col>
+            </Row>
+            <ExperienceView/>
+        </Jumbotron>;
     }
-
-
-    // const allPanes = [
-    //
-    //     // getDebugPane(),
-    //
-    //     getCharacteristicsPane(),
-    //     getSkillsPane(),
-    //     getTalentsPane(),
-    //     getArmouryPane(),
-    //     getInventoryPane(),
-    //     getSettingsPane(),
-    // ]
-
 
     function getNameForTabKey(key: ETabNames) {
         switch (key) {
@@ -320,6 +347,8 @@ export const CharacterFunction = () => {
                 return 'Inventory';
             case ETabNames.SETTINGS:
                 return 'Settings';
+            case ETabNames.EXPERIENCE:
+                return "Experience"
             default:
                 return `No name for no. ${key}`
         }
@@ -328,17 +357,19 @@ export const CharacterFunction = () => {
     function getTabForKey(key: ETabNames, layout: string) {
         switch (key) {
             case ETabNames.CHARACTERISTICS:
-                return getCharacteristicsPane(layout);
+                return getCharacteristicsPane();
             case ETabNames.SKILLS:
                 return getSkillsPane(layout);
             case ETabNames.TALENTS:
                 return getTalentsPane(layout);
             case ETabNames.ARMOURY:
-                return getArmouryPane(layout);
+                return getArmouryPane();
             case ETabNames.INVENTORY:
-                return getInventoryPane(layout);
+                return getInventoryPane();
             case ETabNames.SETTINGS:
-                return getSettingsPane(layout);
+                return getSettingsPane();
+            case ETabNames.EXPERIENCE:
+                return getExperiencePane();
             default:
                 return <Jumbotron>{`No tab for no. ${key}`}</Jumbotron>
         }

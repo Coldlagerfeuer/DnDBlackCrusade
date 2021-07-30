@@ -1,8 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { EGods } from "../talents/talentSlice";
 
 interface ICharacterState {
     characterName: string,
-    discordServer: string,
+    devotion?: EGods,
+    discord: {
+        active: string,
+        prod: string,
+        debug: string,
+        [key: string]: string,
+    }
     layout: {
         left: number[],
         main: number[],
@@ -15,22 +22,41 @@ export const characterSlice = createSlice({
     name: 'character',
     initialState: {
         characterName: 'Character Name',
-        discordServer: '',
+        discord: {
+            active: 'prod',
+            prod: '',
+            debug: '',
+
+        },
         layout: {
-            left: [1],
-            main: [0, 2, 3, 4, 5],
-            right: []
+            left: [],
+            main: [0, 1, 2, 3, 4, 5],
+            right: [6]
         },
     } as ICharacterState,
     reducers: {
-        importCompleteState: (state, action) => {
-            state = action.payload
+        importCharacter: (state, action) => {
+            const { characterName, discord, layout, devotion } = action.payload
+            state.characterName = characterName;
+            state.discord = discord;
+            state.layout = layout;
+            state.devotion = devotion;
         },
         setCharacterName: (state, action) => {
             state.characterName = action.payload;
         },
         setDiscordServer: (state, action) => {
-            state.discordServer = action.payload
+            state.discord.prod = action.payload
+        },
+        setDiscordServerDebug: (state, action) => {
+            state.discord.debug = action.payload
+        },
+        setDiscordActive: (state, action) => {
+            state.discord.active = action.payload
+        },
+        setLayout: (state, action) => {
+            console.log(action.payload)
+            state.layout = action.payload
         },
         changeLayout: (state, action: PayloadAction<{field: string, index: number}>) => {
             const {field, index} = action.payload;
@@ -46,5 +72,5 @@ export const characterSlice = createSlice({
     },
 });
 
-export const { importCompleteState, setCharacterName, setDiscordServer, changeLayout } = characterSlice.actions
+export const { importCharacter, setCharacterName, setDiscordActive, setDiscordServer, setDiscordServerDebug, setLayout, changeLayout } = characterSlice.actions
 export default characterSlice.reducer

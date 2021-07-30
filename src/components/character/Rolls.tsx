@@ -1,14 +1,15 @@
 import { ISkill } from "../skills/skillSlice";
 import { EDamageType, ISpell, IWeapon } from "../armoury/armourySlice";
 import { ICharacteristics } from "../characteristics/characteristicsSlice";
-import { getHitLocation, reverseNumber } from "../armoury/armoury";
+import { getHitLocation } from "../armoury/armoury";
 
 enum ERollType {
     NONE,
     TEST,
     STAT,
     INIT,
-    DAMAGE
+    DAMAGE,
+    AIM
 }
 
 export interface IRollResult {
@@ -58,7 +59,7 @@ export function rollAndSendToDiscord(discordServer: string, username: string, am
     return rollResult;
 }
 
-export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell): IRollResult {
+export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell): IDamageRoll {
 
     // Damage Calc
     const d = weapon.damage.split("d")
@@ -83,6 +84,15 @@ export function rollInitAndSendToDiscord(discordServer: string, username: string
 
 export function rollStatAndSendToDiscord(discordServer: string, username: string, characteristics: ICharacteristics, modifier: number = 0, amount: number = 1, limit: number = 100): IRollResult {
     const rollResult: IStatRoll = { ...roll(amount, limit), rollType: ERollType.STAT, characteristics, modifier };
+    rollResult.result = rollResult.rollSum < characteristics.value + rollResult.modifier;
+
+    sendMessage(discordServer, `rolled for ${characteristics.name}`, getEmbedsForRollType(rollResult), username);
+
+    return rollResult
+}
+
+export function rollAimAndSendToDiscord(discordServer: string, username: string, characteristics: ICharacteristics, modifier: number = 0, amount: number = 1, limit: number = 100): IStatRoll {
+    const rollResult: IStatRoll = { ...roll(amount, limit), rollType: ERollType.AIM, characteristics, modifier };
     rollResult.result = rollResult.rollSum < characteristics.value + rollResult.modifier;
 
     sendMessage(discordServer, `rolled for ${characteristics.name}`, getEmbedsForRollType(rollResult), username);
@@ -163,11 +173,30 @@ function getEmbedsForRollType(roll: IRollResult) {
                 ]
             }]
         }
+        case ERollType.AIM: {
+            const rollResult = roll as IStatRoll
+            const r = rollResult.result ? '>' : '<';
+            return [{
+                color: rollResult.result ? colorCodeGreen : colorCodeRed,
+                fields: [
+                    { name: "Roll", value: `${rollResult.amount}d${ rollResult.limit }`, inline: true },
+                    { name: "Sum", value: `${rollResult.rollSum}`, inline: true },
+                    { name: "Stat", value: `${rollResult.characteristics.value} ${rollResult.modifier < 0 ? rollResult.modifier : `+${rollResult.modifier}`}`, inline: true },
+                    { name: "**Result**",value: `${rollResult.characteristics.value + rollResult.modifier} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}` },
+                    { name: "Hit Location", value: `${getHitLocation(rollResult.rollSum)}` },
+                ]
+            }]
+        }
     }
 }
 
 
 function sendMessage(discord: string, message: string, embeds: any, username?: string) {
+    console.log(JSON.stringify({
+        username: username,
+        content: message,
+        embeds: embeds
+    }));
     fetch(discord,
         {
             method: 'POST',

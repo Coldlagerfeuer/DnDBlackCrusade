@@ -1,15 +1,5 @@
-import {
-    Button,
-    Col,
-    Container,
-    Dropdown,
-    DropdownButton,
-    FormControl,
-    InputGroup,
-    ListGroup,
-    Row
-} from "react-bootstrap";
-import { addTalent, ITalent, ITalentState, removeTalent } from "./talentSlice";
+import { Button, Col, Container, Dropdown, DropdownButton, FormControl, InputGroup, ListGroup, Row } from "react-bootstrap";
+import { addTalent, devotionMap, EGods, expMap, ITalent, ITalentState, removeTalent } from "./talentSlice";
 import { Pencil, PlusCircle, Trash } from "react-bootstrap-icons";
 import React, { useState } from "react";
 import { TalentEntryFunction } from "./talentEntry";
@@ -17,8 +7,10 @@ import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { allTalents } from "../character/resources";
 
+
 export const TalentView = ({ sidebar = false }) => {
     const talents = useAppSelector(state => state.talents);
+    const devotion = useAppSelector(state => state.character.devotion)
     const dispatch = useAppDispatch()
 
     const [activeTalent, setActiveTalent] = useState({ name: '', description: '', tier: 0 } as ITalent);
@@ -97,6 +89,9 @@ export const TalentView = ({ sidebar = false }) => {
                         {activeTalent.prerequisites?.split(",").map((prerequisit: string) =>
                             <ListGroup.Item key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
                         )}
+                        {activeTalent.tier !== 0 ? <ListGroup.Item>Needed Exp: {calcNeededExp(activeTalent, devotion)} </ListGroup.Item>
+                            : <></> // => Traits do not have exp
+                        }
                     </ListGroup>
                     Alignment: {activeTalent.devotion}
                 </Col>
@@ -117,8 +112,17 @@ export const TalentView = ({ sidebar = false }) => {
     )
 }
 
+
+function calcNeededExp(activeTalent: ITalent, devotion?: EGods): number {
+    const characterDevotion = devotion ? devotion : EGods.UNALIGNED;
+    const talentDevotion = activeTalent.devotion ? activeTalent.devotion : EGods.UNALIGNED;
+
+    return expMap[activeTalent.tier - 1][devotionMap[talentDevotion][characterDevotion]];
+}
+
 function createSimpleTalent(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {
-    return <Row>{Object.keys(talents).map(value => <TalentEntryFunction {...talents[value]} setActiveTalent={setNewTalent}/>)}</Row>
+    return <Row>{Object.keys(talents).map(value => <TalentEntryFunction key={`talent-entry-${value}`} {...talents[value]}
+                                                                        setActiveTalent={setNewTalent}/>)}</Row>
 }
 
 function createTalentObject(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {

@@ -1,8 +1,9 @@
 import {
+    Alert,
     Badge,
     Button,
     Card,
-    Col,
+    Col, Container,
     Dropdown, DropdownButton,
     FormControl,
     InputGroup,
@@ -29,7 +30,15 @@ import './weaponCard.scss';
 import { EWeaponCategory, EDamageType, IWeapon, removeWeapon } from "./armourySlice";
 import { addItem, editWeapon, changeWeaponName } from "../inventory/inventorySlice";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { rollDamageAndSendToDiscord, rollStatAndSendToDiscord } from "../character/Rolls";
+import {
+    IDamageRoll,
+    IRollResult,
+    IStatRoll,
+    rollAimAndSendToDiscord,
+    rollDamageAndSendToDiscord,
+    rollStatAndSendToDiscord
+} from "../character/Rolls";
+import { getHitLocation } from "./armoury";
 
 
 export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, editMode?: boolean }) => {
@@ -39,6 +48,10 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
     const character = useAppSelector(state => state.character);
     const characteristics = useAppSelector(state => state.characteristics);
     const [testModifier, setTestModifier] = useState(10);
+
+    const [show, setShow] = useState(false);
+    const [text, setText] = useState('');
+    const [variant, setVariant] = useState('success');
 
     const dispatch = useAppDispatch();
 
@@ -274,20 +287,38 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             </Col>
             <Col>
                 <Button size="sm" variant="light"
-                        onClick={() => rollStatAndSendToDiscord(character.discordServer, character.characterName, characteristic, testModifier)}>
+                        onClick={() => showAimAlert(rollAimAndSendToDiscord(character.discord[character.discord.active], character.characterName, characteristic, testModifier))}
+                >
                     <BiCrosshair style={{ cursor: "pointer" }}
                     /> Aim
                 </Button>
             </Col>
             <Col>
                 <Button size="sm" variant="light"
-                        onClick={() => rollDamageAndSendToDiscord(character.discordServer, character.characterName, weapon)}>
+                        onClick={() => showDamageAlert(rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, weapon))}
+                >
                     <FaDiceD20 color={"darkred"}
                                style={{ cursor: "pointer" }}
                     /> Damage
                 </Button>
             </Col>
         </Row>;
+    }
+
+    function showAimAlert(rollResult: IStatRoll) {
+        setVariant(rollResult.result ? 'success' : 'danger');
+        setShow(true);
+        setTimeout(() => setShow(false), 15000)
+        setText(`Stat ${rollResult.characteristics.value + rollResult.modifier} Rolled ${rollResult.rollSum} = Test ${rollResult.result ? 'success' : 'failed'} 
+        ${getHitLocation(rollResult.rollSum)}`)
+    }
+
+    function showDamageAlert(rollResult: IDamageRoll) {
+        setShow(false);
+        setShow(true);
+        setVariant('info')
+        setTimeout(() => setShow(false), 15000)
+        setText(`Damage: ${rollResult.rollSum + rollResult.damage} - Pen: ${rollResult.pen} - Rolls: ${JSON.stringify(rollResult.rolls)}`)
     }
 
     function isMeeleWeapon() {
@@ -314,7 +345,9 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             </Card.Header>
             <Card.Body style={{ padding: 10 }}>
                 {getRollDice()}
-
+                <Alert onClose={() => setShow(false)} show={show} variant={variant}>
+                    {text}
+                </Alert>
             </Card.Body>
         </Card>;
     }
@@ -336,6 +369,9 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
                     {getMagazineField()}
                 </Row>
                 {getRollDice()}
+                <Alert onClose={() => setShow(false)} show={show} variant={variant}>
+                    {text}
+                </Alert>
             </Card.Body>
         </Card>;
     }

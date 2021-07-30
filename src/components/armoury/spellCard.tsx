@@ -35,7 +35,7 @@ export const SpellCard = ({ spell }: { spell: ISpell }) => {
 
             <Col>
                 <Button size="sm" variant="light"
-                        onClick={() => rollDamageAndSendToDiscord(character.discordServer, character.characterName, spell)}>
+                        onClick={() => rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, spell)}>
                     <FaDiceD20 color={"darkred"}
                                style={{ cursor: "pointer" }}
                     /> Damage

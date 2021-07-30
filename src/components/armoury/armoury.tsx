@@ -9,6 +9,7 @@ import { SpellCard } from "./spellCard";
 import { BiTargetLock, FaDiceD20 } from "react-icons/all";
 import { rollInitAndSendToDiscord } from "../character/Rolls";
 import { EItemCategory } from "../character/EItemCategory";
+import { EGods } from "../talents/talentSlice";
 
 export const Armoury = () => {
 
@@ -102,7 +103,7 @@ export const Armoury = () => {
                                 </Row>
                                 <Row>
                                     <Button
-                                        onClick={() => rollInitAndSendToDiscord(character.discordServer, character.characterName, agility, 1, 10)}
+                                        onClick={() => rollInitAndSendToDiscord(character.discord[character.discord.active], character.characterName, agility, 1, 10)}
                                         variant={"light"}><FaDiceD20 color={"darkred"} style={{ cursor: "pointer" }}/> Init
                                     </Button>
                                     <DropdownButton size="sm" title={agilityBonus} variant={'secondary'}>
@@ -224,6 +225,12 @@ export const Armoury = () => {
                                    onClick={() => setFatigue(Math.min(fatigue + 1, maxFatigue))}>+</Badge>
                         </div>
                     </Col>
+                </Row>
+
+                {/* OTHER MODIFIER */}
+                <Row>
+                    <Col md={2}>Devotion:</Col>
+                    <Col md={2}><Badge pill style={{backgroundColor: 'brown', color: 'white'}} >{character.devotion ? character.devotion : EGods.UNALIGNED}</Badge></Col>
                 </Row>
 
             </Col>

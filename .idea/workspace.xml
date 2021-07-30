@@ -5,10 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="808a4b29-ea26-4b7c-9d87-271f6fcdbaa2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/character/experienceSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/character/experienceView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/spellCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/weaponCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/ETabNames.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/ETabNames.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/Rolls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/Rolls.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/characterSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/characterSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/characteristics/characteristicsCounter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/characteristics/characteristicsCounter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/general/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/general/store.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +69,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.TypeScript" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="ts.external.directory.path" value="C:\Git\MyProjects\DnDBlackCrusade\dnd-frontend\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
@@ -76,20 +87,7 @@
       <recent name="C:\Git\MyProjects\DnDBlackCrusade\dnd-frontend\src\general" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.deploy">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="npm.start">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -129,8 +127,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.deploy" />
         <item itemvalue="npm.build" />
       </list>
     </recent_temporary>
@@ -156,7 +154,9 @@
       <workItem from="1623050384393" duration="69050000" />
       <workItem from="1624259272771" duration="11414000" />
       <workItem from="1624345916073" duration="25305000" />
-      <workItem from="1625149957979" duration="11442000" />
+      <workItem from="1625149957979" duration="13542000" />
+      <workItem from="1626247793116" duration="12979000" />
+      <workItem from="1626787429001" duration="22752000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -249,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626197222311</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Fixed additional Lore Bonus set">
+      <created>1626197993182</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1626197993182</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +287,18 @@
     <MESSAGE value="Added multiple rolls, added lore" />
     <MESSAGE value="Added layout options" />
     <MESSAGE value="Fixed additional Lore Level set" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed additional Lore Level set" />
+    <MESSAGE value="Fixed additional Lore Bonus set" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed additional Lore Bonus set" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/character/experienceView.tsx</url>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

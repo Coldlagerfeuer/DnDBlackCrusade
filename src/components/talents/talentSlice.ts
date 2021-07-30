@@ -19,12 +19,74 @@ export enum EGods {
     SPECIAL = "Special"
 }
 
+/**
+Tier 1 Talente (T:200xp/A:250xp/O:500xp)
+Tier 2 Talents (T:300xp/A:500xp/O:750xp)
+Tier 3 Talents (T:400xp/A:750xp/O:1000xp)
+ */
+export const expMap = [
+    [200, 250, 500],
+    [300, 500, 750],
+    [400, 750, 1000]
+];
+
+export const devotionMap = {
+    [EGods.UNALIGNED]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 1,
+        [EGods.NURGLE]: 1,
+        [EGods.TZEENTCH]: 1,
+        [EGods.SLAANESH]: 1,
+    },
+    [EGods.KHORNE]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 0,
+        [EGods.NURGLE]: 1,
+        [EGods.TZEENTCH]: 2,
+        [EGods.SLAANESH]: 2,
+    },
+    [EGods.NURGLE]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 1,
+        [EGods.NURGLE]: 0,
+        [EGods.TZEENTCH]: 2,
+        [EGods.SLAANESH]: 2,
+    },
+    [EGods.TZEENTCH]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 2,
+        [EGods.NURGLE]: 2,
+        [EGods.TZEENTCH]: 0,
+        [EGods.SLAANESH]: 1,
+    },
+    [EGods.SLAANESH]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 2,
+        [EGods.NURGLE]: 2,
+        [EGods.TZEENTCH]: 1,
+        [EGods.SLAANESH]: 0,
+    },
+    [EGods.SPECIAL]: {
+        [EGods.UNALIGNED]: 1,
+        [EGods.SPECIAL]: 1,
+        [EGods.KHORNE]: 1,
+        [EGods.NURGLE]: 1,
+        [EGods.TZEENTCH]: 1,
+        [EGods.SLAANESH]: 1,
+    }
+};
+
 export interface ITalentState {
     [name: string]: ITalent
 }
 
 export const talentsInitialState = {
-    'Total Recall': { name: "Total Recall", tier: 1, prerequisites: "-", description: "The character can automatically remember trivial facts or pieces of information the character might feasibly have picked up in the past. When dealing with more detailed, complex or obscure facts, such as the exact layout of a defence network, the GM may require a successful Intelligence Test to recall the information." },
+    'Total Recall': { name: "Total Recall", tier: 1, devotion: EGods.UNALIGNED, prerequisites: "-", description: "The character can automatically remember trivial facts or pieces of information the character might feasibly have picked up in the past. When dealing with more detailed, complex or obscure facts, such as the exact layout of a defence network, the GM may require a successful Intelligence Test to recall the information." },
 } as ITalentState
 
 export const talentSlice = createSlice({
