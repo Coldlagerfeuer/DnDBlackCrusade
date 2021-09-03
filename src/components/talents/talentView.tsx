@@ -16,9 +16,8 @@ export const TalentView = ({ sidebar = false }) => {
     const [activeTalent, setActiveTalent] = useState({ name: '', description: '', tier: 0 } as ITalent);
 
     const talentOptions: any[] = [];
-    for (const talent in allTalents) {
-        talentOptions.push(talent);
-    }
+
+    Object.keys(allTalents).forEach(value => talentOptions.push(value));
 
     function getEditFields() {
         return (<div>
@@ -89,8 +88,8 @@ export const TalentView = ({ sidebar = false }) => {
                         {activeTalent.prerequisites?.split(",").map((prerequisit: string) =>
                             <ListGroup.Item key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
                         )}
-                        {activeTalent.tier !== 0 ? <ListGroup.Item>Needed Exp: {calcNeededExp(activeTalent, devotion)} </ListGroup.Item>
-                            : <></> // => Traits do not have exp
+                        {activeTalent.tier > 0 ? <ListGroup.Item>Needed Exp: {calcNeededExp(activeTalent, devotion)} </ListGroup.Item>
+                            : <></> // => Traits and Gifts do not have exp
                         }
                     </ListGroup>
                     Alignment: {activeTalent.devotion}

@@ -21,6 +21,7 @@ import { EItemCategory } from "./EItemCategory";
 import { SkillView } from "../skills/skillView";
 import { ETabNames } from "./ETabNames";
 import { ExperienceView } from "./experienceView";
+import { SearchView } from "../search/searchView";
 
 
 export const CharacterFunction = () => {
@@ -43,10 +44,6 @@ export const CharacterFunction = () => {
         const state = JSON.parse(importState) as RootState;
 
         dispatch(importCharacter(state.character))
-        //
-        // dispatch(setCharacterName(state.character.characterName))
-        // dispatch(setDiscordServer(state.character.discord.prod))
-        // dispatch(setLayout(state.character.layout))
 
         dispatch(importCharacteristics(state.characteristics))
         dispatch(importInventory(state.inventory))
@@ -118,6 +115,9 @@ export const CharacterFunction = () => {
                             </Col>
                         </Form.Row>
                     </Form>
+                </Row>
+                <Row>
+                    <SearchView />
                 </Row>
             </Container>
         </Jumbotron>

@@ -4,7 +4,6 @@ import { GiCrossMark } from "react-icons/all";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { addEntry, IExpEntry, removeEntry } from "./experienceSlice";
 import { PlusCircle } from "react-bootstrap-icons";
-import { EGods, ITalent } from "../talents/talentSlice";
 
 
 export const ExperienceView = () => {

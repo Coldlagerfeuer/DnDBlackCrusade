@@ -1,15 +1,30 @@
 import { WeaponCard } from "./weaponCard";
-import { Badge, Button, Card, Col, Dropdown, DropdownButton, FormControl, FormGroup, FormLabel, ProgressBar, Row } from "react-bootstrap";
+import {
+    Badge,
+    Button,
+    Card,
+    Col,
+    Dropdown,
+    DropdownButton,
+    FormControl,
+    FormGroup,
+    FormLabel,
+    OverlayTrigger,
+    ProgressBar,
+    Row, Tooltip
+} from "react-bootstrap";
 import React, { useState } from "react";
 import "./armoury.scss";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { addItem } from "../inventory/inventorySlice";
 import { ISpell, IWeapon, removeGear, setMaxWounds, setWounds } from "./armourySlice";
 import { SpellCard } from "./spellCard";
-import { BiTargetLock, FaDiceD20 } from "react-icons/all";
+import { BiTargetLock, FaDiceD20, IoReloadCircle } from "react-icons/all";
 import { rollInitAndSendToDiscord } from "../character/Rolls";
 import { EItemCategory } from "../character/EItemCategory";
 import { EGods } from "../talents/talentSlice";
+import { setDevotion } from "../character/characterSlice";
+import { TalentEntryFunction } from "../talents/talentEntry";
 
 export const Armoury = () => {
 
@@ -25,6 +40,7 @@ export const Armoury = () => {
     const agilityStat = useAppSelector(state => state.characteristics["AG"]);
     const armouryState = useAppSelector(state => state.armoury);
     const character = useAppSelector(state => state.character);
+    const talents = useAppSelector(state => state.talents)
     const dispatch = useAppDispatch()
 
     const [agilityBonus, setAgilityBonus] = useState(2);
@@ -50,6 +66,39 @@ export const Armoury = () => {
     const dropItems = [<Dropdown.Header key={`init-modifier-header`}>Init Modifier</Dropdown.Header>];
     for (let i = 10; i > -10; i -= 1) {
         dropItems.push(<Dropdown.Item key={`init-modifier-${i}`} onClick={() => setAgilityBonus(i)}>{i}</Dropdown.Item>);
+    }
+
+    function resetDevotion() {
+        const h = Object.entries(calcDevotion())
+            .filter(value => value[0] !== "Unaligned")
+            .sort((a, b) =>  b[1] - a[1])
+        ;
+
+        // If the highest devotion is 5 greater than the second the character is aligned
+        if (h[0][1] - h[1][1] >= 5) {
+            dispatch(setDevotion(h[0][0]))
+            if (h[0][1] > 20) {
+                // Todo add Mark of God
+            }
+        } else {
+            dispatch(setDevotion("Unaligned"))
+            // Todo remove mark of god
+        }
+    }
+
+    function calcDevotion() {
+        const counts = {
+            [EGods.UNALIGNED]: 0,
+            [EGods.SPECIAL]: 0,
+            [EGods.KHORNE]: 0,
+            [EGods.SLAANESH]: 0,
+            [EGods.TZEENTCH]: 0,
+            [EGods.NURGLE]: 0,
+        }
+        Object.values(talents).flatMap(t => t.devotion)
+            .filter((v => v))
+            .forEach(value => counts[value]++);
+        return counts;
     }
 
     return <div>
@@ -99,7 +148,8 @@ export const Armoury = () => {
                         <Row>
                             <Col>
                                 <Row>
-                                    <Button variant={showTarget ? "primary" : "secondary"} onClick={() => setShowTarget(!showTarget)}><BiTargetLock/> </Button>
+                                    <Button variant={showTarget ? "primary" : "secondary"} onClick={() => setShowTarget(!showTarget)}><BiTargetLock/>
+                                    </Button>
                                 </Row>
                                 <Row>
                                     <Button
@@ -227,10 +277,56 @@ export const Armoury = () => {
                     </Col>
                 </Row>
 
-                {/* OTHER MODIFIER */}
+                {/* DEVOTION */}
                 <Row>
                     <Col md={2}>Devotion:</Col>
-                    <Col md={2}><Badge pill style={{backgroundColor: 'brown', color: 'white'}} >{character.devotion ? character.devotion : EGods.UNALIGNED}</Badge></Col>
+                    <Col md={2}>
+                        <OverlayTrigger
+                            overlay={
+                                <Tooltip id={`remove`}>
+                                    {JSON.stringify(Object.entries(calcDevotion()))}
+                                </Tooltip>
+                            }>
+                        <Badge pill style={{
+                        backgroundColor: 'brown',
+                        color: 'white'
+                    }}>{character.devotion ? character.devotion : EGods.UNALIGNED}</Badge>
+                        </OverlayTrigger>
+                    </Col>
+                    <Col md={2}><IoReloadCircle color={'green'} onClick={() => resetDevotion()}/> </Col>
+                </Row>
+
+                {/* MOVEMENT */}
+                <Row>
+                    <Col md={2}>Movement:</Col>
+                    <Col md={5}>
+                        <Row>
+                            <Col>HALF ({agilityStat.value / 10 + agilityStat.bonus}) </Col>
+                        </Row>
+                        <Row>
+                            <Col>FULL ({(agilityStat.value / 10 + agilityStat.bonus) * 2}) </Col>
+                        </Row>
+                    </Col>
+                    <Col md={5}>
+                        <Row>
+                            <Col>CHARGE ({(agilityStat.value / 10 + agilityStat.bonus) * 3}) </Col>
+                        </Row>
+                        <Row>
+                            <Col>RUN ({(agilityStat.value / 10 + agilityStat.bonus) * 4}) </Col>
+                        </Row>
+                    </Col>
+                </Row>
+
+                {/* Gift of the Gods */}
+                <Row>
+                    <Col>
+                        Gift of the Gods
+                    </Col>
+                </Row>
+                <Row>
+                    {Object.values(talents).filter(value => value.tier < 0)
+                        .map(value => <TalentEntryFunction key={`talent-entry-${value}`} {...value} setActiveTalent={() => null}/>)
+                    }
                 </Row>
 
             </Col>

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EGods } from "../talents/talentSlice";
+import { EGods, godStringMap } from "../talents/talentSlice";
 
 interface ICharacterState {
     characterName: string,
@@ -54,6 +54,9 @@ export const characterSlice = createSlice({
         setDiscordActive: (state, action) => {
             state.discord.active = action.payload
         },
+        setDevotion: (state, action: PayloadAction<string>) => {
+            state.devotion = godStringMap[action.payload]
+        },
         setLayout: (state, action) => {
             console.log(action.payload)
             state.layout = action.payload
@@ -72,5 +75,5 @@ export const characterSlice = createSlice({
     },
 });
 
-export const { importCharacter, setCharacterName, setDiscordActive, setDiscordServer, setDiscordServerDebug, setLayout, changeLayout } = characterSlice.actions
+export const { importCharacter, setCharacterName, setDiscordActive, setDiscordServer, setDiscordServerDebug, setDevotion, setLayout, changeLayout } = characterSlice.actions
 export default characterSlice.reducer

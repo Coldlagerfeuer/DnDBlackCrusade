@@ -5,7 +5,7 @@ export interface ITalent {
     name: string,
     tier: number,
     prerequisites?: string,
-    devotion?: EGods,
+    devotion: EGods,
     description?: string,
     specialization?: string
 }
@@ -16,8 +16,27 @@ export enum EGods {
     SLAANESH = "Slaanesh",
     TZEENTCH = "Tzeentch",
     UNALIGNED = "Unaligned",
-    SPECIAL = "Special"
+    SPECIAL = "Special",
 }
+
+export interface IGodMap {
+    "Khorne": EGods.KHORNE,
+    "Nurgle": EGods.NURGLE,
+    "Slaanesh": EGods.SLAANESH,
+    "Tzeentch": EGods.TZEENTCH,
+    "Unaligned": EGods.UNALIGNED,
+    "Special": EGods.SPECIAL,
+    [idx: string]: EGods
+}
+
+export const godStringMap =  {
+    "Khorne": EGods.KHORNE,
+    "Nurgle": EGods.NURGLE,
+    "Slaanesh": EGods.SLAANESH,
+    "Tzeentch": EGods.TZEENTCH,
+    "Unaligned": EGods.UNALIGNED,
+    "Special": EGods.SPECIAL,
+} as IGodMap
 
 /**
 Tier 1 Talente (T:200xp/A:250xp/O:500xp)
