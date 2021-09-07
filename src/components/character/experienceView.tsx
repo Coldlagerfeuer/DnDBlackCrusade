@@ -1,9 +1,10 @@
 import { Button, FormControl, InputGroup, OverlayTrigger, Row, Table, Tooltip } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { CSSProperties, useState } from "react";
 import { GiCrossMark } from "react-icons/all";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { addEntry, IExpEntry, removeEntry } from "./experienceSlice";
 import { PlusCircle } from "react-bootstrap-icons";
+import { EGods } from "../talents/talentSlice";
 
 
 export const ExperienceView = () => {
@@ -11,10 +12,20 @@ export const ExperienceView = () => {
     const dispatch = useAppDispatch();
 
     const [newEntry, setNewEntry] = useState({} as IExpEntry);
-    const [expSum, setExpSum] = useState(0);
+    // const [expSum, setExpSum] = useState(0);
 
     function calcExpSum(index: number, array: IExpEntry[]) {
         return array.slice(0, index + 1).reduce((sum, { amount }) => sum + amount, 0);
+    }
+
+    function getStyleForDevotion(devotion: EGods): CSSProperties {
+        switch (devotion) {
+            case EGods.NURGLE: return {backgroundColor: "brown", color: "white"}
+            case EGods.KHORNE: return {backgroundColor: "red"}
+            case EGods.SLAANESH: return {backgroundColor: "pink"}
+            case EGods.TZEENTCH: return {backgroundColor: "lightskyblue"}
+            default: return {backgroundColor: "white"}
+        }
     }
 
     return <Row>
@@ -32,7 +43,7 @@ export const ExperienceView = () => {
 
             {experience.entries.map((value, index, array) =>
                 <tr key={`tr-${index}-${value.description}`}>
-                    <td>{index}</td>
+                    <td style={getStyleForDevotion(value.devotion)}>{index}</td>
                     <td>{value.description}</td>
                     <td>{value.amount}</td>
                     <td>{calcExpSum(index, array)}</td>
@@ -48,12 +59,16 @@ export const ExperienceView = () => {
                     </td>
                 </tr>
             )}
+            <tr>
+                <td colSpan={2}><b>Remaining</b></td>
+                <td colSpan={2}><b>{experience.expSum}</b></td>
+            </tr>
 
             </tbody>
         </Table>
         <InputGroup>
             <FormControl
-                placeholder={"Name"}
+                placeholder={"Comment"}
                 value={newEntry.description ? newEntry.description : ""}
                 size={"lg"}
                 onChange={(event => setNewEntry({

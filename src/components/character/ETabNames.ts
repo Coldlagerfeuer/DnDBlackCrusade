@@ -5,5 +5,6 @@ export enum ETabNames {
     ARMOURY,
     INVENTORY,
     SETTINGS,
-    EXPERIENCE
+    EXPERIENCE,
+    SEARCH
 }

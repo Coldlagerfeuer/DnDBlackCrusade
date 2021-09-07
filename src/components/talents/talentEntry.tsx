@@ -13,6 +13,15 @@ export const TalentEntryFunction = ({
 
     const talent = talents[name];
 
+    function getTierDescription(tier: number) {
+        switch (tier) {
+            case -2: return "Reward";
+            case -1: return "Gift";
+            case 0: return "Trait";
+            default: return `T${tier}`;
+        }
+    }
+
     return <OverlayTrigger
         key={`talent-${talent.name}`}
         placement={'bottom'}
@@ -23,11 +32,13 @@ export const TalentEntryFunction = ({
         }
     >
         <div onClick={() => setActiveTalent(talent)}>
-            {talent.tier === 0
-                ? <Badge>{`Trait ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>
-                : talent.tier === -1 ? <Badge>{`Gift ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>
-                    : <Badge>{`T${talent.tier} ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>
-            }
+            <Badge>{`${getTierDescription(talent.tier)} ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>
+
+            {/*{talent.tier === 0*/}
+            {/*    ? <Badge>{`Trait ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>*/}
+            {/*    : talent.tier === -1 ? <Badge>{`Gift ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>*/}
+            {/*        : <Badge>{`T${talent.tier} ${talent.name}${talent.specialization ? ` (${talent.specialization})` : ''}`}</Badge>*/}
+            {/*}*/}
         </div>
     </OverlayTrigger>
 

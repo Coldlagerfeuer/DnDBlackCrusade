@@ -6,11 +6,13 @@ import { TalentEntryFunction } from "./talentEntry";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { allTalents } from "../character/resources";
+import { addEntry } from "../character/experienceSlice";
 
 
 export const TalentView = ({ sidebar = false }) => {
     const talents = useAppSelector(state => state.talents);
     const devotion = useAppSelector(state => state.character.devotion)
+    const remainingExp = useAppSelector(state => state.experience.expSum)
     const dispatch = useAppDispatch()
 
     const [activeTalent, setActiveTalent] = useState({ name: '', description: '', tier: 0 } as ITalent);
@@ -20,6 +22,10 @@ export const TalentView = ({ sidebar = false }) => {
     Object.keys(allTalents).forEach(value => talentOptions.push(value));
 
     function getEditFields() {
+        function hasPrerequisite(prerequisit: string) {
+            return !!talents[prerequisit];
+        }
+
         return (<div>
             <Row>
                 {createTalentObject(talents, setActiveTalent)}
@@ -29,7 +35,15 @@ export const TalentView = ({ sidebar = false }) => {
                     <InputGroup className="mb-3">
                         <InputGroup.Prepend>
                             <Button
-                                onClick={() => dispatch(addTalent(activeTalent))}
+                                onClick={() => {
+                                    dispatch(addTalent(activeTalent));
+                                    dispatch(addEntry({
+                                        devotion: activeTalent.devotion,
+                                        type: "TALENT",
+                                        amount: -calcNeededExp(activeTalent, devotion),
+                                        description: activeTalent.name
+                                    }))
+                                }}
                                 variant="outline-primary">
                                 {talents[activeTalent.name] ? <Pencil/> : <PlusCircle/>}
                             </Button>
@@ -42,9 +56,11 @@ export const TalentView = ({ sidebar = false }) => {
                             size={"large"}
                             onInputChange={(name) => setActiveTalent({ ...activeTalent, name: name })}
                             onChange={(selection) => setActiveTalent({
-                                ...activeTalent, ...allTalents[selection[0]?.toString()],
-                                name: selection[0]?.toString()
-                            })}
+                                // ...activeTalent,
+                                ...allTalents[selection[0]?.toString()],
+                                name: selection[0]?.toString(),
+                            })
+                            }
                             selected={allTalents[activeTalent.name] ? [activeTalent.name] : []}
                         />
                         <FormControl placeholder={"Specialization or count"}
@@ -86,9 +102,12 @@ export const TalentView = ({ sidebar = false }) => {
                     Prerequisites to Skill
                     <ListGroup>
                         {activeTalent.prerequisites?.split(",").map((prerequisit: string) =>
-                            <ListGroup.Item key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
+                            <ListGroup.Item style={{ backgroundColor: hasPrerequisite(prerequisit) ? "white" : "orangered" }}
+                                            key={`prerequisit-${prerequisit}`}>{prerequisit}</ListGroup.Item>
                         )}
-                        {activeTalent.tier > 0 ? <ListGroup.Item>Needed Exp: {calcNeededExp(activeTalent, devotion)} </ListGroup.Item>
+                        {activeTalent.tier > 0 ? <ListGroup.Item
+                                style={{ backgroundColor: remainingExp > calcNeededExp(activeTalent, devotion) ? "white" : "orangered" }}> Needed
+                                Exp: {calcNeededExp(activeTalent, devotion)} </ListGroup.Item>
                             : <></> // => Traits and Gifts do not have exp
                         }
                     </ListGroup>

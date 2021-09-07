@@ -22,6 +22,7 @@ import { SkillView } from "../skills/skillView";
 import { ETabNames } from "./ETabNames";
 import { ExperienceView } from "./experienceView";
 import { SearchView } from "../search/searchView";
+import { importExperience } from "./experienceSlice";
 
 
 export const CharacterFunction = () => {
@@ -50,6 +51,7 @@ export const CharacterFunction = () => {
         dispatch(importSkills(state.skills))
         dispatch(importTalents(state.talents))
         dispatch(importArmoury(state.armoury))
+        dispatch(importExperience(state.experience))
     }
 
     function getDiscordServer() {
@@ -115,9 +117,6 @@ export const CharacterFunction = () => {
                             </Col>
                         </Form.Row>
                     </Form>
-                </Row>
-                <Row>
-                    <SearchView />
                 </Row>
             </Container>
         </Jumbotron>
@@ -333,6 +332,16 @@ export const CharacterFunction = () => {
         </Jumbotron>;
     }
 
+    function getSearchPane() {
+        return <Jumbotron key={"jumbo-search"}>
+            <Row>
+                <Col>
+                    <SearchView />
+                </Col>
+            </Row>
+        </Jumbotron>
+    }
+
     function getNameForTabKey(key: ETabNames) {
         switch (key) {
             case ETabNames.CHARACTERISTICS:
@@ -349,6 +358,8 @@ export const CharacterFunction = () => {
                 return 'Settings';
             case ETabNames.EXPERIENCE:
                 return "Experience"
+            case ETabNames.SEARCH:
+                return "Search"
             default:
                 return `No name for no. ${key}`
         }
@@ -370,6 +381,8 @@ export const CharacterFunction = () => {
                 return getSettingsPane();
             case ETabNames.EXPERIENCE:
                 return getExperiencePane();
+            case ETabNames.SEARCH:
+                return getSearchPane();
             default:
                 return <Jumbotron>{`No tab for no. ${key}`}</Jumbotron>
         }

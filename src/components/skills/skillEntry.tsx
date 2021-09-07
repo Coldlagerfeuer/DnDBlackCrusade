@@ -109,7 +109,7 @@ export const SkillEntryFunction = ({
 
     return <Container style={{ padding: 0 }}>
         {showSkilled ? getSkilledRow() : getEditRow()}
-        <Alert onClose={() => setShow(false)} show={show} variant={variant}>
+        <Alert dismissible onClose={() => setShow(false)} show={show} variant={variant}>
             {text}
         </Alert>
     </Container>

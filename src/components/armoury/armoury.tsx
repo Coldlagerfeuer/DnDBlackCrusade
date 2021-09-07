@@ -11,7 +11,8 @@ import {
     FormLabel,
     OverlayTrigger,
     ProgressBar,
-    Row, Tooltip
+    Row,
+    Tooltip
 } from "react-bootstrap";
 import React, { useState } from "react";
 import "./armoury.scss";
@@ -22,9 +23,10 @@ import { SpellCard } from "./spellCard";
 import { BiTargetLock, FaDiceD20, IoReloadCircle } from "react-icons/all";
 import { rollInitAndSendToDiscord } from "../character/Rolls";
 import { EItemCategory } from "../character/EItemCategory";
-import { EGods } from "../talents/talentSlice";
+import { addTalent, EGods } from "../talents/talentSlice";
 import { setDevotion } from "../character/characterSlice";
 import { TalentEntryFunction } from "../talents/talentEntry";
+import { allTalents } from "../character/resources";
 
 export const Armoury = () => {
 
@@ -41,6 +43,7 @@ export const Armoury = () => {
     const armouryState = useAppSelector(state => state.armoury);
     const character = useAppSelector(state => state.character);
     const talents = useAppSelector(state => state.talents)
+    const experience = useAppSelector(state => state.experience)
     const dispatch = useAppDispatch()
 
     const [agilityBonus, setAgilityBonus] = useState(2);
@@ -77,7 +80,13 @@ export const Armoury = () => {
         // If the highest devotion is 5 greater than the second the character is aligned
         if (h[0][1] - h[1][1] >= 5) {
             dispatch(setDevotion(h[0][0]))
-            if (h[0][1] > 20) {
+            if (h[0][1] >= 20) {
+                console.log("ADD MARK")
+                switch (h[0][0]) {
+                    case EGods.KHORNE: dispatch(addTalent(allTalents["Mark of Khorne"])); break;
+                    case EGods.NURGLE: dispatch(addTalent(allTalents["Mark of Nurgle"])); break;
+                    default: return;
+                }
                 // Todo add Mark of God
             }
         } else {
@@ -95,9 +104,10 @@ export const Armoury = () => {
             [EGods.TZEENTCH]: 0,
             [EGods.NURGLE]: 0,
         }
-        Object.values(talents).flatMap(t => t.devotion)
+        Object.values(talents).flatMap(t =>  t.devotion)
             .filter((v => v))
             .forEach(value => counts[value]++);
+        experience.entries.filter(v => v.devotion).forEach(e => {if (e.type === "CHAR" || e.type === "SPELL") { counts[e.devotion]++ }});
         return counts;
     }
 
@@ -325,7 +335,7 @@ export const Armoury = () => {
                 </Row>
                 <Row>
                     {Object.values(talents).filter(value => value.tier < 0)
-                        .map(value => <TalentEntryFunction key={`talent-entry-${value}`} {...value} setActiveTalent={() => null}/>)
+                        .map(value => <TalentEntryFunction key={`armoury-talent-entry-${value.name}`} {...value} setActiveTalent={() => null}/>)
                     }
                 </Row>
 

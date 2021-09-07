@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EGods, godStringMap } from "../talents/talentSlice";
+import { ETabNames } from "./ETabNames";
 
 interface ICharacterState {
     characterName: string,
@@ -29,9 +30,9 @@ export const characterSlice = createSlice({
 
         },
         layout: {
-            left: [],
-            main: [0, 1, 2, 3, 4, 5],
-            right: [6]
+            left: [ETabNames.SEARCH],
+            main: [ETabNames.CHARACTERISTICS, 1, 2, 3, 4, 5],
+            right: [ETabNames.EXPERIENCE]
         },
     } as ICharacterState,
     reducers: {

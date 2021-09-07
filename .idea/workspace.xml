@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="808a4b29-ea26-4b7c-9d87-271f6fcdbaa2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/search/searchView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/armoury/armoury.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/ETabNames.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/ETabNames.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/character.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/character.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/characterSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/characterSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/character/experienceSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/experienceSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/experienceView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/experienceView.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/character/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/character/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/search/searchView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/search/searchView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/skills/skillEntry.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentEntry.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentSlice.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/talents/talentView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/talents/talentView.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,7 +171,7 @@
       <workItem from="1629711923751" duration="6551000" />
       <workItem from="1630062631410" duration="8807000" />
       <workItem from="1630351008284" duration="11779000" />
-      <workItem from="1630582258554" duration="12919000" />
+      <workItem from="1630582258554" duration="33420000" />
     </task>
     <task id="LOCAL-00001" summary="Added ArmourEdit options">
       <created>1621159709298</created>
@@ -276,7 +278,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627659166443</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added search function">
+      <created>1630707536787</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1630707536787</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,6 +318,7 @@
     <MESSAGE value="Fixed additional Lore Level set" />
     <MESSAGE value="Fixed additional Lore Bonus set" />
     <MESSAGE value="Added exp functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added exp functions" />
+    <MESSAGE value="Added search function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added search function" />
   </component>
 </project>
