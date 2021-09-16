@@ -23,7 +23,7 @@ import { SpellCard } from "./spellCard";
 import { BiTargetLock, FaDiceD20, IoReloadCircle } from "react-icons/all";
 import { rollInitAndSendToDiscord } from "../character/Rolls";
 import { EItemCategory } from "../character/EItemCategory";
-import { addTalent, EGods } from "../talents/talentSlice";
+import { addTalent, removeTalent, EGods } from "../talents/talentSlice";
 import { setDevotion } from "../character/characterSlice";
 import { TalentEntryFunction } from "../talents/talentEntry";
 import { allTalents } from "../character/resources";
@@ -74,24 +74,24 @@ export const Armoury = () => {
     function resetDevotion() {
         const h = Object.entries(calcDevotion())
             .filter(value => value[0] !== "Unaligned")
-            .sort((a, b) =>  b[1] - a[1])
+            .sort((a, b) => b[1] - a[1])
         ;
 
-        // If the highest devotion is 5 greater than the second the character is aligned
+
+// If the highest devotion is 5 greater than the second the character is aligned
         if (h[0][1] - h[1][1] >= 5) {
-            dispatch(setDevotion(h[0][0]))
+            const newDevotion = h[0][0];
+            if (newDevotion !== character.devotion) {
+                dispatch(removeTalent(talents[`Mark of ${character.devotion}`]))
+                dispatch(setDevotion(newDevotion))
+            }
             if (h[0][1] >= 20) {
-                console.log("ADD MARK")
-                switch (h[0][0]) {
-                    case EGods.KHORNE: dispatch(addTalent(allTalents["Mark of Khorne"])); break;
-                    case EGods.NURGLE: dispatch(addTalent(allTalents["Mark of Nurgle"])); break;
-                    default: return;
-                }
-                // Todo add Mark of God
+                dispatch(addTalent(allTalents[`Mark of ${newDevotion}`]));
             }
         } else {
-            dispatch(setDevotion("Unaligned"))
-            // Todo remove mark of god
+            dispatch(setDevotion("Unaligned"));
+            dispatch(removeTalent(talents[`Mark of ${character.devotion}`]))
+
         }
     }
 
@@ -104,10 +104,14 @@ export const Armoury = () => {
             [EGods.TZEENTCH]: 0,
             [EGods.NURGLE]: 0,
         }
-        Object.values(talents).flatMap(t =>  t.devotion)
+        Object.values(talents).flatMap(t => t.devotion)
             .filter((v => v))
             .forEach(value => counts[value]++);
-        experience.entries.filter(v => v.devotion).forEach(e => {if (e.type === "CHAR" || e.type === "SPELL") { counts[e.devotion]++ }});
+        experience.entries.filter(v => v.devotion).forEach(e => {
+            if (e.type === "CHAR" || e.type === "SPELL" || e.type === "SKILL") {
+                counts[e.devotion]++
+            }
+        });
         return counts;
     }
 
@@ -297,13 +301,13 @@ export const Armoury = () => {
                                     {JSON.stringify(Object.entries(calcDevotion()))}
                                 </Tooltip>
                             }>
-                        <Badge pill style={{
-                        backgroundColor: 'brown',
-                        color: 'white'
-                    }}>{character.devotion ? character.devotion : EGods.UNALIGNED}</Badge>
+                            <Badge pill style={{
+                                backgroundColor: 'brown',
+                                color: 'white'
+                            }}>{character.devotion ? character.devotion : EGods.UNALIGNED}</Badge>
                         </OverlayTrigger>
                     </Col>
-                    <Col md={2}><IoReloadCircle color={'green'} onClick={() => resetDevotion()}/> </Col>
+                    <Col md={2}><IoReloadCircle style={{ cursor: 'pointer' }} color={'green'} onClick={() => resetDevotion()}/> </Col>
                 </Row>
 
                 {/* MOVEMENT */}

@@ -12,7 +12,6 @@ export const ExperienceView = () => {
     const dispatch = useAppDispatch();
 
     const [newEntry, setNewEntry] = useState({} as IExpEntry);
-    // const [expSum, setExpSum] = useState(0);
 
     function calcExpSum(index: number, array: IExpEntry[]) {
         return array.slice(0, index + 1).reduce((sum, { amount }) => sum + amount, 0);

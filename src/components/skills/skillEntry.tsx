@@ -1,8 +1,11 @@
 import { Alert, Button, Col, Container, FormControl, InputGroup, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { addSkill, setBonus, setLevel } from "./skillSlice";
+import { addSkill, expMapSkills, setBonus, setLevel } from "./skillSlice";
 import React, { useState } from "react";
 import { FaDiceD20 } from "react-icons/all";
+import { devotionMap, EGods } from "../talents/talentSlice";
+import { allSkills } from "../character/resources";
+import { addEntry } from "../character/experienceSlice";
 
 
 export const SkillEntryFunction = ({
@@ -14,6 +17,7 @@ export const SkillEntryFunction = ({
     const skills = useAppSelector(state => state.skills);
     const characteristics = useAppSelector(state => state.characteristics);
     const characterName = useAppSelector(state => state.character.characterName);
+    const devotion = useAppSelector(state => state.character.devotion);
     const discordServer = useAppSelector(state => state.character.discord[state.character.discord.active]);
     const dispatch = useAppDispatch();
 
@@ -62,7 +66,7 @@ export const SkillEntryFunction = ({
                 {getElement()}
                 <Row style={{ padding: 0 }}>
                     <Col>
-                        <Button size={"sm"} onClick={() => dispatch(addSkill({ name: newLore, level: 1, type, bonus: 0, parent: skill}))}>+</Button>
+                        <Button size={"sm"} onClick={() => dispatch(addSkill({ name: newLore, level: 1, type, bonus: 0, parent: skill, devotion: EGods.UNALIGNED}))}>+</Button>
                     </Col>
                     <Col md={10} style={{ padding: 0 }}>
                         <FormControl size={'sm'} placeholder="New Lore"
@@ -75,14 +79,27 @@ export const SkillEntryFunction = ({
 
 
         function getElement() {
+            function changeLevel(level: number) {
+                dispatch(setLevel({ ...skill, level }));
+
+                // calcNeededExp
+                const characterDevotion = devotion ? devotion : EGods.UNALIGNED;
+                const skillDevotion = skill.devotion ? skill.devotion : allSkills[skill.name].devotion;
+
+                for (let lv = skill.level; lv < level; lv++) {
+                    const exp = expMapSkills[devotionMap[skillDevotion][characterDevotion]][lv];
+                    dispatch(addEntry({description: `${skill.name} Level ${lv}`, amount: -exp, type: "SKILL", devotion: skillDevotion}))
+                }
+            }
+
             return <Row style={{ padding: 0 }}>
                 {getNameCol()}
                 <Col md={5} style={{ padding: 0 }}>
                     <InputGroup>
-                        <InputGroup.Checkbox checked={level > 0} onChange={() => dispatch(setLevel({ ...skill, level: 1 }))}/>
-                        <InputGroup.Checkbox checked={level > 1} onChange={() => dispatch(setLevel({ ...skill, level: 2 }))}/>
-                        <InputGroup.Checkbox checked={level > 2} onChange={() => dispatch(setLevel({ ...skill, level: 3 }))}/>
-                        <InputGroup.Checkbox checked={level > 3} onChange={() => dispatch(setLevel({ ...skill, level: 4 }))}/>
+                        <InputGroup.Checkbox checked={level > 0} onChange={() => changeLevel(1)}/>
+                        <InputGroup.Checkbox checked={level > 1} onChange={() => changeLevel(2)}/>
+                        <InputGroup.Checkbox checked={level > 2} onChange={() => changeLevel(3)}/>
+                        <InputGroup.Checkbox checked={level > 3} onChange={() => changeLevel(4)}/>
                     </InputGroup>
                 </Col>
                 <Col md={2} style={{ padding: 0 }}>

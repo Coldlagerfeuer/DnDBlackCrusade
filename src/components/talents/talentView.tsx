@@ -1,5 +1,5 @@
 import { Button, Col, Container, Dropdown, DropdownButton, FormControl, InputGroup, ListGroup, Row } from "react-bootstrap";
-import { addTalent, devotionMap, EGods, expMap, ITalent, ITalentState, removeTalent } from "./talentSlice";
+import { addTalent, devotionMap, EGods, expMapTalents, ITalent, ITalentState, removeTalent } from "./talentSlice";
 import { Pencil, PlusCircle, Trash } from "react-bootstrap-icons";
 import React, { useState } from "react";
 import { TalentEntryFunction } from "./talentEntry";
@@ -135,7 +135,7 @@ function calcNeededExp(activeTalent: ITalent, devotion?: EGods): number {
     const characterDevotion = devotion ? devotion : EGods.UNALIGNED;
     const talentDevotion = activeTalent.devotion ? activeTalent.devotion : EGods.UNALIGNED;
 
-    return expMap[activeTalent.tier - 1][devotionMap[talentDevotion][characterDevotion]];
+    return expMapTalents[activeTalent.tier - 1][devotionMap[talentDevotion][characterDevotion]];
 }
 
 function createSimpleTalent(talents: ITalentState, setNewTalent: React.Dispatch<React.SetStateAction<ITalent>>) {

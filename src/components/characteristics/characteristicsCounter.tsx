@@ -1,17 +1,37 @@
 import { Badge, Col, Container, Row } from "react-bootstrap";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { decrement, decrementBonus, increment, incrementBonus } from './characteristicsSlice'
+import { decrement, decrementBonus, expMapCharacteristics, increment, incrementBonus, incrementFive } from './characteristicsSlice'
 import { rollStatAndSendToDiscord } from "../character/Rolls";
 import { FaDiceD20 } from "react-icons/all";
+import { devotionMap, EGods } from "../talents/talentSlice";
+import { addEntry } from "../character/experienceSlice";
 
 export const CharacteristicsCounter = ({ short = '' }) => {
     const [hideBtns, toggleBtns] = React.useState(true);
 
     const characteristic = useAppSelector(state => state.characteristics[short]);
+    const experience = useAppSelector(state => state.experience);
     const character = useAppSelector(state => state.character);
     const dispatch = useAppDispatch()
 
+
+    function learnCharacteristics(short: string) {
+        dispatch(incrementFive(characteristic.short));
+
+        const characterDevotion = character.devotion ? character.devotion : EGods.UNALIGNED;
+        const characteristicsDevotion = characteristic.devotion ? characteristic.devotion : EGods.UNALIGNED;
+
+        const lv = experience.entries.reduce((sum, {
+            type,
+            description
+        }) => description.includes(characteristic.name) && type === "CHAR" ? sum + 1 : sum, 0);
+
+        const exp = expMapCharacteristics[devotionMap[characteristicsDevotion][characterDevotion]][Math.min(lv, 3)];
+        dispatch(addEntry({ description: `${characteristic.name} Level ${lv}`, amount: -exp, type: "CHAR", devotion: characteristicsDevotion }))
+
+
+    }
 
     return <Container id={`stat-${characteristic.name}`} style={{ backgroundColor: "lightgrey", padding: 0 }}>
         <Row onClick={() => toggleBtns(!hideBtns)}>
@@ -47,15 +67,22 @@ export const CharacteristicsCounter = ({ short = '' }) => {
                                    onClick={() => dispatch(decrement(characteristic.short))}>-</Badge>
 
                         </div>
+                        <div>
+                            <Badge pill variant={"primary"}
+                                   onClick={() => learnCharacteristics(characteristic.short)}
+                            >Learn +5</Badge>
+                        </div>
                     </>
                     : <>
-                        <FaDiceD20 onClick={() => rollStatAndSendToDiscord(character.discord[character.discord.active], character.characterName, characteristic)} color={"darkred"} style={{ cursor: "pointer" }}/>
+                        <FaDiceD20
+                            onClick={() => rollStatAndSendToDiscord(character.discord[character.discord.active], character.characterName, characteristic)}
+                            color={"darkred"} style={{ cursor: "pointer" }}/>
 
                         {characteristic.bonus ?
-                        <Badge variant={'secondary'}>
-                            {characteristic.bonus}
-                        </Badge>
-                        : <></>}
+                            <Badge variant={'secondary'}>
+                                {characteristic.bonus}
+                            </Badge>
+                            : <></>}
                         <Badge
                             variant={"dark"}
                             pill

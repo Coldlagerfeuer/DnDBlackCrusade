@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { allSkills } from "../character/resources";
+import { EGods } from "../talents/talentSlice";
 
 export interface ISkill {
     name: string,
@@ -7,11 +8,21 @@ export interface ISkill {
     type: string,
     bonus: number,
     parent?: ISkill
+    devotion: EGods;
 }
 
 export interface ISkillState {
     [name: string]: ISkill
 }
+
+/**
+ * Devotion -> Level Map
+ */
+export const expMapSkills = [
+    [100, 200, 400, 600],
+    [200, 350, 500, 750],
+    [250, 500, 750, 1000]
+];
 
 export const skillSlice = createSlice({
     name: 'skills',

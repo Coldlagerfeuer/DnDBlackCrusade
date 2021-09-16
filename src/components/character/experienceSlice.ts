@@ -6,7 +6,7 @@ export interface IExpEntry {
     description: string,
     amount: number,
     devotion: EGods,
-    type: string,
+    type: string, // SKILL, ADV, SPELL, CHAR
 }
 
 interface IExpState {

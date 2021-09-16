@@ -43,7 +43,7 @@ Tier 1 Talente (T:200xp/A:250xp/O:500xp)
 Tier 2 Talents (T:300xp/A:500xp/O:750xp)
 Tier 3 Talents (T:400xp/A:750xp/O:1000xp)
  */
-export const expMap = [
+export const expMapTalents = [
     [200, 250, 500],
     [300, 500, 750],
     [400, 750, 1000]
@@ -124,7 +124,7 @@ export const talentSlice = createSlice({
             }
         },
         removeTalent: (state, action) => {
-            delete state[action.payload.name];
+                delete state[action.payload?.name];
         },
         importTalents: (state, action) => {
             const talents = action.payload;
