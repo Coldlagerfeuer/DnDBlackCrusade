@@ -74,9 +74,6 @@ export const inventorySlice = createSlice({
             if (state[itemname]) {
                 state[itemname].count++;
             } else {
-                console.log(itemname)
-                console.log(allItems[itemname])
-                console.log()
                 const item = allItems[itemname];
 
                 item ? state[itemname] = item

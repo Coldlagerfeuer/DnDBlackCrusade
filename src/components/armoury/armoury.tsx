@@ -27,6 +27,7 @@ import { addTalent, removeTalent, EGods } from "../talents/talentSlice";
 import { setDevotion } from "../character/characterSlice";
 import { TalentEntryFunction } from "../talents/talentEntry";
 import { allTalents } from "../character/resources";
+import { ICharacteristics, incrementBonus } from "../characteristics/characteristicsSlice";
 
 export const Armoury = () => {
 
@@ -37,9 +38,10 @@ export const Armoury = () => {
     const imageLegR = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%20style%3D%22height%3A%20512px%3B%20width%3A%20512px%3B%22%3E%3Cpath%20d%3D%22M0%200h512v512H0z%22%20fill%3D%22%23000%22%20fill-opacity%3D%221%22%3E%3C%2Fpath%3E%3Cg%20class%3D%22%22%20transform%3D%22translate(0%2C0)%22%20style%3D%22%22%3E%3Cpath%20d%3D%22M269%2023.95l-87.7.1c1.1%2061.4-2.4%20116.05-14%20159.45-9%2034-23.6%2061.6-45.2%2079-.1%209.5-.8%2019-2.1%2028.6-3.1%2022.9-13.5%2043.2-22.75%2065%2023.55-1.3%2043.55-11.6%2065.35-24.8%2020.6-12.5%2042.4-27.5%2068.9-37.8-.2-1.4-.4-2.9-.4-4.2-1.9-23.7.1-52.2%204.1-83.2C243%20147.6%20257.9%2081.05%20269%2023.95zm-105.7.1H80.65c-1.6%2036.5%2010.1%2076.15%2021.65%20119.15%208.3%2030.4%2016.5%2062.3%2019%2095.7%2012.6-14.3%2021.8-34.4%2028.6-60%2010.8-40.6%2014.4-94.15%2013.4-154.85zm41.8%2014.9a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-2.4%2052.5a9%209%200%200%201%20.1%200%209%209%200%200%201%209%208.95%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-8.95zm-5.9%2056.25a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-16%2060.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-32%2048.1a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm85.7%2055.3c-22.6%209.6-42.3%2022.9-62.6%2035-24.6%2014.9-50.5%2027.9-81.85%2027.5-8.2%2022.7-13.8%2048-10%2079.9h82.35c13.2-41.4%2042.9-78%2095.1-106.8-1.4-1-2.9-2.1-4.3-3.2-9.6-7.6-15.3-18.8-18.7-32.4zm40.2%2046.7c-52.1%2026.2-80.4%2058.5-93.6%2095.7h127.4c0-14.3.6-29%203.9-43.6%202.6-11.5%207-22.9%2014-33.9-16.1-3.3-33.5-8.1-51.7-18.2zm70.8%2021.8c-8.2%2010.9-12.8%2022.3-15.5%2034.3-2.8%2012.5-3.5%2025.8-3.5%2039.6h104c-2-17.8-12.5-39.8-28.1-52.1-17.8-13.9-36-17.9-56.9-21.8zm8.3%2010.5a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zm-254.05%2035a9%209%200%200%201%20.1%200%209%209%200%200%201%208.95%209%209%209%200%200%201-8.95%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm44.85.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm201.5.1a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zM72.05%20470v18.1H440V470z%22%20fill%3D%22%23fff%22%20fill-opacity%3D%221%22%20transform%3D%22translate(512%2C%200)%20scale(-1%2C%201)%20rotate(0%2C%20256%2C%20256)%20skewX(0)%20skewY(0)%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fsvg%3E';
     const imageLegL = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20512%20512%22%20style%3D%22height%3A%20512px%3B%20width%3A%20512px%3B%22%3E%3Cpath%20d%3D%22M0%200h512v512H0z%22%20fill%3D%22%23000%22%20fill-opacity%3D%221%22%3E%3C%2Fpath%3E%3Cg%20class%3D%22%22%20transform%3D%22translate(0%2C0)%22%20style%3D%22%22%3E%3Cpath%20d%3D%22M269%2023.95l-87.7.1c1.1%2061.4-2.4%20116.05-14%20159.45-9%2034-23.6%2061.6-45.2%2079-.1%209.5-.8%2019-2.1%2028.6-3.1%2022.9-13.5%2043.2-22.75%2065%2023.55-1.3%2043.55-11.6%2065.35-24.8%2020.6-12.5%2042.4-27.5%2068.9-37.8-.2-1.4-.4-2.9-.4-4.2-1.9-23.7.1-52.2%204.1-83.2C243%20147.6%20257.9%2081.05%20269%2023.95zm-105.7.1H80.65c-1.6%2036.5%2010.1%2076.15%2021.65%20119.15%208.3%2030.4%2016.5%2062.3%2019%2095.7%2012.6-14.3%2021.8-34.4%2028.6-60%2010.8-40.6%2014.4-94.15%2013.4-154.85zm41.8%2014.9a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-2.4%2052.5a9%209%200%200%201%20.1%200%209%209%200%200%201%209%208.95%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-8.95zm-5.9%2056.25a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-16%2060.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm-32%2048.1a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm85.7%2055.3c-22.6%209.6-42.3%2022.9-62.6%2035-24.6%2014.9-50.5%2027.9-81.85%2027.5-8.2%2022.7-13.8%2048-10%2079.9h82.35c13.2-41.4%2042.9-78%2095.1-106.8-1.4-1-2.9-2.1-4.3-3.2-9.6-7.6-15.3-18.8-18.7-32.4zm40.2%2046.7c-52.1%2026.2-80.4%2058.5-93.6%2095.7h127.4c0-14.3.6-29%203.9-43.6%202.6-11.5%207-22.9%2014-33.9-16.1-3.3-33.5-8.1-51.7-18.2zm70.8%2021.8c-8.2%2010.9-12.8%2022.3-15.5%2034.3-2.8%2012.5-3.5%2025.8-3.5%2039.6h104c-2-17.8-12.5-39.8-28.1-52.1-17.8-13.9-36-17.9-56.9-21.8zm8.3%2010.5a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zm-254.05%2035a9%209%200%200%201%20.1%200%209%209%200%200%201%208.95%209%209%209%200%200%201-8.95%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm44.85.6a9%209%200%200%201%20.1%200%209%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%208.9-9zm201.5.1a9%209%200%200%201%209%209%209%209%200%200%201-9%209%209%209%200%200%201-9-9%209%209%200%200%201%209-9zM72.05%20470v18.1H440V470z%22%20fill%3D%22%23fff%22%20fill-opacity%3D%221%22%3E%3C%2Fpath%3E%3C%2Fg%3E%3C%2Fsvg%3E';
 
-    const infamyStat = useAppSelector(state => state.characteristics['INF']);
-    const toughnessStat = useAppSelector(state => state.characteristics["T"]);
-    const agilityStat = useAppSelector(state => state.characteristics["AG"]);
+    const stats = useAppSelector(state => state.characteristics);
+    const infamyStat = stats['INF'];
+    const toughnessStat = stats["T"];
+    const agilityStat = stats["AG"];
     const armouryState = useAppSelector(state => state.armoury);
     const character = useAppSelector(state => state.character);
     const talents = useAppSelector(state => state.talents)
@@ -82,17 +84,76 @@ export const Armoury = () => {
         if (h[0][1] - h[1][1] >= 5) {
             const newDevotion = h[0][0];
             if (newDevotion !== character.devotion) {
+                // Remove old Mark
                 dispatch(removeTalent(talents[`Mark of ${character.devotion}`]))
                 dispatch(setDevotion(newDevotion))
             }
             if (h[0][1] >= 20) {
-                dispatch(addTalent(allTalents[`Mark of ${newDevotion}`]));
+                if (!talents[`Mark of ${newDevotion}`]) { // Only grant once
+                    grantAdditionalBenefits(newDevotion);
+                    dispatch(addTalent(allTalents[`Mark of ${newDevotion}`]));
+                }
             }
         } else {
             dispatch(setDevotion("Unaligned"));
             dispatch(removeTalent(talents[`Mark of ${character.devotion}`]))
-
         }
+    }
+
+    /**
+     * Additional Benefits:
+     * Khorne: The character gains the Resistance (Psychic Powers), Talent, the Brutal Charge Trait, and Unnatural Strength (+2)
+     * Nurgle: The character gains the Stuff of Nightmares and Unnatural Toughness (+1) Traits
+     * Slaanesh: The character gains the Heightened Senses (All) Talent and the Unnatural Fellowship (+2) Trait
+     * Tzeentch: The character gains the Unnatural Willpower (+1) Trait and the Psy Rating (+1) Talent
+     */
+    function grantAdditionalBenefits(devotion: string) {
+        switch (devotion) {
+            case EGods.NURGLE:
+                dispatch(addTalent(allTalents["The Stuff of Nightmares"]));
+                grantUnnaturalStat(toughnessStat)
+                break;
+            case EGods.KHORNE:
+                dispatch(addTalent(allTalents["Brutal Charge"]));
+                const name = "Resistance"
+                const t = talents[name] || allTalents[name]
+                dispatch(addTalent({...t, specialization: ["Psychic Powers" + t.specialization].join()}));
+                grantUnnaturalStat(stats["S"], 2)
+                break;
+            case EGods.SLAANESH:
+                const ts = allTalents["Heightened Senses"]
+                dispatch(addTalent({...ts, specialization: "all"}));
+                grantUnnaturalStat(stats["FEL"], 2)
+                break;
+            case EGods.TZEENTCH:
+                const namet = "Psy Rating";
+                const tt = talents[namet] || allTalents[namet]
+                dispatch(addTalent({...tt, specialization: increaseSpecialization(tt.specialization)}));
+                grantUnnaturalStat(stats["WP"])
+                break;
+            default: return
+        }
+
+    }
+
+    function grantUnnaturalStat(stat: ICharacteristics, amount: number = 1) {
+        const name = `Unnatural ${stat.name}`
+        let talent = talents[name];
+        if (talent) {
+            // Stat already present increase by one
+            talent = {...talent, specialization: increaseSpecialization(talent.specialization)}
+        } else {
+            talent = allTalents["Unnatural Characteristic"];
+            talent = {...talent, name, specialization: "1"}
+        }
+        dispatch(addTalent(talent));
+        for (let i = 0; i < amount; i++) {
+            dispatch(incrementBonus(stat.short));
+        }
+    }
+
+    function increaseSpecialization(spec: string | undefined): string {
+        return "" + (parseInt(spec || "0") + 1);
     }
 
     function calcDevotion() {
@@ -107,6 +168,13 @@ export const Armoury = () => {
         Object.values(talents).flatMap(t => t.devotion)
             .filter((v => v))
             .forEach(value => counts[value]++);
+        // Only aligned Talent which can be taken multiple times
+        const t = talents["Sound Constitution"]
+        if (t) {
+            for (let i = 1; i < parseInt(t.specialization || "1"); i++) {
+                counts["Nurgle"]++
+            }
+        }
         experience.entries.filter(v => v.devotion).forEach(e => {
             if (e.type === "CHAR" || e.type === "SPELL" || e.type === "SKILL") {
                 counts[e.devotion]++

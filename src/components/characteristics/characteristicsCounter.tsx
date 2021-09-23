@@ -68,7 +68,7 @@ export const CharacteristicsCounter = ({ short = '' }) => {
 
                         </div>
                         <div>
-                            <Badge pill variant={"primary"}
+                            <Badge pill variant={"primary"} style={{ cursor: 'pointer' }}
                                    onClick={() => learnCharacteristics(characteristic.short)}
                             >Learn +5</Badge>
                         </div>

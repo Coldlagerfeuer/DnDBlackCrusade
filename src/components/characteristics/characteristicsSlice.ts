@@ -49,7 +49,6 @@ export const characteristicsSlice = createSlice({
             state[action.payload].value -= 1
         },
         incrementBonus: (state, action: PayloadAction<string>) => {
-            console.log(action.payload)
             state[action.payload].bonus += 1
         },
         decrementBonus: (state, action: PayloadAction<string>) => {

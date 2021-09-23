@@ -37,12 +37,14 @@ export const TalentView = ({ sidebar = false }) => {
                             <Button
                                 onClick={() => {
                                     dispatch(addTalent(activeTalent));
-                                    dispatch(addEntry({
-                                        devotion: activeTalent.devotion,
-                                        type: "TALENT",
-                                        amount: -calcNeededExp(activeTalent, devotion),
-                                        description: activeTalent.name
-                                    }))
+                                    if (activeTalent.tier > 0) {
+                                        dispatch(addEntry({
+                                            devotion: activeTalent.devotion,
+                                            type: "TALENT",
+                                            amount: -calcNeededExp(activeTalent, devotion),
+                                            description: activeTalent.name
+                                        }));
+                                    }
                                 }}
                                 variant="outline-primary">
                                 {talents[activeTalent.name] ? <Pencil/> : <PlusCircle/>}
