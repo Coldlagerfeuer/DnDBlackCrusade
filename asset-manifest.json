@@ -1,26 +1,26 @@
 {
   "files": {
     "main.css": "/DnDBlackCrusade/static/css/main.2cb1d5d5.chunk.css",
-    "main.js": "/DnDBlackCrusade/static/js/main.5ccd739b.chunk.js",
-    "main.js.map": "/DnDBlackCrusade/static/js/main.5ccd739b.chunk.js.map",
+    "main.js": "/DnDBlackCrusade/static/js/main.da8a4bee.chunk.js",
+    "main.js.map": "/DnDBlackCrusade/static/js/main.da8a4bee.chunk.js.map",
     "runtime-main.js": "/DnDBlackCrusade/static/js/runtime-main.b3ccefd2.js",
     "runtime-main.js.map": "/DnDBlackCrusade/static/js/runtime-main.b3ccefd2.js.map",
     "static/css/2.150d169a.chunk.css": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css",
-    "static/js/2.ab20b293.chunk.js": "/DnDBlackCrusade/static/js/2.ab20b293.chunk.js",
-    "static/js/2.ab20b293.chunk.js.map": "/DnDBlackCrusade/static/js/2.ab20b293.chunk.js.map",
+    "static/js/2.d470e2e6.chunk.js": "/DnDBlackCrusade/static/js/2.d470e2e6.chunk.js",
+    "static/js/2.d470e2e6.chunk.js.map": "/DnDBlackCrusade/static/js/2.d470e2e6.chunk.js.map",
     "static/js/3.dd656524.chunk.js": "/DnDBlackCrusade/static/js/3.dd656524.chunk.js",
     "static/js/3.dd656524.chunk.js.map": "/DnDBlackCrusade/static/js/3.dd656524.chunk.js.map",
     "index.html": "/DnDBlackCrusade/index.html",
     "static/css/2.150d169a.chunk.css.map": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css.map",
     "static/css/main.2cb1d5d5.chunk.css.map": "/DnDBlackCrusade/static/css/main.2cb1d5d5.chunk.css.map",
-    "static/js/2.ab20b293.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.ab20b293.chunk.js.LICENSE.txt",
+    "static/js/2.d470e2e6.chunk.js.LICENSE.txt": "/DnDBlackCrusade/static/js/2.d470e2e6.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/DnDBlackCrusade/static/media/CloisterBlack.0a8dea1a.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.b3ccefd2.js",
     "static/css/2.150d169a.chunk.css",
-    "static/js/2.ab20b293.chunk.js",
+    "static/js/2.d470e2e6.chunk.js",
     "static/css/main.2cb1d5d5.chunk.css",
-    "static/js/main.5ccd739b.chunk.js"
+    "static/js/main.da8a4bee.chunk.js"
   ]
 }
