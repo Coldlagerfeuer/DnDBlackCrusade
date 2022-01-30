@@ -47,7 +47,11 @@ export interface IInitRoll extends IRollResult {
 
 export function rollTestAndSendToDiscord(discordServer: string, username: string, characteristics: number, skill?: ISkill, amount: number = 1, limit: number = 100, bonus: number = 0): IRollResult {
     const rollResult = rollTest(characteristics, amount, limit, bonus, skill);
-    const message = skill ? `tried ${skill.name} Test` : ""
+    let message = skill ? `tried ${skill.name} Test` : ""
+    if (rollResult.rollType === ERollType.TEST) {
+        const rollResultTest = rollResult as ITestRoll;
+        message += `${rollResultTest.result ? ' - **SUCCESS**' : '**FAILURE**'}`
+    }
 
     sendMessage(discordServer, message, getEmbedsForRollType(rollResult), username);
 
@@ -113,6 +117,11 @@ export function rollAimAndSendToDiscord(discordServer: string, username: string,
 }
 
 
+function getRollResultText(rollResult: ITestRoll) {
+    const r = rollResult.result ? '>' : '<';
+    return `${rollResult.sum} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}`;
+}
+
 function getEmbedsForRollType(roll: IRollResult) {
     const colorCodeRed = 14159922;
     const colorCodeGreen = 4113681;
@@ -140,7 +149,6 @@ function getEmbedsForRollType(roll: IRollResult) {
         }
         case ERollType.TEST: {
             const rollResult = roll as ITestRoll;
-            const r = rollResult.result ? '>' : '<';
             return [
                 {
                     color: rollResult.result ? colorCodeGreen : colorCodeRed,
@@ -151,7 +159,7 @@ function getEmbedsForRollType(roll: IRollResult) {
                         { name: "Stat", value: `${rollResult.stat}`, inline: true },
                         { name: "Level", value: `${rollResult.level}`, inline: true },
                         { name: "Sum", value: `${rollResult.sum}`, inline: true },
-                        { name: "**Result**", value: `${rollResult.sum} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}` },
+                        { name: "**Result**", value: getRollResultText(rollResult) },
 
                     ],
                 },

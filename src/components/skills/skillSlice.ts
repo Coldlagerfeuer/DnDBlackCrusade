@@ -60,7 +60,6 @@ export const skillSlice = createSlice({
             } else {
                 state[name] = action.payload;
             }
-
         },
         removeSkill: (state, action: PayloadAction<ISkill>) => {
             const {name, parent} = action.payload;
