@@ -19,7 +19,7 @@ export interface IWeapon extends IItem{
     type: EDamageType,
     pen: number,
     weight: number,
-
+    additionalRolls?: number,
 }
 
 export enum ESpellType {
@@ -33,7 +33,7 @@ export interface ISpell extends IItem {
     action: string,
     focusPower: string,
     range: string,
-    sustained: boolean,
+    sustained: boolean | string,
     subtype: ESpellType[],
     pen: number,
     damage: string,
@@ -50,8 +50,11 @@ export enum EDamageType {
     SCHOCK,
     LASER,
     ENERGY,
+    EXPLOSIVE,
 
     MISC,
+    BUFF,
+    CURSE,
 }
 
 

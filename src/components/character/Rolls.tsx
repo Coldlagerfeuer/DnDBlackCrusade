@@ -2,6 +2,7 @@ import { ISkill } from "../skills/skillSlice";
 import { EDamageType, ISpell, IWeapon } from "../armoury/armourySlice";
 import { ICharacteristics } from "../characteristics/characteristicsSlice";
 import { getHitLocation } from "../armoury/armoury";
+import { EItemCategory } from "./EItemCategory";
 
 enum ERollType {
     NONE,
@@ -59,16 +60,27 @@ export function rollAndSendToDiscord(discordServer: string, username: string, am
     return rollResult;
 }
 
-export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell): IDamageRoll {
+export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell, bonusRolls: number = 0): IDamageRoll {
 
-    // Damage Calc
+    // Damage Calc - Syntax: XdY+Z
     const d = weapon.damage.split("d")
-    const amount = parseInt(d[0]);
+    let amount = parseInt(d[0]);
     const limit = parseInt(d[1].split("+")[0]);
     const damage = parseInt(d[1].split("+")[1]);
 
-    const rollResult: IDamageRoll = { ...roll(amount, limit), rollType: ERollType.DAMAGE, ...weapon, damage };
-
+    // if (bonusRolls) {
+    //     const rollResult: IDamageRoll = { ...roll(amount + bonusRolls, limit), rollType: ERollType.DAMAGE, ...weapon, damage };
+    //     rollResult.rollSum = rollResult.rolls.sort((a, b) => a > b ? a : b).slice(0, amount - 1).reduce((a,b) => a+b);
+    //     sendMessage(discordServer, `attacks with ${weapon.name} `, getEmbedsForRollType(rollResult), username);
+    //     return rollResult
+    //
+    // }
+    const rollResult: IDamageRoll = { ...roll(amount + bonusRolls, limit), rollType: ERollType.DAMAGE, ...weapon, damage };
+    // console.log(rollResult.rolls)
+    // console.log(rollResult.rolls.sort((a, b) => b - a ))
+    // console.log(rollResult.rolls)
+    // console.log(rollResult.rolls.slice(0, amount))
+    rollResult.rollSum = rollResult.rolls.sort((a, b) => b - a).slice(0, amount).reduce((a,b) => a + b);
     sendMessage(discordServer, `attacks with ${weapon.name} `, getEmbedsForRollType(rollResult), username);
 
     return rollResult
@@ -211,13 +223,15 @@ function sendMessage(discord: string, message: string, embeds: any, username?: s
 }
 
 export function getRndInteger(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function roll(amount: number, limit: number): IRollResult {
     const rollResult: ITestRoll = { rollType: ERollType.NONE, rolls: [], rollSum: 0, amount, limit };
     for (let count = 0; count < rollResult.amount; count++) {
-        const roll = getRndInteger(0, rollResult.limit);
+        const roll = getRndInteger(1, rollResult.limit);
         rollResult.rolls[count] = roll;
         rollResult.rollSum += roll;
     }

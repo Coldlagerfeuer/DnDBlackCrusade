@@ -17,15 +17,6 @@ export const ExperienceView = () => {
         return array.slice(0, index + 1).reduce((sum, { amount }) => sum + amount, 0);
     }
 
-    function getStyleForDevotion(devotion: EGods): CSSProperties {
-        switch (devotion) {
-            case EGods.NURGLE: return {backgroundColor: "brown", color: "white"}
-            case EGods.KHORNE: return {backgroundColor: "red"}
-            case EGods.SLAANESH: return {backgroundColor: "pink"}
-            case EGods.TZEENTCH: return {backgroundColor: "lightskyblue"}
-            default: return {backgroundColor: "white"}
-        }
-    }
 
     return <Row>
         <Table striped borderless hover size={"sm"}>
@@ -92,4 +83,17 @@ export const ExperienceView = () => {
         </InputGroup>
     </Row>;
 
+
+
 }
+
+    export function getStyleForDevotion(devotion: EGods): CSSProperties {
+        switch (devotion) {
+            case EGods.NURGLE: return {backgroundColor: "brown", color: "white"}
+            case EGods.KHORNE: return {backgroundColor: "red"}
+            case EGods.SLAANESH: return {backgroundColor: "pink"}
+            case EGods.TZEENTCH: return {backgroundColor: "lightskyblue"}
+            default: return {backgroundColor: "lightgrey"}
+        }
+    }
+

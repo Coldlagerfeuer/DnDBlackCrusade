@@ -1,4 +1,4 @@
-import { Button, Col, Container, Dropdown, DropdownButton, FormControl, InputGroup, ListGroup, Row } from "react-bootstrap";
+import { Badge, Button, Col, Container, Dropdown, DropdownButton, FormControl, InputGroup, ListGroup, Row } from "react-bootstrap";
 import { addTalent, devotionMap, EGods, expMapTalents, ITalent, ITalentState, removeTalent } from "./talentSlice";
 import { Pencil, PlusCircle, Trash } from "react-bootstrap-icons";
 import React, { useState } from "react";
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { allTalents } from "../character/resources";
 import { addEntry } from "../character/experienceSlice";
+import { getStyleForDevotion } from "../character/experienceView";
 
 
 export const TalentView = ({ sidebar = false }) => {
@@ -21,6 +22,7 @@ export const TalentView = ({ sidebar = false }) => {
 
     Object.keys(allTalents).forEach(value => talentOptions.push(value));
 
+
     function getEditFields() {
         function hasPrerequisite(prerequisit: string) {
             return !!talents[prerequisit];
@@ -31,8 +33,8 @@ export const TalentView = ({ sidebar = false }) => {
                 {createTalentObject(talents, setActiveTalent)}
             </Row>
             <Row>
-                <Col>
-                    <InputGroup className="mb-3">
+                {/*<Col md={12}>*/}
+                    <InputGroup size={"lg"} className="mb-3 col-md-12" >
                         <InputGroup.Prepend>
                             <Button
                                 onClick={() => {
@@ -50,44 +52,64 @@ export const TalentView = ({ sidebar = false }) => {
                                 {talents[activeTalent.name] ? <Pencil/> : <PlusCircle/>}
                             </Button>
                         </InputGroup.Prepend>
-                        <Typeahead
-                            placeholder={'Talentname'}
-                            id="basic-typeahead-talents"
-                            options={talentOptions}
-                            paginationText={"More..."}
-                            size={"large"}
-                            onInputChange={(name) => setActiveTalent({ ...activeTalent, name: name })}
-                            onChange={(selection) => setActiveTalent({
-                                // ...activeTalent,
-                                ...allTalents[selection[0]?.toString()],
-                                name: selection[0]?.toString(),
-                            })
-                            }
-                            selected={allTalents[activeTalent.name] ? [activeTalent.name] : []}
-                        />
-                        <FormControl placeholder={"Specialization or count"}
-                                     value={activeTalent.specialization ? activeTalent.specialization : ""}
-                                     size={"lg"}
-                                     onChange={(event => setActiveTalent({
-                                         ...activeTalent,
-                                         specialization: event.target.value
-                                     }))}
-                        />
-                        <DropdownButton size={"lg"} variant="success" title={`Tier: ${activeTalent.tier}`}>
-                            <Dropdown.Item
-                                onClick={() => setActiveTalent({ ...activeTalent, tier: 1 })}>1</Dropdown.Item>
-                            <Dropdown.Item
-                                onClick={() => setActiveTalent({ ...activeTalent, tier: 2 })}>2</Dropdown.Item>
-                            <Dropdown.Item
-                                onClick={() => setActiveTalent({ ...activeTalent, tier: 3 })}>3</Dropdown.Item>
-                        </DropdownButton>
+                        <Row>
+
+
+                            <Col md={5} style={{ paddingRight: 0 }}>
+                                <Typeahead
+                                    flip
+                                    placeholder={'Talentname'}
+                                    id="basic-typeahead-talents"
+                                    options={Object.values(allTalents)}
+                                    labelKey="name"
+                                    paginationText={"More..."}
+                                    size={"large"}
+                                    onInputChange={(name) => setActiveTalent({ ...activeTalent, name: name })}
+                                    onChange={(selection) => setActiveTalent({
+                                        // ...activeTalent,
+                                        ...allTalents[selection[0]?.name],
+                                        name: selection[0]?.name,
+                                    })
+                                    }
+                                    selected={allTalents[activeTalent.name] ? [activeTalent] : []}
+                                    renderMenuItemChildren={(option, props, index) => {
+                                        return <Row>
+                                            <Col md={1}>
+                                                <Badge style={{ ...getStyleForDevotion(option.devotion) }} pill>{option.tier}</Badge>
+                                            </Col>
+                                            <Col md={10}>{option.name}</Col>
+                                        </Row>
+                                    }}
+                                />
+                            </Col>
+                            <Col md={3} style={{ padding: 0 }}>
+                                <FormControl placeholder={"Specialization or count"}
+                                             value={activeTalent.specialization ? activeTalent.specialization : ""}
+                                             size={"lg"}
+                                             onChange={(event => setActiveTalent({
+                                                 ...activeTalent,
+                                                 specialization: event.target.value
+                                             }))}
+                                />
+                            </Col>
+                            <Col md={2} style={{ paddingLeft: 0 }}>
+                                <DropdownButton size={"lg"} variant="success" title={`Tier: ${activeTalent.tier || "-"}`}>
+                                    <Dropdown.Item
+                                        onClick={() => setActiveTalent({ ...activeTalent, tier: 1 })}>1</Dropdown.Item>
+                                    <Dropdown.Item
+                                        onClick={() => setActiveTalent({ ...activeTalent, tier: 2 })}>2</Dropdown.Item>
+                                    <Dropdown.Item
+                                        onClick={() => setActiveTalent({ ...activeTalent, tier: 3 })}>3</Dropdown.Item>
+                                </DropdownButton>
+                            </Col>
+                        </Row>
                         <InputGroup.Append>
                             <Button
                                 onClick={() => dispatch(removeTalent(activeTalent))}
                                 variant="outline-primary"><Trash/></Button>
                         </InputGroup.Append>
                     </InputGroup>
-                </Col>
+                {/*</Col>*/}
             </Row>
             <Row>
                 <Col md={8}>

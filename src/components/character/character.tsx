@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Jumbotron, Row } from "react-bootstrap";
 import { CharacteristicsCounter } from "../characteristics/characteristicsCounter";
 import './character.scss';
@@ -25,7 +25,7 @@ import { SearchView } from "../search/searchView";
 import { importExperience } from "./experienceSlice";
 
 
-export const CharacterFunction = () => {
+export const CharacterFunction = ({ isMobile }: { isMobile: boolean }) => {
     const [mainCols, setMainCols] = useState(1);
     const [importState, setImportState] = useState('');
     const [editCharacterName, setEditCharacterName] = useState(false);
@@ -33,7 +33,7 @@ export const CharacterFunction = () => {
     const [editDiscordDebug, setEditDiscordDebug] = useState(false);
     const [customAmount, setCustomAmount] = useState(1)
     const [customLimit, setCustomLimit] = useState(100)
-
+    const [lastSafe, setLastSafe] = useState(new Date(0))
 
     const completeState = useAppSelector(state => state);
     const dispatch = useAppDispatch()
@@ -52,6 +52,8 @@ export const CharacterFunction = () => {
         dispatch(importTalents(state.talents))
         dispatch(importArmoury(state.armoury))
         dispatch(importExperience(state.experience))
+
+        saveCharToLocalStorage()
     }
 
     function getDiscordServer() {
@@ -189,12 +191,15 @@ export const CharacterFunction = () => {
                         <h3>{getNameForTabKey(ETabNames.SETTINGS)}</h3>
                     </Col>
                 </Row>
+                <Row><Col>{`Last safe - ${lastSafe}`}</Col></Row>
                 <Row>
                     <Col sm={2}>
                         <Row>
                             <Col>
                                 <Button size={"sm"}
-                                        onClick={() => setImportState(JSON.stringify(completeState))}>Export</Button>
+                                        onClick={() => {
+                                            setImportState(JSON.stringify(completeState));
+                                        }}>Export</Button>
                             </Col>
                             <Col>
                                 <Button size={"sm"} onClick={() => importStateFromJson(importState)}>Load</Button>
@@ -217,7 +222,7 @@ export const CharacterFunction = () => {
                             Cols: {mainCols}
                             <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
                                     size="sm"
-                                    onClick={() => setMainCols(mainCols - 1)}>-</Button>
+                                    onClick={() => setMainCols(Math.max(mainCols - 1, 1))}>-</Button>
                             <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
                                     size="sm"
                                     onClick={() => setMainCols(mainCols + 1)}>+</Button>
@@ -240,18 +245,18 @@ export const CharacterFunction = () => {
                         <Row>
                             <Col>
 
-                        <Form.Check label="Prod" name="group1" type={'radio'} id={`discord-inline-radio-1`}
-                                    checked={completeState.character.discord.active === 'prod'}
-                                    onChange={() => dispatch(setDiscordActive('prod'))}
-                        />
+                                <Form.Check label="Prod" name="group1" type={'radio'} id={`discord-inline-radio-1`}
+                                            checked={completeState.character.discord.active === 'prod'}
+                                            onChange={() => dispatch(setDiscordActive('prod'))}
+                                />
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                        <Form.Check label="Debug" name="group1" type={'radio'} id={`discord-inline-radio-2`}
-                                    checked={completeState.character.discord.active === 'debug'}
-                                    onChange={() => dispatch(setDiscordActive('debug'))}
-                        />
+                                <Form.Check label="Debug" name="group1" type={'radio'} id={`discord-inline-radio-2`}
+                                            checked={completeState.character.discord.active === 'debug'}
+                                            onChange={() => dispatch(setDiscordActive('debug'))}
+                                />
 
                             </Col>
                         </Row>
@@ -289,37 +294,59 @@ export const CharacterFunction = () => {
 
                 {Object.keys(ETabNames)
                     .flatMap((value, index) => {
-                        if (isNaN(Number(value))) {
-                            return [];
-                        }
+                            if (isNaN(Number(value))) {
+                                return [];
+                            }
 
-                        return <Row key={`layout-${value}`}>
-                            <Col xs={3}>{getNameForTabKey(index)}</Col>
-                            <Col xs={9} style={{padding:0}}>
-                                <Form>
-                                    <div key={`inline-radio`} className="mb-3">
-                                        <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`${value}-inline-radio-1`}
-                                                    checked={completeState.character.layout.left.includes(index)}
-                                                    onChange={() => dispatch(changeLayout({ field: 'left', index }))}
-                                        />
-                                        <Form.Check inline label="Main" name="group1" type={'radio'} id={`${value}-inline-radio-2`}
-                                                    checked={completeState.character.layout.main.includes(index)}
-                                                    onChange={() => dispatch(changeLayout({ field: 'main', index }))}
-                                        />
-                                        <Form.Check inline label="Right Sidebar" type={'radio'} id={`${value}-inline-radio-3`}
-                                                    checked={completeState.character.layout.right.includes(index)}
-                                                    onChange={() => dispatch(changeLayout({ field: 'right', index }))}
-                                        />
-                                    </div>
-                                </Form>
-                            </Col>
-                        </Row>
-                    }
-                )}
+                            return <Row key={`layout-${value}`}>
+                                <Col xs={3}>{getNameForTabKey(index)}</Col>
+                                <Col xs={9} style={{ padding: 0 }}>
+                                    <Form>
+                                        <div key={`inline-radio`} className="mb-3">
+                                            <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`${value}-inline-radio-1`}
+                                                        checked={completeState.character.layout.left.includes(index)}
+                                                        onChange={() => dispatch(changeLayout({ field: 'left', index }))}
+                                            />
+                                            <Form.Check inline label="Main" name="group1" type={'radio'} id={`${value}-inline-radio-2`}
+                                                        checked={completeState.character.layout.main.includes(index)}
+                                                        onChange={() => dispatch(changeLayout({ field: 'main', index }))}
+                                            />
+                                            <Form.Check inline label="Right Sidebar" type={'radio'} id={`${value}-inline-radio-3`}
+                                                        checked={completeState.character.layout.right.includes(index)}
+                                                        onChange={() => dispatch(changeLayout({ field: 'right', index }))}
+                                            />
+                                        </div>
+                                    </Form>
+                                </Col>
+                            </Row>
+                        }
+                    )}
             </Container>
         </Jumbotron>
     }
 
+
+    const MINUTE_MS = 60000;
+
+    function saveCharToLocalStorage() {
+        localStorage.setItem("char", JSON.stringify(completeState));
+        setLastSafe(new Date());
+        console.log(`Saved char - ${lastSafe}`);
+    }
+
+    useEffect(() => {
+        const storedChar = localStorage.getItem("char")
+        if (storedChar) {
+            importStateFromJson(storedChar)
+        }
+
+        const interval = setInterval(() => {
+            saveCharToLocalStorage()
+        }, MINUTE_MS);
+
+        return () => clearInterval(interval);
+
+    }, []);
 
     function getExperiencePane() {
         return <Jumbotron key={"jumbo-experience"}>
@@ -336,7 +363,7 @@ export const CharacterFunction = () => {
         return <Jumbotron key={"jumbo-search"}>
             <Row>
                 <Col>
-                    <SearchView />
+                    <SearchView/>
                 </Col>
             </Row>
         </Jumbotron>
@@ -403,20 +430,29 @@ export const CharacterFunction = () => {
             }</>
     }
 
-
-    return <Row>
-        <Col xs={3} id="sidebar-wrapper">
-            {getTabs('left')}
-        </Col>
-        <Col xs={6} id="page-content-wrapper">
-            <div>
-                {getTabs()}
-            </div>
-        </Col>
-        <Col xs={3} id="sidebar-wrapper">
-            {getTabs('right')}
-        </Col>
-    </Row>
+    return isMobile ? (
+        <Row>
+            <Col id="page-content-wrapper-mobile">
+                <div>
+                    {getTabs('left')}
+                    {getTabs()}
+                    {getTabs('right')}
+                </div>
+            </Col>
+        </Row>
+    ) : <Row>
+            <Col md={3} id="sidebar-wrapper">
+                {getTabs('left')}
+            </Col>
+            <Col md={6} id="page-content-wrapper">
+                <div>
+                    {getTabs()}
+                </div>
+            </Col>
+            <Col md={3} id="sidebar-wrapper">
+                {getTabs('right')}
+            </Col>
+        </Row>
 
 } // END OF FUNCTION
 

@@ -48,6 +48,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
     const character = useAppSelector(state => state.character);
     const characteristics = useAppSelector(state => state.characteristics);
     const [testModifier, setTestModifier] = useState(10);
+    const [bonusRolls, setBonusRolls] = useState(0);
 
     const [show, setShow] = useState(false);
     const [text, setText] = useState('');
@@ -272,17 +273,27 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
 
     function getRollDice() {
         const characteristic = isMeeleWeapon() ? characteristics["WS"] : characteristics["BS"];
-        const dropItems = [<Dropdown.Header key={`aim-header-${weapon.name}`}>Aim Modifier</Dropdown.Header>];
+        const bonusDrop = [<Dropdown.Header key={`aim-header-${weapon.name}`}>Aim Modifier</Dropdown.Header>];
+        const bonusRollDrop = [<Dropdown.Header key={`rolls-header-${weapon.name}`}>Bonus Rolls</Dropdown.Header>];
 
         // dropItems.push();
         for (let i = 60; i > -70; i -= 10) {
-            dropItems.push(<Dropdown.Item key={`${weapon.name}-modifier-${i}`} onClick={() => setTestModifier(i)}>{i}</Dropdown.Item>);
+            bonusDrop.push(<Dropdown.Item key={`${weapon.name}-modifier-${i}`} onClick={() => setTestModifier(i)}>{i}</Dropdown.Item>);
         }
+        for (let i = 0; i < 10; i++) {
+            bonusRollDrop.push(<Dropdown.Item key={`${weapon.name}-rolls-${i}`} onClick={() => setBonusRolls(i)}>{i}</Dropdown.Item>);
+        }
+
 
         return <Row>
             <Col>
                 <DropdownButton size="sm" title={testModifier} variant={'secondary'}>
-                    {dropItems}
+                    {bonusDrop}
+                </DropdownButton>
+            </Col>
+            <Col>
+                <DropdownButton size="sm"  title={bonusRolls} variant={'secondary'}>
+                    {bonusRollDrop}
                 </DropdownButton>
             </Col>
             <Col>
@@ -295,7 +306,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             </Col>
             <Col>
                 <Button size="sm" variant="light"
-                        onClick={() => showDamageAlert(rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, weapon))}
+                        onClick={() => showDamageAlert(rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, weapon, bonusRolls))}
                 >
                     <FaDiceD20 color={"darkred"}
                                style={{ cursor: "pointer" }}
