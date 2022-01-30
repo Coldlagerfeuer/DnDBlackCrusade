@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/DnDBlackCrusade/static/css/main.2cb1d5d5.chunk.css",
-    "main.js": "/DnDBlackCrusade/static/js/main.5b045aca.chunk.js",
-    "main.js.map": "/DnDBlackCrusade/static/js/main.5b045aca.chunk.js.map",
+    "main.js": "/DnDBlackCrusade/static/js/main.ad19e9ae.chunk.js",
+    "main.js.map": "/DnDBlackCrusade/static/js/main.ad19e9ae.chunk.js.map",
     "runtime-main.js": "/DnDBlackCrusade/static/js/runtime-main.b3ccefd2.js",
     "runtime-main.js.map": "/DnDBlackCrusade/static/js/runtime-main.b3ccefd2.js.map",
     "static/css/2.150d169a.chunk.css": "/DnDBlackCrusade/static/css/2.150d169a.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.150d169a.chunk.css",
     "static/js/2.d470e2e6.chunk.js",
     "static/css/main.2cb1d5d5.chunk.css",
-    "static/js/main.5b045aca.chunk.js"
+    "static/js/main.ad19e9ae.chunk.js"
   ]
 }
