@@ -129,7 +129,7 @@ export const armourySlice = createSlice({
         setWeapon: (state, action: PayloadAction<IWeapon | ISpell>) => {
             state.weapons[action.payload.name] = {...action.payload, count: 1};
         },
-        removeWeapon: (state, action) => {
+        removeWeapon: (state, action: PayloadAction<IWeapon | ISpell>) => {
             delete state.weapons[action.payload.name];
         },
         setWounds: (state, action: PayloadAction<number>) => {

@@ -1,5 +1,5 @@
 import { ISkill } from "../skills/skillSlice";
-import { EDamageType, ISpell, IWeapon } from "../armoury/armourySlice";
+import { EDamageType, EWeaponCategory, ISpell, IWeapon } from "../armoury/armourySlice";
 import { ICharacteristics } from "../characteristics/characteristicsSlice";
 import { getHitLocation } from "../armoury/armoury";
 import { EItemCategory } from "./EItemCategory";
@@ -64,13 +64,21 @@ export function rollAndSendToDiscord(discordServer: string, username: string, am
     return rollResult;
 }
 
-export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell, bonusRolls: number = 0): IDamageRoll {
+export function rollDamageAndSendToDiscord(discordServer: string, username: string, weapon: IWeapon | ISpell, strength?: ICharacteristics, bonusRolls: number = 0): IDamageRoll {
+
 
     // Damage Calc - Syntax: XdY+Z
     const d = weapon.damage.split("d")
     let amount = parseInt(d[0]);
     const limit = parseInt(d[1].split("+")[0]);
-    const damage = parseInt(d[1].split("+")[1]);
+    let damage = parseInt(d[1].split("+")[1]);
+
+    if (weapon.category === EItemCategory.WEAPON) {
+        const w = weapon as IWeapon;
+        if (w.weaponCategory > EWeaponCategory._ && strength) {
+            damage += Math.floor(strength.value / 10) + strength.bonus;
+        }
+    }
 
     // if (bonusRolls) {
     //     const rollResult: IDamageRoll = { ...roll(amount + bonusRolls, limit), rollType: ERollType.DAMAGE, ...weapon, damage };
@@ -84,7 +92,7 @@ export function rollDamageAndSendToDiscord(discordServer: string, username: stri
     // console.log(rollResult.rolls.sort((a, b) => b - a ))
     // console.log(rollResult.rolls)
     // console.log(rollResult.rolls.slice(0, amount))
-    rollResult.rollSum = rollResult.rolls.sort((a, b) => b - a).slice(0, amount).reduce((a,b) => a + b);
+    rollResult.rollSum = rollResult.rolls.sort((a, b) => b - a).slice(0, amount).reduce((a, b) => a + b);
     sendMessage(discordServer, `attacks with ${weapon.name} `, getEmbedsForRollType(rollResult), username);
 
     return rollResult
@@ -143,7 +151,11 @@ function getEmbedsForRollType(roll: IRollResult) {
                 fields: [
                     { name: "Roll", value: `${rollResult.amount}d${rollResult.limit}`, inline: true },
                     { name: "Roll", value: `${rollResult.rolls}`, inline: true },
-                    { name: "Sum", value: `${rollResult.rollSum} ${rollResult.bonus < 0 ? rollResult.bonus : `+ ${rollResult.bonus}`} = **${rollResult.rollSum + rollResult.bonus}**`, inline: true},
+                    {
+                        name: "Sum",
+                        value: `${rollResult.rollSum} ${rollResult.bonus < 0 ? rollResult.bonus : `+ ${rollResult.bonus}`} = **${rollResult.rollSum + rollResult.bonus}**`,
+                        inline: true
+                    },
                 ]
             }]
         }
@@ -153,7 +165,7 @@ function getEmbedsForRollType(roll: IRollResult) {
                 {
                     color: rollResult.result ? colorCodeGreen : colorCodeRed,
                     fields: [
-                        { name: "Roll", value: `${rollResult.amount}d${ rollResult.limit }`, inline: true },
+                        { name: "Roll", value: `${rollResult.amount}d${rollResult.limit}`, inline: true },
                         { name: "Results", value: `${rollResult.rolls}`, inline: true },
                         { name: "Sum", value: `${rollResult.rollSum}`, inline: true },
                         { name: "Stat", value: `${rollResult.stat}`, inline: true },
@@ -170,7 +182,7 @@ function getEmbedsForRollType(roll: IRollResult) {
             return [
                 {
                     fields: [
-                        { name: "Roll", value: `${rollResult.amount}d${ rollResult.limit }`, inline: true },
+                        { name: "Roll", value: `${rollResult.amount}d${rollResult.limit}`, inline: true },
                         { name: "Results", value: `${rollResult.rolls}`, inline: true },
                         { name: "Damage", value: `${rollResult.damage}`, inline: true },
                         { name: "Sum", value: `**${rollResult.rollSum + rollResult.damage}**`, inline: true },
@@ -186,10 +198,17 @@ function getEmbedsForRollType(roll: IRollResult) {
             return [{
                 color: rollResult.result ? colorCodeGreen : colorCodeRed,
                 fields: [
-                    { name: "Roll", value: `${rollResult.amount}d${ rollResult.limit }`, inline: true },
+                    { name: "Roll", value: `${rollResult.amount}d${rollResult.limit}`, inline: true },
                     { name: "Sum", value: `${rollResult.rollSum}`, inline: true },
-                    { name: "Stat", value: `${rollResult.characteristics.value} ${rollResult.modifier < 0 ? rollResult.modifier : `+${rollResult.modifier}`}`, inline: true },
-                    { name: "**Result**",value: `${rollResult.characteristics.value + rollResult.modifier} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}` },
+                    {
+                        name: "Stat",
+                        value: `${rollResult.characteristics.value} ${rollResult.modifier < 0 ? rollResult.modifier : `+${rollResult.modifier}`}`,
+                        inline: true
+                    },
+                    {
+                        name: "**Result**",
+                        value: `${rollResult.characteristics.value + rollResult.modifier} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}`
+                    },
                 ]
             }]
         }
@@ -199,10 +218,17 @@ function getEmbedsForRollType(roll: IRollResult) {
             return [{
                 color: rollResult.result ? colorCodeGreen : colorCodeRed,
                 fields: [
-                    { name: "Roll", value: `${rollResult.amount}d${ rollResult.limit }`, inline: true },
+                    { name: "Roll", value: `${rollResult.amount}d${rollResult.limit}`, inline: true },
                     { name: "Sum", value: `${rollResult.rollSum}`, inline: true },
-                    { name: "Stat", value: `${rollResult.characteristics.value} ${rollResult.modifier < 0 ? rollResult.modifier : `+${rollResult.modifier}`}`, inline: true },
-                    { name: "**Result**",value: `${rollResult.characteristics.value + rollResult.modifier} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}` },
+                    {
+                        name: "Stat",
+                        value: `${rollResult.characteristics.value} ${rollResult.modifier < 0 ? rollResult.modifier : `+${rollResult.modifier}`}`,
+                        inline: true
+                    },
+                    {
+                        name: "**Result**",
+                        value: `${rollResult.characteristics.value + rollResult.modifier} ${r} ${rollResult.rollSum} = ${rollResult.result ? '**SUCCESS**' : '**FAILURE**'}`
+                    },
                     { name: "Hit Location", value: `${getHitLocation(rollResult.rollSum)}` },
                 ]
             }]

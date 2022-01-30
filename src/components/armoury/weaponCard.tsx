@@ -290,7 +290,7 @@ export const WeaponCard = ({ weapon, editMode = false }: { weapon: IWeapon, edit
             </Col>
             <Col>
                 <Button size="sm" variant="light"
-                        onClick={() => showDamageAlert(rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, weapon, bonusRolls))}
+                        onClick={() => showDamageAlert(rollDamageAndSendToDiscord(character.discord[character.discord.active], character.characterName, weapon, characteristics["S"], bonusRolls))}
                 >
                     <FaDiceD20 color={"darkred"}
                                style={{ cursor: "pointer" }}
