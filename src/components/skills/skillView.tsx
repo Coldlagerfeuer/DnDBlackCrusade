@@ -63,7 +63,7 @@ export const SkillView = ({ cols = 2, showTypeDef = true, showSkilledDef = false
                                 </Row>
                                 : <Row>
                                     <Col md={5}><b>Skillname</b></Col>
-                                    <Col md={5} style={{ padding: 0 }}>
+                                    <Col md={4} style={{ padding: 0 }}>
                                         <span style={{ paddingLeft: 0, paddingRight: 12 }}><b>T</b></span>
                                         <span style={{ paddingLeft: 5, paddingRight: 5 }}><b>+10</b></span>
                                         <span style={{ paddingLeft: 5, paddingRight: 5 }}><b>+20</b></span>

@@ -1,22 +1,13 @@
-import {
-    Alert,
-    Badge,
-    Button,
-    Card,
-    Col, Container,
-    Dropdown, DropdownButton,
-    FormControl,
-    InputGroup,
-    OverlayTrigger,
-    Row,
-    Tooltip
-} from "react-bootstrap";
+import { Alert, Badge, Button, Card, Col, Dropdown, DropdownButton, FormControl, InputGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import {
     BiCrosshair,
-    BiQuestionMark, FaDiceD20,
+    BiQuestionMark,
+    FaDiceD20,
     GiAncientSword,
-    GiArrowScope, GiBulletImpacts,
-    GiChainsaw, GiElectric,
+    GiArrowScope,
+    GiBulletImpacts,
+    GiChainsaw,
+    GiElectric,
     GiLaserPrecision,
     GiMachineGunMagazine,
     GiPistolGun,
@@ -27,17 +18,10 @@ import {
 } from "react-icons/all";
 import React, { useState } from "react";
 import './weaponCard.scss';
-import { EWeaponCategory, EDamageType, IWeapon, removeWeapon } from "./armourySlice";
-import { addItem, editWeapon, changeWeaponName } from "../inventory/inventorySlice";
+import { EDamageType, EWeaponCategory, IWeapon, removeWeapon } from "./armourySlice";
+import { addItem, changeWeaponName, editWeapon } from "../inventory/inventorySlice";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import {
-    IDamageRoll,
-    IRollResult,
-    IStatRoll,
-    rollAimAndSendToDiscord,
-    rollDamageAndSendToDiscord,
-    rollStatAndSendToDiscord
-} from "../character/Rolls";
+import { IDamageRoll, IStatRoll, rollAimAndSendToDiscord, rollDamageAndSendToDiscord } from "../character/Rolls";
 import { getHitLocation } from "./armoury";
 
 

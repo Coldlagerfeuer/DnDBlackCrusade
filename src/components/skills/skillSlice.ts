@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { allSkills } from "../character/resources";
 import { EGods } from "../talents/talentSlice";
+import { stat } from "fs";
 
 export interface ISkill {
     name: string,
@@ -60,11 +61,15 @@ export const skillSlice = createSlice({
                 state[name] = action.payload;
             }
 
+        },
+        removeSkill: (state, action: PayloadAction<ISkill>) => {
+            const {name, parent} = action.payload;
+            delete state[`${parent?.name} - ${name}`];
         }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { setLevel, setBonus, importSkills, addSkill } = skillSlice.actions
+export const { setLevel, setBonus, importSkills, addSkill, removeSkill } = skillSlice.actions
 export default skillSlice.reducer
 

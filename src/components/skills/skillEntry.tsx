@@ -1,6 +1,6 @@
-import { Alert, Button, Col, Container, FormControl, InputGroup, Row } from "react-bootstrap";
+import { Alert, Badge, Button, Col, Container, FormControl, InputGroup, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
-import { addSkill, expMapSkills, setBonus, setLevel } from "./skillSlice";
+import { addSkill, expMapSkills, removeSkill, setBonus, setLevel } from "./skillSlice";
 import React, { useState } from "react";
 import { FaDiceD20 } from "react-icons/all";
 import { devotionMap, EGods } from "../talents/talentSlice";
@@ -94,7 +94,7 @@ export const SkillEntryFunction = ({
 
             return <Row style={{ padding: 0 }}>
                 {getNameCol()}
-                <Col md={5} style={{ padding: 0 }}>
+                <Col md={4} style={{ padding: 0 }}>
                     <InputGroup>
                         <InputGroup.Checkbox checked={level > 0} onChange={() => changeLevel(1)}/>
                         <InputGroup.Checkbox checked={level > 1} onChange={() => changeLevel(2)}/>
@@ -107,6 +107,14 @@ export const SkillEntryFunction = ({
                                  onChange={(event => dispatch(setBonus({ ...skill, bonus: parseInt(event.target.value) })))}
                     />
                 </Col>
+                {parent ?
+                <Col md={1}>
+                    <Badge variant={'danger'} style={{ cursor: 'pointer' }}
+                           onClick={() => {
+                               dispatch(removeSkill(skill))
+                           }}>-
+                    </Badge>
+                </Col> : <></>}
             </Row>;
         }
 
