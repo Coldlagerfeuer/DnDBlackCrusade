@@ -2,35 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, FormControl, FormGroup, FormLabel, Jumbotron, Row } from "react-bootstrap";
 import { CharacteristicsCounter } from "../characteristics/characteristicsCounter";
 import './character.scss';
-import { allArmour, allItems, allWeapons } from "./resources";
 import { characteristicsInitialState, ICharacteristicsState, importCharacteristics } from "../characteristics/characteristicsSlice";
 import { importTalents } from "../talents/talentSlice";
 import { InventoryFunction } from "../inventory/inventory";
 import { useAppDispatch, useAppSelector } from "../../general/hooks";
 import { RootState } from "../../general/store";
 import { importSkills } from "../skills/skillSlice";
-import { IInventory, IItem, importInventory } from "../inventory/inventorySlice";
+import { importInventory } from "../inventory/inventorySlice";
 import { TalentView } from "../talents/talentView";
 import { Armoury } from "../armoury/armoury";
-import { IArmour, importArmoury, IWeapon, IWeaponState } from "../armoury/armourySlice";
-import { FileUploadDrop } from "./fileUploadDrop";
-import { changeLayout, importCharacter, setCharacterName, setDiscordActive, setDiscordServer, setDiscordServerDebug } from "./characterSlice";
+import { importArmoury } from "../armoury/armourySlice";
+import { importCharacter, setCharacterName } from "./characterSlice";
 import { rollAndSendToDiscord } from "./Rolls";
 import { FaDiceD20 } from "react-icons/all";
-import { EItemCategory } from "./EItemCategory";
 import { SkillView } from "../skills/skillView";
 import { ETabNames } from "./ETabNames";
 import { ExperienceView } from "./experienceView";
 import { SearchView } from "../search/searchView";
 import { importExperience } from "./experienceSlice";
+import { Settings } from "../settings/settings";
 
 
 export const CharacterFunction = ({ isMobile }: { isMobile: boolean }) => {
     const [mainCols, setMainCols] = useState(1);
-    const [importState, setImportState] = useState('');
     const [editCharacterName, setEditCharacterName] = useState(false);
-    const [editDiscord, setEditDiscord] = useState(false);
-    const [editDiscordDebug, setEditDiscordDebug] = useState(false);
     const [customAmount, setCustomAmount] = useState(1)
     const [customLimit, setCustomLimit] = useState(100)
     const [lastSafe, setLastSafe] = useState(new Date(0))
@@ -154,175 +149,198 @@ export const CharacterFunction = ({ isMobile }: { isMobile: boolean }) => {
 
     function getSettingsPane() {
 
-        function calcNewItems() {
-            const result = {
-                items: {},
-                weapons: {},
-                armour: {}
-            }
-
-            const items: IInventory = {};
-            const weapons: IWeaponState = {};
-            const armour: { [name: string]: IArmour } = {};
-
-            const inventory = completeState.inventory;
-            for (const itemName in inventory) {
-                if (!(itemName in allItems || itemName in allWeapons || itemName in allArmour)) {
-                    const item: IItem = inventory[itemName];
-                    if (item.category === EItemCategory.WEAPON) {
-                        weapons[itemName] = item as IWeapon;
-                    } else if (item.category === EItemCategory.ARMOUR) {
-                        armour[itemName] = item as IArmour;
-                    } else {
-                        items[itemName] = item;
-                    }
-                }
-            }
-            result.items = items;
-            result.weapons = weapons;
-            result.armour = armour;
-            return result
-        }
-
         return <Jumbotron key={"jumbo-settings"}>
-            <Container>
-                <Row>
-                    <Col>
-                        <h3>{getNameForTabKey(ETabNames.SETTINGS)}</h3>
-                    </Col>
-                </Row>
-                <Row><Col>{`Last safe - ${lastSafe}`}</Col></Row>
-                <Row>
-                    <Col sm={2}>
-                        <Row>
-                            <Col>
-                                <Button size={"sm"}
-                                        onClick={() => {
-                                            setImportState(JSON.stringify(completeState));
-                                        }}>Export</Button>
-                            </Col>
-                            <Col>
-                                <Button size={"sm"} onClick={() => importStateFromJson(importState)}>Load</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <a href={`data:text/json;charset=utf-8,${encodeURIComponent(
-                                    JSON.stringify(completeState)
-                                )}`}
-                                   download={completeState.character.characterName ? completeState.character.characterName + ".json" : "DnD-Character.json"}>
-                                    <Button>Download</Button>
-                                </a>
-                            </Col>
-                            <Col>
-
-                            </Col>
-                        </Row>
-                        <Row>
-                            Cols: {mainCols}
-                            <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
-                                    size="sm"
-                                    onClick={() => setMainCols(Math.max(mainCols - 1, 1))}>-</Button>
-                            <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
-                                    size="sm"
-                                    onClick={() => setMainCols(mainCols + 1)}>+</Button>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Button onClick={() => setImportState(JSON.stringify(calcNewItems()))}>Export New
-                                    Items</Button>
-                            </Col>
-                        </Row>
-                    </Col>
-
-                    <Col sm={10}>
-                        <FileUploadDrop {...{ importState, setImportState }} />
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col md={3}>
-                        <Row>
-                            <Col>
-
-                                <Form.Check label="Prod" name="group1" type={'radio'} id={`discord-inline-radio-1`}
-                                            checked={completeState.character.discord.active === 'prod'}
-                                            onChange={() => dispatch(setDiscordActive('prod'))}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Check label="Debug" name="group1" type={'radio'} id={`discord-inline-radio-2`}
-                                            checked={completeState.character.discord.active === 'debug'}
-                                            onChange={() => dispatch(setDiscordActive('debug'))}
-                                />
-
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col md={9}>
-                        <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
-                            {editDiscord ?
-                                <FormControl
-                                    onMouseLeave={() => setEditDiscord(false)}
-                                    value={completeState.character.discord.prod}
-                                    onChange={(event => dispatch(setDiscordServer(event.target.value)))}
-                                    autoFocus={true}/>
-                                :
-                                <h4
-                                    onClick={() => setEditDiscord(true)}
-                                >{completeState.character.discord.prod ? completeState.character.discord.prod : 'Click to set Discord'}</h4>
-                            }
-                        </Row>
-
-                        <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
-                            {editDiscordDebug ?
-                                <FormControl
-                                    onMouseLeave={() => setEditDiscordDebug(false)}
-                                    value={completeState.character.discord.debug}
-                                    onChange={(event => dispatch(setDiscordServerDebug(event.target.value)))}
-                                    autoFocus={true}/>
-                                :
-                                <h4
-                                    onClick={() => setEditDiscordDebug(true)}
-                                >{completeState.character.discord.debug ? completeState.character.discord.debug : 'Click to set Discord - debug'}</h4>
-                            }
-                        </Row>
-                    </Col>
-                </Row>
-
-                {Object.keys(ETabNames)
-                    .flatMap((value, index) => {
-                            if (isNaN(Number(value))) {
-                                return [];
-                            }
-
-                            return <Row key={`layout-${value}`}>
-                                <Col xs={3}>{getNameForTabKey(index)}</Col>
-                                <Col xs={9} style={{ padding: 0 }}>
-                                    <Form>
-                                        <div key={`inline-radio`} className="mb-3">
-                                            <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`${value}-inline-radio-1`}
-                                                        checked={completeState.character.layout.left.includes(index)}
-                                                        onChange={() => dispatch(changeLayout({ field: 'left', index }))}
-                                            />
-                                            <Form.Check inline label="Main" name="group1" type={'radio'} id={`${value}-inline-radio-2`}
-                                                        checked={completeState.character.layout.main.includes(index)}
-                                                        onChange={() => dispatch(changeLayout({ field: 'main', index }))}
-                                            />
-                                            <Form.Check inline label="Right Sidebar" type={'radio'} id={`${value}-inline-radio-3`}
-                                                        checked={completeState.character.layout.right.includes(index)}
-                                                        onChange={() => dispatch(changeLayout({ field: 'right', index }))}
-                                            />
-                                        </div>
-                                    </Form>
-                                </Col>
-                            </Row>
-                        }
-                    )}
-            </Container>
+            <Row>
+                <Col>
+                    <h3>{getNameForTabKey(ETabNames.SETTINGS)}</h3>
+                </Col>
+            </Row>
+            <Row><Col>{`Last safe - ${lastSafe}`}</Col></Row>
+            <Settings importStateFromJson={importStateFromJson} getNameForTabKey={getNameForTabKey} />
+            <Row>
+                Cols: {mainCols}
+                <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setMainCols(Math.max(mainCols - 1, 1))}>-</Button>
+                <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setMainCols(mainCols + 1)}>+</Button>
+            </Row>
         </Jumbotron>
+
+        // function calcNewItems() {
+        //     const result = {
+        //         items: {},
+        //         weapons: {},
+        //         armour: {}
+        //     }
+        //
+        //     const items: IInventory = {};
+        //     const weapons: IWeaponState = {};
+        //     const armour: { [name: string]: IArmour } = {};
+        //
+        //     const inventory = completeState.inventory;
+        //     for (const itemName in inventory) {
+        //         if (!(itemName in allItems || itemName in allWeapons || itemName in allArmour)) {
+        //             const item: IItem = inventory[itemName];
+        //             if (item.category === EItemCategory.WEAPON) {
+        //                 weapons[itemName] = item as IWeapon;
+        //             } else if (item.category === EItemCategory.ARMOUR) {
+        //                 armour[itemName] = item as IArmour;
+        //             } else {
+        //                 items[itemName] = item;
+        //             }
+        //         }
+        //     }
+        //     result.items = items;
+        //     result.weapons = weapons;
+        //     result.armour = armour;
+        //     return result
+        // }
+        //
+        // return <Jumbotron key={"jumbo-settings"}>
+        //     <Container>
+        //         <Row>
+        //             <Col>
+        //                 <h3>{getNameForTabKey(ETabNames.SETTINGS)}</h3>
+        //             </Col>
+        //         </Row>
+        //         <Row><Col>{`Last safe - ${lastSafe}`}</Col></Row>
+        //         <Row>
+        //             <Col sm={2}>
+        //                 <Row>
+        //                     <Col>
+        //                         <Button size={"sm"}
+        //                                 onClick={() => {
+        //                                     setImportState(JSON.stringify(completeState));
+        //                                 }}>Export</Button>
+        //                     </Col>
+        //                     <Col>
+        //                         <Button size={"sm"} onClick={() => importStateFromJson(importState)}>Load</Button>
+        //                     </Col>
+        //                 </Row>
+        //                 <Row>
+        //                     <Col>
+        //                         <a href={`data:text/json;charset=utf-8,${encodeURIComponent(
+        //                             JSON.stringify(completeState)
+        //                         )}`}
+        //                            download={completeState.character.characterName ? completeState.character.characterName + ".json" : "DnD-Character.json"}>
+        //                             <Button>Download</Button>
+        //                         </a>
+        //                     </Col>
+        //                 </Row>
+        //                 <Row>
+        //                     <Col>
+        //                         <Button>
+        //                             Save to Discord
+        //                         </Button>
+        //                     </Col>
+        //                 </Row>
+        //                 <Row>
+        //                     Cols: {mainCols}
+        //                     <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
+        //                             size="sm"
+        //                             onClick={() => setMainCols(Math.max(mainCols - 1, 1))}>-</Button>
+        //                     <Button style={{ padding: 0, width: '10px', height: '25px' }} variant="outline-secondary"
+        //                             size="sm"
+        //                             onClick={() => setMainCols(mainCols + 1)}>+</Button>
+        //                 </Row>
+        //                 <Row>
+        //                     <Col>
+        //                         <Button onClick={() => setImportState(JSON.stringify(calcNewItems()))}>Export New
+        //                             Items</Button>
+        //                     </Col>
+        //                 </Row>
+        //             </Col>
+        //
+        //             <Col sm={10}>
+        //                 <FileUploadDrop {...{ importState, setImportState }} />
+        //             </Col>
+        //         </Row>
+        //
+        //         <Row>
+        //             <Col md={3}>
+        //                 <Row>
+        //                     <Col>
+        //
+        //                         <Form.Check label="Prod" name="group1" type={'radio'} id={`discord-inline-radio-1`}
+        //                                     checked={completeState.character.discord.active === 'prod'}
+        //                                     onChange={() => dispatch(setDiscordActive('prod'))}
+        //                         />
+        //                     </Col>
+        //                 </Row>
+        //                 <Row>
+        //                     <Col>
+        //                         <Form.Check label="Debug" name="group1" type={'radio'} id={`discord-inline-radio-2`}
+        //                                     checked={completeState.character.discord.active === 'debug'}
+        //                                     onChange={() => dispatch(setDiscordActive('debug'))}
+        //                         />
+        //
+        //                     </Col>
+        //                 </Row>
+        //             </Col>
+        //             <Col md={9}>
+        //                 <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
+        //                     {editDiscord ?
+        //                         <FormControl
+        //                             onMouseLeave={() => setEditDiscord(false)}
+        //                             value={completeState.character.discord.prod}
+        //                             onChange={(event => dispatch(setDiscordServer(event.target.value)))}
+        //                             autoFocus={true}/>
+        //                         :
+        //                         <h4
+        //                             onClick={() => setEditDiscord(true)}
+        //                         >{completeState.character.discord.prod ? completeState.character.discord.prod : 'Click to set Discord'}</h4>
+        //                     }
+        //                 </Row>
+        //
+        //                 <Row style={{ border: 2, borderColor: 'black', borderStyle: 'solid', margin: 3 }}>
+        //                     {editDiscordDebug ?
+        //                         <FormControl
+        //                             onMouseLeave={() => setEditDiscordDebug(false)}
+        //                             value={completeState.character.discord.debug}
+        //                             onChange={(event => dispatch(setDiscordServerDebug(event.target.value)))}
+        //                             autoFocus={true}/>
+        //                         :
+        //                         <h4
+        //                             onClick={() => setEditDiscordDebug(true)}
+        //                         >{completeState.character.discord.debug ? completeState.character.discord.debug : 'Click to set Discord - debug'}</h4>
+        //                     }
+        //                 </Row>
+        //             </Col>
+        //         </Row>
+        //
+        //         {Object.keys(ETabNames)
+        //             .flatMap((value, index) => {
+        //                     if (isNaN(Number(value))) {
+        //                         return [];
+        //                     }
+        //
+        //                     return <Row key={`layout-${value}`}>
+        //                         <Col xs={3}>{getNameForTabKey(index)}</Col>
+        //                         <Col xs={9} style={{ padding: 0 }}>
+        //                             <Form>
+        //                                 <div key={`inline-radio`} className="mb-3">
+        //                                     <Form.Check inline label="Left Sidebar" name="group1" type={'radio'} id={`${value}-inline-radio-1`}
+        //                                                 checked={completeState.character.layout.left.includes(index)}
+        //                                                 onChange={() => dispatch(changeLayout({ field: 'left', index }))}
+        //                                     />
+        //                                     <Form.Check inline label="Main" name="group1" type={'radio'} id={`${value}-inline-radio-2`}
+        //                                                 checked={completeState.character.layout.main.includes(index)}
+        //                                                 onChange={() => dispatch(changeLayout({ field: 'main', index }))}
+        //                                     />
+        //                                     <Form.Check inline label="Right Sidebar" type={'radio'} id={`${value}-inline-radio-3`}
+        //                                                 checked={completeState.character.layout.right.includes(index)}
+        //                                                 onChange={() => dispatch(changeLayout({ field: 'right', index }))}
+        //                                     />
+        //                                 </div>
+        //                             </Form>
+        //                         </Col>
+        //                     </Row>
+        //                 }
+        //             )}
+        //     </Container>
+        // </Jumbotron>
     }
 
 
@@ -441,18 +459,18 @@ export const CharacterFunction = ({ isMobile }: { isMobile: boolean }) => {
             </Col>
         </Row>
     ) : <Row>
-            <Col md={3} id="sidebar-wrapper">
-                {getTabs('left')}
-            </Col>
-            <Col md={6} id="page-content-wrapper">
-                <div>
-                    {getTabs()}
-                </div>
-            </Col>
-            <Col md={3} id="sidebar-wrapper">
-                {getTabs('right')}
-            </Col>
-        </Row>
+        <Col md={3} id="sidebar-wrapper">
+            {getTabs('left')}
+        </Col>
+        <Col md={6} id="page-content-wrapper">
+            <div>
+                {getTabs()}
+            </div>
+        </Col>
+        <Col md={3} id="sidebar-wrapper">
+            {getTabs('right')}
+        </Col>
+    </Row>
 
 } // END OF FUNCTION
 

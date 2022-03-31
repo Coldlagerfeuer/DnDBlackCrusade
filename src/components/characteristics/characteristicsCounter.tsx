@@ -17,7 +17,7 @@ export const CharacteristicsCounter = ({ short = '' }) => {
 
 
     function learnCharacteristics(short: string) {
-        dispatch(incrementFive(characteristic.short));
+        dispatch(incrementFive(short));
 
         const characterDevotion = character.devotion ? character.devotion : EGods.UNALIGNED;
         const characteristicsDevotion = characteristic.devotion ? characteristic.devotion : EGods.UNALIGNED;

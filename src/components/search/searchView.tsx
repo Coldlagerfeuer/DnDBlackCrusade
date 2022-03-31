@@ -4,7 +4,6 @@ import { allItems, allTalents } from "../character/resources";
 import React, { createRef, useState } from "react";
 import { IItem } from "../inventory/inventorySlice";
 import { ITalent } from "../talents/talentSlice";
-import { log } from "util";
 
 
 export type ISearchable = IItem | ITalent

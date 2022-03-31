@@ -3,6 +3,7 @@ import { EDamageType, EWeaponCategory, ISpell, IWeapon } from "../armoury/armour
 import { ICharacteristics } from "../characteristics/characteristicsSlice";
 import { getHitLocation } from "../armoury/armoury";
 import { EItemCategory } from "./EItemCategory";
+import { RootState } from "../../general/store";
 
 enum ERollType {
     NONE,
@@ -50,7 +51,7 @@ export function rollTestAndSendToDiscord(discordServer: string, username: string
     let message = skill ? `tried ${skill.name} Test` : ""
     if (rollResult.rollType === ERollType.TEST) {
         const rollResultTest = rollResult as ITestRoll;
-        message += `${rollResultTest.result ? ' - **SUCCESS**' : '**FAILURE**'}`
+        message += `${rollResultTest.result ? ' - **SUCCESS**' : ' - **FAILURE**'}`
     }
 
     sendMessage(discordServer, message, getEmbedsForRollType(rollResult), username);
@@ -124,6 +125,31 @@ export function rollAimAndSendToDiscord(discordServer: string, username: string,
     return rollResult
 }
 
+export function saveCharToDiscord(completeState: RootState): void {
+    const discordServer = completeState.character.discord[completeState.character.discord.active]
+    const filename = completeState.character.characterName ? completeState.character.characterName + ".jsonSave" : "DnD-Character.jsonSave"
+
+    const main = {
+        username: completeState.character.characterName,
+        content: " saved File to Discord. Click on the arrow icon to download the file",
+        attachments:[{ id: 0, description: "Character Savefile", filename }]
+    }
+
+    const formData = new FormData();
+    formData.append("payload_json", JSON.stringify(main));
+    formData.append("files[0]", new Blob([JSON.stringify(completeState)]), filename);
+
+    fetch(discordServer,
+        {
+            method: 'POST',
+            body: formData
+
+        }
+    );
+}
+
+
+// PRIVATE FUNCTIONS
 
 function getRollResultText(rollResult: ITestRoll) {
     const r = rollResult.result ? '>' : '<';
@@ -237,7 +263,7 @@ function getEmbedsForRollType(roll: IRollResult) {
 }
 
 
-function sendMessage(discord: string, message: string, embeds: any, username?: string) {
+function sendMessage(discord: string, message: string, embeds?: any, username?: string) {
     console.log(JSON.stringify({
         username: username,
         content: message,
